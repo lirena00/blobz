@@ -1,0 +1,32 @@
+{
+  "name": "@blobz/avatar-core",
+  "version": "0.1.0",
+  "description": "Deterministic, framework-free SVG blob avatars.",
+  "keywords": [
+    "avatar",
+    "blob",
+    "deterministic",
+    "svg"
+  ],
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/avatar.ts",
+      "default": "./src/avatar.ts"
+    }
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "check-types": "tsc --noEmit",
+    "test": "bun test"
+  },
+  "devDependencies": {
+    "@blobz/config": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
+  }
+}
