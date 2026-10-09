@@ -1,0 +1,42 @@
+{
+  "name": "@blobz/react",
+  "version": "0.1.0",
+  "description": "React components for deterministic Blobz avatars.",
+  "keywords": [
+    "avatar",
+    "blob",
+    "react",
+    "svg"
+  ],
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/avatar.tsx",
+      "default": "./src/avatar.tsx"
+    }
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "check-types": "tsc --noEmit",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@blobz/avatar-core": "workspace:*"
+  },
+  "devDependencies": {
+    "@blobz/config": "workspace:*",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "typescript": "catalog:"
+  },
+  "peerDependencies": {
+    "react": ">=19.0.0"
+  }
+}

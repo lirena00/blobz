@@ -91,6 +91,25 @@
         "varlock": "catalog:",
       },
     },
+    "packages/react": {
+      "name": "@blobz/react",
+      "version": "0.1.0",
+      "dependencies": {
+        "@blobz/avatar-core": "workspace:*",
+      },
+      "devDependencies": {
+        "@blobz/config": "workspace:*",
+        "@types/node": "catalog:",
+        "@types/react": "catalog:",
+        "@types/react-dom": "catalog:",
+        "react": "catalog:",
+        "react-dom": "catalog:",
+        "typescript": "catalog:",
+      },
+      "peerDependencies": {
+        "react": ">=19.0.0",
+      },
+    },
     "packages/ui": {
       "name": "@blobz/ui",
       "version": "0.0.0",
@@ -245,6 +264,8 @@
     "@blobz/config": ["@blobz/config@workspace:packages/config"],
 
     "@blobz/db": ["@blobz/db@workspace:packages/db"],
+
+    "@blobz/react": ["@blobz/react@workspace:packages/react"],
 
     "@blobz/ui": ["@blobz/ui@workspace:packages/ui"],
 
