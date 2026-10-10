@@ -331,9 +331,9 @@ export default function Home() {
 				</p>
 				<Link
 					className="mt-8 inline-flex h-[3.15rem] items-center justify-center gap-[0.55rem] rounded-[0.95rem] bg-[#0b1830] px-5 font-extrabold text-[0.9rem] text-white shadow-[0_18px_40px_rgb(11_24_48_/_20%)] transition-[transform,box-shadow,background] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-[3px] hover:bg-sky-600 active:scale-[0.97] motion-reduce:transition-none"
-					href="#surfaces"
+					href="/create"
 				>
-					Try a seed
+					Create yours
 					<ArrowRight aria-hidden="true" className="size-4" />
 				</Link>
 			</section>

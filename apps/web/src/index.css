@@ -1,3 +1,4 @@
+@import "@blobz/react/builder.css";
 @import "@blobz/ui/globals.css";
 
 html {
@@ -8,6 +9,16 @@ html {
 
 body {
 	background: #f8fcff;
+}
+
+.blobz-creator .blobz-builder {
+	--blobz-builder-accent: #0ea5e9;
+	--blobz-builder-background: var(--muted);
+	--blobz-builder-border: var(--border);
+	--blobz-builder-foreground: var(--foreground);
+	--blobz-builder-muted: var(--muted-foreground);
+	--blobz-builder-surface: var(--card);
+	font-family: inherit;
 }
 
 ::selection {
