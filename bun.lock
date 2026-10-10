@@ -23,6 +23,7 @@
       "dependencies": {
         "@blobz/auth": "workspace:*",
         "@blobz/db": "workspace:*",
+        "@blobz/react": "workspace:*",
         "@blobz/ui": "workspace:*",
         "@swc/helpers": "^0.5.23",
         "@tanstack/react-form": "^1.33.5",

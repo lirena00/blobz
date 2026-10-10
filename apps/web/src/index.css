@@ -1,1 +1,32 @@
 @import "@blobz/ui/globals.css";
+
+html {
+	-webkit-tap-highlight-color: transparent;
+	-webkit-text-size-adjust: 100%;
+	scroll-behavior: smooth;
+}
+
+body {
+	background: #f8fcff;
+}
+
+::selection {
+	color: #082f49;
+	background: #bae6fd;
+}
+
+button,
+a,
+[role="button"] {
+	touch-action: manipulation;
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+@media (pointer: coarse) {
+	input,
+	textarea,
+	select {
+		font-size: 1rem;
+	}
+}

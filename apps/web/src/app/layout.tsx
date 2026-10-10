@@ -1,40 +1,59 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Bricolage_Grotesque, Geist, Geist_Mono } from "next/font/google";
 
 import "../index.css";
 import Header from "@/components/header";
 import Providers from "@/components/providers";
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+	subsets: ["latin"],
+	variable: "--font-geist-sans",
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+	subsets: ["latin"],
+	variable: "--font-geist-mono",
+});
+
+const bricolageGrotesque = Bricolage_Grotesque({
+	subsets: ["latin"],
+	variable: "--font-bricolage",
 });
 
 export const metadata: Metadata = {
-  title: "blobz",
-  description: "blobz",
+	description:
+		"Playful, deterministic SVG avatars for default profile pictures. Generate the same unique avatar from any username, email, or ID.",
+	title: "Blobz — deterministic avatars worth keeping",
+};
+
+export const viewport: Viewport = {
+	initialScale: 1,
+	interactiveWidget: "resizes-content",
+	themeColor: [
+		{ color: "#f4fbff", media: "(prefers-color-scheme: light)" },
+		{ color: "#f4fbff", media: "(prefers-color-scheme: dark)" },
+	],
+	viewportFit: "cover",
+	width: "device-width",
 };
 
 export default function RootLayout({
-  children,
+	children,
 }: Readonly<{
-  children: React.ReactNode;
+	children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Providers>
-          <div className="grid grid-rows-[auto_1fr] h-svh">
-            <Header />
-            {children}
-          </div>
-        </Providers>
-      </body>
-    </html>
-  );
+	return (
+		<html lang="en" suppressHydrationWarning>
+			<body
+				className={`${geistSans.variable} ${geistMono.variable} ${bricolageGrotesque.variable} font-[family-name:var(--font-geist-sans)] antialiased`}
+			>
+				<Providers>
+					<div className="min-h-screen">
+						<Header />
+						{children}
+					</div>
+				</Providers>
+			</body>
+		</html>
+	);
 }

@@ -3,16 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 3001",
+    "auth:generate": "varlock run -- bun x auth@latest generate --config src/services.ts --output ../../packages/db/src/schema/auth.ts --yes",
     "build": "next build",
     "check-types": "tsc --noEmit",
-    "start": "next start",
+    "dev": "next dev --port 3001",
     "env:generate": "varlock codegen",
-    "auth:generate": "varlock run -- bun x auth@latest generate --config src/services.ts --output ../../packages/db/src/schema/auth.ts --yes"
+    "start": "next start"
   },
   "dependencies": {
     "@blobz/auth": "workspace:*",
     "@blobz/db": "workspace:*",
+    "@blobz/react": "workspace:*",
     "@blobz/ui": "workspace:*",
     "@swc/helpers": "^0.5.23",
     "@tanstack/react-form": "^1.33.5",
