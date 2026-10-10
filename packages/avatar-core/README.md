@@ -34,34 +34,37 @@ const avatar = makeAvatar(
 
 ## Build a face manually
 
-`AVATAR_CHOICES` contains every label in display order. Pass the corresponding
-zero-based indexes through `choices`; omitted or invalid values fall back to the
-name's deterministic choice.
+`createCustomAvatar` renders semantic choices directly. It does not use a name
+or a name-derived hash to select missing features, and it validates every
+choice at runtime.
 
 ```ts
-import { AVATAR_CHOICES, createAvatar } from "@blobz/avatar-core";
+import { createCustomAvatar } from "@blobz/avatar-core";
 
-console.log(AVATAR_CHOICES);
-
-const avatar = createAvatar({
-  name: "my-face",
+const avatar = createCustomAvatar({
   palette: ["#ffffff", "#12b76a"],
+  frame: "circle",
   choices: {
-    shapeI: 11,
-    eyeI: 13,
-    lookI: 4,
-    mouthI: 10,
-    browI: 3,
-    gapI: 2,
-    tiltI: 14,
-    dxI: 4,
-    dyI: 2,
-    flip: 1,
-    faceTiltI: 12,
+    shape: "leaf",
+    eyes: "distorted",
+    look: "centre",
+    eyeSpacing: "medium",
+    mouth: "wide smile",
+    brows: "quizzical",
+    mirrored: false,
+    faceAngle: 2,
+    bodyTilt: -4,
+    facePosition: { x: 1, y: 0 },
   },
 });
 ```
 
-The current feature space contains `1,135,134,000` combinations before palette
-variation. The generator draw order is intentionally stable; changing it would
-change existing users' avatars.
+`toCustomAvatarChoices` converts a generated result into the semantic format,
+which lets an editor use a generated face as its custom starting point. The
+legacy `choices` option on `createAvatar` remains available for partial numeric
+overrides.
+
+The current feature space contains `4,911,637,500` combinations before palette
+variation. It includes 21 silhouettes, 14 eye styles, 11 mouths, nine brow
+styles, and 25 face angles. The generator draw order is intentionally stable;
+changing it would change existing users' avatars.

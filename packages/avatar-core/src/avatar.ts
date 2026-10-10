@@ -1,6 +1,16 @@
 // biome-ignore-all lint/suspicious/noBitwiseOperators: cyrb53 and mulberry32 intentionally use 32-bit bitwise arithmetic for stable seeded output.
 export const AVATAR_CHOICES = {
-	brows: ["none", "raised", "angry", "worried"],
+	brows: [
+		"none",
+		"raised",
+		"angry",
+		"worried",
+		"flat",
+		"quizzical",
+		"high",
+		"tilted",
+		"unibrow",
+	],
 	eyes: [
 		"big",
 		"dots",
@@ -8,7 +18,7 @@ export const AVATAR_CHOICES = {
 		"happy",
 		"wink",
 		"squint",
-		"dash",
+		"distorted",
 		"grumpy",
 		"uneven",
 		"oval",
@@ -35,7 +45,7 @@ export const AVATAR_CHOICES = {
 	shape: [
 		"eared",
 		"lopsided",
-		"triangle",
+		"pillow",
 		"star",
 		"ghost",
 		"pebble",
@@ -49,7 +59,7 @@ export const AVATAR_CHOICES = {
 		"pill",
 		"quarter",
 		"round",
-		"soft square",
+		"leaf",
 		"soft triangle",
 		"cloud",
 		"drop",
@@ -58,7 +68,7 @@ export const AVATAR_CHOICES = {
 } as const;
 
 export const CHOICE_LABELS = AVATAR_CHOICES;
-export const AVATAR_COMBINATION_COUNT = 1_135_134_000;
+export const AVATAR_COMBINATION_COUNT = 4_911_637_500;
 export const DEFAULT_AVATAR_PALETTE = ["#f2f1f4", "#7c6cf2"] as const;
 
 export type AvatarFrame = "circle" | "rounded" | "square";
@@ -92,6 +102,49 @@ export interface AvatarChoices {
 	readonly tiltI: number;
 }
 
+export type AvatarBrow = (typeof AVATAR_CHOICES.brows)[number];
+export type AvatarEye = (typeof AVATAR_CHOICES.eyes)[number];
+export type AvatarEyeSpacing = (typeof AVATAR_CHOICES.gap)[number];
+export type AvatarLook = (typeof AVATAR_CHOICES.look)[number];
+export type AvatarMouth = (typeof AVATAR_CHOICES.mouth)[number];
+export type AvatarShape = (typeof AVATAR_CHOICES.shape)[number];
+
+export interface CustomAvatarChoices {
+	readonly bodyTilt: number;
+	readonly brows: AvatarBrow;
+	readonly eyeSpacing: AvatarEyeSpacing;
+	readonly eyes: AvatarEye;
+	readonly faceAngle: number;
+	readonly facePosition: {
+		readonly x: number;
+		readonly y: number;
+	};
+	readonly look: AvatarLook;
+	readonly mirrored: boolean;
+	readonly mouth: AvatarMouth;
+	readonly shape: AvatarShape;
+}
+
+export interface GeneratedAvatarDefinition {
+	readonly frame: AvatarFrame;
+	readonly name: string | number;
+	readonly palette: AvatarPalette;
+	readonly type: "generated";
+	readonly version: 1;
+}
+
+export interface CustomAvatarDefinition {
+	readonly choices: CustomAvatarChoices;
+	readonly frame: AvatarFrame;
+	readonly palette: AvatarPalette;
+	readonly type: "custom";
+	readonly version: 1;
+}
+
+export type AvatarDefinition =
+	| GeneratedAvatarDefinition
+	| CustomAvatarDefinition;
+
 export interface AvatarFeature {
 	readonly at: number;
 	readonly label: string;
@@ -100,19 +153,32 @@ export interface AvatarFeature {
 	readonly value: string;
 }
 
-export interface AvatarResult {
+export interface AvatarRenderResult {
 	readonly choices: AvatarChoices;
 	readonly combos: number;
 	readonly features: readonly AvatarFeature[];
-	readonly hash: number;
 	readonly key: string;
 	readonly svg: string;
+}
+
+export interface AvatarResult extends AvatarRenderResult {
+	readonly hash: number;
+}
+
+export interface CustomAvatarResult extends AvatarRenderResult {
+	readonly key: "custom avatar";
 }
 
 export interface CreateAvatarOptions {
 	readonly choices?: AvatarChoiceOverrides | null;
 	readonly frame?: AvatarFrame;
 	readonly name: unknown;
+	readonly palette?: AvatarPalette;
+}
+
+export interface CreateCustomAvatarOptions {
+	readonly choices: CustomAvatarChoices;
+	readonly frame?: AvatarFrame;
 	readonly palette?: AvatarPalette;
 }
 
@@ -144,7 +210,10 @@ const GLINTS = [
 		"M15.4 37.4C15.6 36.7 16.1 34.6 16.6 33.3C17.1 31.9 17.7 30.6 18.4 29.4C19.1 28.1 20.4 26.4 20.8 25.8",
 		"M14.7 41.9L14.8 44.9",
 	],
-	["M19.1 46.4L25.3 35.1", "M17.0 50.4L15.8 53.2"],
+	[
+		"M19.4 23.1L19.7 21.8L20.5 20.5L21.4 19.9L23.1 19.4L24.4 19.6L25.9 20.1L27.3 20.6L28.4 20.9",
+		"M20.7 27.7L21.3 30.3",
+	],
 	["M33.7 25.7L37.7 18.9", "M21.1 32.1L24.1 31.5"],
 	[
 		"M18.9 36.4C19.0 35.7 19.2 33.5 19.5 32.1C19.9 30.7 20.3 29.3 21.0 28.1C21.6 26.8 22.9 25.0 23.3 24.4",
@@ -177,8 +246,8 @@ const GLINTS = [
 		"M16.7 40.4L16.7 43.5",
 	],
 	[
-		"M14.6 35.1C14.7 34.4 14.9 32.3 15.2 30.9C15.5 29.5 15.9 28.1 16.4 26.8C16.9 25.4 18.0 23.6 18.4 22.9",
-		"M14.3 39.6L14.4 42.7",
+		"M23.0 28.1L24.0 26.8L25.2 25.7L26.0 24.8L27.2 23.7L28.2 23.0L29.5 22.0L30.8 21.1L31.9 20.5",
+		"M20.4 31.7L19.1 34.2",
 	],
 	["M20.2 44.6L26.2 33.2", "M18.1 48.6L16.6 51.4"],
 	[
@@ -261,54 +330,42 @@ const choiceOrFallback = (
 		? value
 		: fallback;
 
-export const makeAvatar = (
-	input: unknown,
-	colours: AvatarPalette,
-	frame: AvatarFrame = "rounded",
-	overrides: AvatarChoiceOverrides | null = null
-): AvatarResult => {
-	const key = String(input).trim().toLowerCase();
-	const hash = hashAvatarSeed(key);
-	const random = createSeededRandom(
-		(hash % 4_294_967_296) ^ Math.floor(hash / 4_294_967_296)
-	);
-	const integer = (count: number) => Math.floor(random() * count);
+interface RenderAvatarOptions {
+	readonly choices: AvatarChoices;
+	readonly colours: AvatarPalette;
+	readonly frame: AvatarFrame;
+	readonly id: string;
+	readonly key: string;
+}
 
-	random();
-	random();
-	let shapeI = integer(21);
-	let eyeI = integer(14);
-	let lookI = integer(5);
-	let mouthI = integer(11);
-	let tiltI = integer(15);
-	let dxI = integer(5);
-	let dyI = integer(3);
-	let gapI = integer(3);
-	let flip = integer(2);
-	let browI = integer(4);
-	let faceTiltI = integer(13);
-	if (overrides) {
-		shapeI = choiceOrFallback(overrides.shapeI, 21, shapeI);
-		eyeI = choiceOrFallback(overrides.eyeI, 14, eyeI);
-		lookI = choiceOrFallback(overrides.lookI, 5, lookI);
-		mouthI = choiceOrFallback(overrides.mouthI, 11, mouthI);
-		tiltI = choiceOrFallback(overrides.tiltI, 15, tiltI);
-		dxI = choiceOrFallback(overrides.dxI, 5, dxI);
-		dyI = choiceOrFallback(overrides.dyI, 3, dyI);
-		gapI = choiceOrFallback(overrides.gapI, 3, gapI);
-		flip = choiceOrFallback(overrides.flip, 2, flip);
-		browI = choiceOrFallback(overrides.browI, 4, browI);
-		faceTiltI = choiceOrFallback(overrides.faceTiltI, 13, faceTiltI);
-	}
+const renderAvatar = ({
+	choices,
+	colours,
+	frame,
+	id,
+	key,
+}: RenderAvatarOptions): AvatarRenderResult => {
+	const {
+		browI,
+		dxI,
+		dyI,
+		eyeI,
+		faceTiltI,
+		flip,
+		gapI,
+		lookI,
+		mouthI,
+		shapeI,
+		tiltI,
+	} = choices;
 	const tilt = (tiltI - 7) * 2;
 	const dx = dxI - 2;
 	const dy = dyI - 1;
-	const faceTilt = faceTiltI - 6;
+	const faceTilt = faceTiltI - 12;
 	const [background, blob] = colours;
 	const darkBlob = luminance(blob) < 90;
 	const pupil = darkBlob ? "#1b1b1b" : mix(blob, "#0a1030", 0.78);
 	const ink = darkBlob ? "#ffffff" : pupil;
-	const id = `fp${hash.toString(36)}`;
 
 	const shapePath = (path: string, width = 2.5) =>
 		`<path d="${path}" fill="${blob}" stroke="${blob}" stroke-width="${width}" stroke-linejoin="round"/>`;
@@ -349,9 +406,10 @@ export const makeAvatar = (
 			),
 		},
 		{
-			f: [40, 52, 0.85],
+			f: [40, 40, 0.95],
 			g: shapePath(
-				"M40 13C45 13 49 18 65 48C72 61 66 68 56 68H24C14 68 8 61 15 48C31 18 35 13 40 13Z"
+				"M20 20Q40 29 60 20Q51 40 60 60Q40 51 20 60Q29 40 20 20Z",
+				12
 			),
 		},
 		{ f: [40, 45, 0.78], g: burst(5, 27, 15, 8) },
@@ -414,10 +472,8 @@ export const makeAvatar = (
 			g: `<ellipse cx="40" cy="42" rx="27.5" ry="26.5" fill="${blob}"/>`,
 		},
 		{
-			f: [40, 42, 1],
-			g: shapePath(
-				"M17 20C24 13 55 13 63 21C70 29 69 56 61 64C53 71 26 70 18 62C10 54 9 29 17 20Z"
-			),
+			f: [40, 41, 0.9],
+			g: shapePath("M19 61C8 38 30 8 61 19C72 50 44 72 19 61Z", 9),
 		},
 		{
 			f: [40, 50, 0.88],
@@ -457,8 +513,8 @@ export const makeAvatar = (
 	const whiteBody = bodySvg.split(blob).join("#fff");
 	const shine =
 		`<g mask="url(#${id}s)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" opacity=".62">` +
-		`<path d="${glint[0]}" stroke-width="2.7" vector-effect="non-scaling-stroke"/>` +
-		`<path d="${glint[1]}" stroke-width="2.3" vector-effect="non-scaling-stroke"/></g>`;
+		`<path d="${glint[0]}" stroke-width="2.3"/>` +
+		`<path d="${glint[1]}" stroke-width="2"/></g>`;
 
 	const gap = getItem([8.5, 10, 11.5] as const, gapI);
 	const leftX = -gap;
@@ -505,6 +561,16 @@ export const makeAvatar = (
 		`<circle cx="${leftX}" cy="-2.5" r="4.8" fill="#fff"/>` +
 		`<circle cx="${leftX + look[0] * 0.45}" cy="${-2.5 + look[1] * 0.45}" r="2.45" fill="${pupil}"/>` +
 		`<path d="M${rightX - 4.2} -1.4Q${rightX} -7.2 ${rightX + 4.4} -1.8" ${stroke(2.1)}/>`;
+	const distortedEye = (x: number, side: number) => {
+		const eyeX = x - side * 0.9;
+		const centerY = -3.4;
+		const pupilX = eyeX - side * 1.8 + look[0] * 1.2;
+		const pupilY = centerY - 0.6 + look[1] * 1.2;
+		return (
+			`<path transform="translate(${eyeX} ${centerY}) scale(${1.04 * side} 1.04)" d="M-7.5 2.9C-7.6 -3.5 -4.2 -8.8 -0.5 -9.2C2.8 -9.5 6.2 -8.2 7 -5.6C7.9 -2.8 7.6 1.2 5.8 4.8C4 8.2 0.8 9.4 -1.2 9.3C-4.8 9.2 -7.3 6.2 -7.5 2.9Z" fill="#fff"/>` +
+			`<ellipse cx="${pupilX}" cy="${pupilY}" rx="2.6" ry="4.3" fill="${pupil}" transform="rotate(${25 * side} ${pupilX} ${pupilY})"/>`
+		);
+	};
 	const eyes = getItem(
 		[
 			big(leftX) + big(rightX),
@@ -513,8 +579,7 @@ export const makeAvatar = (
 			happy(leftX) + happy(rightX),
 			big(leftX) + happy(rightX),
 			`<path d="M${leftX - 4} -6L${leftX + 3} -2L${leftX - 4} 2M${rightX + 4} -6L${rightX - 3} -2L${rightX + 4} 2" ${stroke(2.4)}/>`,
-			`<circle cx="${leftX}" cy="-2" r="6.8" fill="#fff"/><circle cx="${rightX}" cy="-2" r="6.8" fill="#fff"/>` +
-				`<rect x="${leftX - 3.2}" y="-3.1" width="6.4" height="2.2" rx="1.1" fill="${pupil}"/><rect x="${rightX - 3.2}" y="-3.1" width="6.4" height="2.2" rx="1.1" fill="${pupil}"/>`,
+			distortedEye(leftX, 1) + distortedEye(rightX, -1),
 			grumpy(leftX, 1) + grumpy(rightX, -1),
 			big(leftX, -3.5, 8) + big(rightX, -0.5, 5.6),
 			oval(leftX) + oval(rightX),
@@ -528,19 +593,37 @@ export const makeAvatar = (
 
 	const mouthY = 8;
 	const mouthFill = darkBlob ? "#4a4a58" : pupil;
+	const openMouth = (
+		width: number,
+		height: number,
+		top: number,
+		withTeeth: boolean
+	) => {
+		const path = `M${-width} ${top}H${width}C${width} ${top + height * 0.8} ${width * 0.55} ${top + height} 0 ${top + height}C${-width * 0.55} ${top + height} ${-width} ${top + height * 0.8} ${-width} ${top}Z`;
+		const clipId = `${id}m`;
+		const teeth = withTeeth
+			? `<rect x="${-width}" y="${top}" width="${width * 2}" height="2.6" fill="#fff"/>`
+			: "";
+		return (
+			`<clipPath id="${clipId}"><path d="${path}"/></clipPath>` +
+			`<path d="${path}" fill="${mouthFill}" stroke="${mouthFill}" stroke-width="1.6" stroke-linejoin="round"/>` +
+			`<g clip-path="url(#${clipId})">${teeth}` +
+			`<ellipse cx="0" cy="${top + height}" rx="${width * 0.62}" ry="${height * 0.42}" fill="#ff8fa3"/></g>`
+		);
+	};
 	const mouth = getItem(
 		[
 			`<path d="M-3.2 ${mouthY}Q0 ${mouthY + 3.8} 3.2 ${mouthY}" ${stroke(2.2)}/>`,
 			`<path d="M-2.6 ${mouthY + 1}H2.6" ${stroke(2.2)}/>`,
-			`<path d="M-4 ${mouthY - 1}H4a4 4 0 0 1-8 0Z" fill="${mouthFill}"/><ellipse cx="0" cy="${mouthY + 2.6}" rx="2.2" ry="1.2" fill="#ff8fa3"/>`,
+			openMouth(4.4, 7.2, 6.2, false),
 			`<path d="M-3 ${mouthY + 2}Q0 ${mouthY - 1.6} 3 ${mouthY + 2}" ${stroke(2.2)}/>`,
 			`<ellipse cx="0" cy="${mouthY + 1}" rx="2" ry="2.5" fill="${ink}"/>`,
 			`<path d="M-3 ${mouthY}Q0.5 ${mouthY + 4} 3.5 ${mouthY - 1}" ${stroke(2.2)}/>`,
 			`<path d="M0.4 9.2V13.2a2.4 2.4 0 0 0 4.8 0V8.6Z" fill="#ff7a93"/><path d="M-5.5 7Q0 13 5.5 7" ${stroke(2.2)}/>`,
-			`<path d="M-6 6.5H6a6 6 0 0 1-12 0Z" fill="${mouthFill}"/><path d="M-5.4 6.5H5.4L5 8.7H-5Z" fill="#fff"/><ellipse cx="0" cy="11" rx="2.8" ry="1.3" fill="#ff8fa3"/>`,
+			openMouth(7, 7.8, 5.6, true),
 			`<path d="M-4 7.5H4" ${stroke(2.2)}/><rect x="-2.6" y="8" width="2.4" height="3.2" rx=".7" fill="#fff" stroke="${pupil}" stroke-width=".8"/><rect x=".2" y="8" width="2.4" height="3.2" rx=".7" fill="#fff" stroke="${pupil}" stroke-width=".8"/>`,
 			`<path d="M-5 8Q-2.5 5 0 8T5 8" ${stroke(2.2)}/>`,
-			`<path d="M-6 6Q0 14 6 6" ${stroke(2.4)}/><path d="M-7 4.8l1.1 1.3M7 4.8l-1.1 1.3" ${stroke(1.6)}/>`,
+			`<path d="M-7 5.4Q0 14.6 7 5.4" ${stroke(2.4)}/>`,
 		],
 		mouthI
 	);
@@ -551,10 +634,25 @@ export const makeAvatar = (
 				`<path d="M${x - 4.5} -12Q${x} -16 ${x + 4.5} -12" ${stroke(2.2)}/>`,
 				`<path d="M${x - 5 * side} -15.5L${x + 5 * side} -11.5" ${stroke(2.2)}/>`,
 				`<path d="M${x - 5 * side} -11.5L${x + 5 * side} -15.5" ${stroke(2.2)}/>`,
+				`<path d="M${x - 4.6} -12.6H${x + 4.6}" ${stroke(2.4)}/>`,
+				side > 0
+					? `<path d="M${x - 4.5} -13Q${x} -18.2 ${x + 4.5} -13" ${stroke(2.2)}/>`
+					: `<path d="M${x - 4.5} -11.8H${x + 4.5}" ${stroke(2.2)}/>`,
+				`<path d="M${x - 5} -14.6Q${x} -22.4 ${x + 5} -14.6" ${stroke(2.2)}/>`,
+				`<path d="M${x - 4.6} -11.6L${x + 4.6} -14.4" ${stroke(2.2)}/>`,
+				side > 0
+					? `<path d="M${x - 5} -12.6Q0 -15.8 ${-x + 5} -12.6" ${stroke(2.4)}/>`
+					: "",
 			],
 			browI
 		);
-	const brows = `<g transform="translate(0 ${eyeI === 8 ? -2.5 : 0})">${brow(leftX, 1)}${brow(rightX, -1)}</g>`;
+	let browShift = 0;
+	if (eyeI === 8) {
+		browShift = -2.5;
+	} else if (eyeI === 6) {
+		browShift = -3;
+	}
+	const brows = `<g transform="translate(0 ${browShift})">${brow(leftX, 1)}${brow(rightX, -1)}</g>`;
 	const face = `<g transform="translate(${body.f[0] + dx} ${body.f[1] + dy}) scale(${body.f[2]}) rotate(${faceTilt})">${brows}${eyes}${mouth}</g>`;
 
 	const frameRadius = FRAME_RADII[frame] ?? 18;
@@ -609,10 +707,10 @@ export const makeAvatar = (
 		{
 			at: browI + 1,
 			label: "Brows",
-			of: 4,
+			of: 9,
 			value: getItem(AVATAR_CHOICES.brows, browI),
 		},
-		{ at: faceTiltI + 1, label: "Face angle", of: 13, value: `${faceTilt}°` },
+		{ at: faceTiltI + 1, label: "Face angle", of: 25, value: `${faceTilt}°` },
 		{ at: tiltI + 1, label: "Tilt", of: 15, value: `${tilt}°` },
 		{
 			at: dxI * 3 + dyI + 1,
@@ -622,6 +720,48 @@ export const makeAvatar = (
 		},
 	];
 	const combos = features.reduce((total, feature) => total * feature.of, 1);
+	return { choices, combos, features, key, svg };
+};
+
+export const makeAvatar = (
+	input: unknown,
+	colours: AvatarPalette,
+	frame: AvatarFrame = "rounded",
+	overrides: AvatarChoiceOverrides | null = null
+): AvatarResult => {
+	const key = String(input).trim().toLowerCase();
+	const hash = hashAvatarSeed(key);
+	const random = createSeededRandom(
+		(hash % 4_294_967_296) ^ Math.floor(hash / 4_294_967_296)
+	);
+	const integer = (count: number) => Math.floor(random() * count);
+
+	random();
+	random();
+	let shapeI = integer(21);
+	let eyeI = integer(14);
+	let lookI = integer(5);
+	let mouthI = integer(11);
+	let tiltI = integer(15);
+	let dxI = integer(5);
+	let dyI = integer(3);
+	let gapI = integer(3);
+	let flip = integer(2);
+	let browI = integer(9);
+	let faceTiltI = integer(25);
+	if (overrides) {
+		shapeI = choiceOrFallback(overrides.shapeI, 21, shapeI);
+		eyeI = choiceOrFallback(overrides.eyeI, 14, eyeI);
+		lookI = choiceOrFallback(overrides.lookI, 5, lookI);
+		mouthI = choiceOrFallback(overrides.mouthI, 11, mouthI);
+		tiltI = choiceOrFallback(overrides.tiltI, 15, tiltI);
+		dxI = choiceOrFallback(overrides.dxI, 5, dxI);
+		dyI = choiceOrFallback(overrides.dyI, 3, dyI);
+		gapI = choiceOrFallback(overrides.gapI, 3, gapI);
+		flip = choiceOrFallback(overrides.flip, 2, flip);
+		browI = choiceOrFallback(overrides.browI, 9, browI);
+		faceTiltI = choiceOrFallback(overrides.faceTiltI, 25, faceTiltI);
+	}
 	const choices: AvatarChoices = {
 		browI,
 		dxI,
@@ -635,7 +775,157 @@ export const makeAvatar = (
 		shapeI,
 		tiltI,
 	};
-	return { choices, combos, features, hash, key, svg };
+	const id = `fp${hash.toString(36)}-${shapeI}-${eyeI}-${mouthI}-${gapI}${frame.charAt(0)}`;
+	const avatar = renderAvatar({ choices, colours, frame, id, key });
+	return { ...avatar, hash, key };
+};
+
+export const DEFAULT_CUSTOM_AVATAR_CHOICES = {
+	bodyTilt: 0,
+	brows: "none",
+	eyeSpacing: "medium",
+	eyes: "big",
+	faceAngle: 0,
+	facePosition: { x: 0, y: 0 },
+	look: "centre",
+	mirrored: false,
+	mouth: "smile",
+	shape: "round",
+} as const satisfies CustomAvatarChoices;
+
+const getChoiceIndex = <Choice extends string>(
+	choices: readonly Choice[],
+	value: Choice,
+	label: string
+): number => {
+	const index = choices.indexOf(value);
+	if (index === -1) {
+		throw new RangeError(`Unknown avatar ${label}: ${String(value)}`);
+	}
+	return index;
+};
+
+const requireIntegerInRange = (
+	value: unknown,
+	minimum: number,
+	maximum: number,
+	label: string
+): number => {
+	if (
+		typeof value !== "number" ||
+		!Number.isInteger(value) ||
+		value < minimum ||
+		value > maximum
+	) {
+		throw new RangeError(
+			`${label} must be an integer from ${minimum} to ${maximum}.`
+		);
+	}
+	return value;
+};
+
+const requireBoolean = (value: unknown, label: string): boolean => {
+	if (typeof value !== "boolean") {
+		throw new TypeError(`${label} must be a boolean.`);
+	}
+	return value;
+};
+
+export const toAvatarChoices = (
+	choices: CustomAvatarChoices
+): AvatarChoices => {
+	const bodyTilt = requireIntegerInRange(
+		choices.bodyTilt,
+		-14,
+		14,
+		"Body tilt"
+	);
+	if (bodyTilt % 2 !== 0) {
+		throw new RangeError("Body tilt must use two-degree increments.");
+	}
+	const faceAngle = requireIntegerInRange(
+		choices.faceAngle,
+		-12,
+		12,
+		"Face angle"
+	);
+	const positionX = requireIntegerInRange(
+		choices.facePosition.x,
+		-2,
+		2,
+		"Horizontal face position"
+	);
+	const positionY = requireIntegerInRange(
+		choices.facePosition.y,
+		-1,
+		1,
+		"Vertical face position"
+	);
+
+	return {
+		browI: getChoiceIndex(AVATAR_CHOICES.brows, choices.brows, "brows"),
+		dxI: positionX + 2,
+		dyI: positionY + 1,
+		eyeI: getChoiceIndex(AVATAR_CHOICES.eyes, choices.eyes, "eyes"),
+		faceTiltI: faceAngle + 12,
+		flip: requireBoolean(choices.mirrored, "Mirrored") ? 1 : 0,
+		gapI: getChoiceIndex(AVATAR_CHOICES.gap, choices.eyeSpacing, "eye spacing"),
+		lookI: getChoiceIndex(AVATAR_CHOICES.look, choices.look, "look"),
+		mouthI: getChoiceIndex(AVATAR_CHOICES.mouth, choices.mouth, "mouth"),
+		shapeI: getChoiceIndex(AVATAR_CHOICES.shape, choices.shape, "shape"),
+		tiltI: bodyTilt / 2 + 7,
+	};
+};
+
+export const toCustomAvatarChoices = (
+	choices: AvatarChoices
+): CustomAvatarChoices => ({
+	bodyTilt: (choices.tiltI - 7) * 2,
+	brows: getItem(AVATAR_CHOICES.brows, choices.browI),
+	eyeSpacing: getItem(AVATAR_CHOICES.gap, choices.gapI),
+	eyes: getItem(AVATAR_CHOICES.eyes, choices.eyeI),
+	faceAngle: choices.faceTiltI - 12,
+	facePosition: {
+		x: choices.dxI - 2,
+		y: choices.dyI - 1,
+	},
+	look: getItem(AVATAR_CHOICES.look, choices.lookI),
+	mirrored: choices.flip === 1,
+	mouth: getItem(AVATAR_CHOICES.mouth, choices.mouthI),
+	shape: getItem(AVATAR_CHOICES.shape, choices.shapeI),
+});
+
+export const createCustomAvatar = ({
+	choices: customChoices,
+	palette = DEFAULT_AVATAR_PALETTE,
+	frame = "rounded",
+}: CreateCustomAvatarOptions): CustomAvatarResult => {
+	const choices = toAvatarChoices(customChoices);
+	const signature = [
+		choices.shapeI,
+		choices.eyeI,
+		choices.lookI,
+		choices.mouthI,
+		choices.tiltI,
+		choices.dxI,
+		choices.dyI,
+		choices.gapI,
+		choices.flip,
+		choices.browI,
+		choices.faceTiltI,
+		frame,
+		palette[0],
+		palette[1],
+	].join("|");
+	const technicalId = `fpc${hashAvatarSeed(signature).toString(36)}`;
+	const avatar = renderAvatar({
+		choices,
+		colours: palette,
+		frame,
+		id: technicalId,
+		key: "custom avatar",
+	});
+	return { ...avatar, key: "custom avatar" };
 };
 
 export const createAvatar = ({

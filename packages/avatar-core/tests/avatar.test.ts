@@ -4,7 +4,11 @@ import {
 	AVATAR_CHOICES,
 	AVATAR_COMBINATION_COUNT,
 	createAvatar,
+	createCustomAvatar,
+	DEFAULT_CUSTOM_AVATAR_CHOICES,
 	makeAvatar,
+	toAvatarChoices,
+	toCustomAvatarChoices,
 } from "../src/avatar";
 
 const digest = (value: string) =>
@@ -20,13 +24,13 @@ describe("avatar-core", () => {
 
 		expect(avatar.key).toBe("ada lovelace");
 		expect(avatar.hash).toBe(426_552_004_313_640);
-		expect(avatar.combos).toBe(1_135_134_000);
+		expect(avatar.combos).toBe(4_911_637_500);
 		expect(avatar.choices).toEqual({
-			browI: 2,
+			browI: 5,
 			dxI: 1,
 			dyI: 2,
 			eyeI: 5,
-			faceTiltI: 9,
+			faceTiltI: 17,
 			flip: 0,
 			gapI: 1,
 			lookI: 3,
@@ -35,7 +39,7 @@ describe("avatar-core", () => {
 			tiltI: 6,
 		});
 		expect(digest(avatar.svg)).toBe(
-			"df677c49b77227a713bccb10fb4fa2236c41d828a082bc8f444046207726c487"
+			"4e45506a7a7ffa48def5ece8496a4bce143a55772524f02b7ad24a29bc620572"
 		);
 	});
 
@@ -48,23 +52,23 @@ describe("avatar-core", () => {
 
 		expect(avatar.hash).toBe(1_665_355_454_956_846);
 		expect(digest(avatar.svg)).toBe(
-			"2062c8bc16004778fd41f8bff74b1dc0fa9e8afa4d161a1552e2871dd8fe9952"
+			"c0cf729908dd0791d4d429a22ad26c6b7e3245f442843efd51ca0b0ac17058bd"
 		);
 		expect(avatar.svg).toContain("Blob avatar for blobz &lt;admin&gt;");
 	});
 
 	test("supports every manual face choice", () => {
 		const choices = {
-			browI: 3,
+			browI: 8,
 			dxI: 4,
 			dyI: 2,
-			eyeI: 13,
-			faceTiltI: 12,
+			eyeI: 6,
+			faceTiltI: 24,
 			flip: 1,
 			gapI: 2,
 			lookI: 4,
 			mouthI: 10,
-			shapeI: 11,
+			shapeI: 16,
 			tiltI: 14,
 		} as const;
 		const avatar = createAvatar({
@@ -75,9 +79,12 @@ describe("avatar-core", () => {
 		});
 
 		expect(avatar.choices).toEqual(choices);
-		expect(avatar.features.map(({ value }) => value)).toContain("peep wink");
+		const values = avatar.features.map(({ value }) => value);
+		expect(values).toContain("leaf");
+		expect(values).toContain("distorted");
+		expect(values).toContain("unibrow");
 		expect(digest(avatar.svg)).toBe(
-			"09644392d6cd5f8db1c87147b4451fa94817889e6baa98429ad8851a53c3686f"
+			"39a1de2cad99598136aedcd222e4c7c793ab32357309aff76057c877a2c2ba0f"
 		);
 	});
 
@@ -86,9 +93,9 @@ describe("avatar-core", () => {
 		expect(AVATAR_CHOICES.eyes).toHaveLength(14);
 		expect(AVATAR_CHOICES.look).toHaveLength(5);
 		expect(AVATAR_CHOICES.mouth).toHaveLength(11);
-		expect(AVATAR_CHOICES.brows).toHaveLength(4);
+		expect(AVATAR_CHOICES.brows).toHaveLength(9);
 		expect(AVATAR_CHOICES.gap).toHaveLength(3);
-		expect(AVATAR_COMBINATION_COUNT).toBe(1_135_134_000);
+		expect(AVATAR_COMBINATION_COUNT).toBe(4_911_637_500);
 	});
 
 	test("normalizes names and stays deterministic", () => {
@@ -105,5 +112,55 @@ describe("avatar-core", () => {
 			shapeI: 99,
 		});
 		expect(invalid).toEqual(generated);
+	});
+
+	test("renders a custom avatar without a name-derived hash", () => {
+		const avatar = createCustomAvatar({
+			choices: {
+				...DEFAULT_CUSTOM_AVATAR_CHOICES,
+				brows: "quizzical",
+				eyes: "distorted",
+				faceAngle: 8,
+				facePosition: { x: 2, y: -1 },
+				shape: "leaf",
+			},
+			frame: "circle",
+			palette: ["#eff8f5", "#10b8a6"],
+		});
+
+		expect(avatar.key).toBe("custom avatar");
+		expect("hash" in avatar).toBe(false);
+		expect(avatar.features.map(({ value }) => value)).toContain("quizzical");
+		expect(avatar.features.map(({ value }) => value)).toContain("distorted");
+		expect(avatar.features.map(({ value }) => value)).toContain("leaf");
+	});
+
+	test("round-trips semantic custom choices", () => {
+		const indexed = toAvatarChoices(DEFAULT_CUSTOM_AVATAR_CHOICES);
+
+		expect(indexed).toEqual({
+			browI: 0,
+			dxI: 2,
+			dyI: 1,
+			eyeI: 0,
+			faceTiltI: 12,
+			flip: 0,
+			gapI: 1,
+			lookI: 0,
+			mouthI: 0,
+			shapeI: 15,
+			tiltI: 7,
+		});
+		expect(toCustomAvatarChoices(indexed)).toEqual(
+			DEFAULT_CUSTOM_AVATAR_CHOICES
+		);
+	});
+
+	test("rejects invalid custom geometry", () => {
+		expect(() =>
+			createCustomAvatar({
+				choices: { ...DEFAULT_CUSTOM_AVATAR_CHOICES, bodyTilt: 3 },
+			})
+		).toThrow("Body tilt must use two-degree increments.");
 	});
 });
