@@ -7,8 +7,12 @@ import {
 	makeAvatar,
 } from "@blobz/avatar-core";
 import type { ComponentPropsWithRef, CSSProperties } from "react";
+import { AvatarImage } from "./avatar-image";
 
 export type AvatarSize = CSSProperties["width"];
+
+export const createAvatarDataUri = (svg: string): string =>
+	`data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 
 export interface AvatarProps
 	extends Omit<
@@ -29,9 +33,6 @@ export interface AvatarProps
 	readonly size?: AvatarSize;
 }
 
-export const createAvatarDataUri = (svg: string): string =>
-	`data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
-
 export function Avatar({
 	alt,
 	choices = null,
@@ -46,21 +47,19 @@ export function Avatar({
 	...imageProps
 }: AvatarProps) {
 	const avatar: AvatarResult = makeAvatar(name, palette, frame, choices);
-	const numericSize = typeof size === "number" ? size : undefined;
 
 	return (
-		// biome-ignore lint/performance/noImgElement: Blobz is framework-neutral and generates an in-memory SVG rather than an optimizable remote asset.
-		<img
+		<AvatarImage
 			{...imageProps}
 			alt={alt ?? `Blob avatar for ${avatar.key}`}
-			data-blobz-avatar=""
 			decoding={decoding}
 			draggable={draggable}
-			height={numericSize}
+			fallbackAlt={`Blob avatar for ${avatar.key}`}
 			ref={ref}
-			src={createAvatarDataUri(avatar.svg)}
-			style={{ height: size, width: size, ...style }}
-			width={numericSize}
+			size={size}
+			source="generated"
+			style={style}
+			svg={avatar.svg}
 		/>
 	);
 }

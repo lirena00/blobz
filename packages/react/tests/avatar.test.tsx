@@ -1,7 +1,12 @@
 import { describe, expect, test } from "bun:test";
-import { makeAvatar } from "@blobz/avatar-core";
+import {
+	createCustomAvatar,
+	DEFAULT_CUSTOM_AVATAR_CHOICES,
+	makeAvatar,
+} from "@blobz/avatar-core";
 import { renderToStaticMarkup } from "react-dom/server";
 import { Avatar, createAvatarDataUri } from "../src/avatar";
+import { CustomAvatar } from "../src/custom-avatar";
 
 describe("Avatar", () => {
 	test("renders the avatar-core result as an image", () => {
@@ -65,5 +70,30 @@ describe("Avatar", () => {
 		const second = renderToStaticMarkup(<Avatar name="same-user" />);
 
 		expect(first).toBe(second);
+	});
+
+	test("renders a complete custom definition as an image", () => {
+		const definition = {
+			choices: {
+				...DEFAULT_CUSTOM_AVATAR_CHOICES,
+				brows: "high",
+				shape: "pillow",
+			},
+			frame: "circle",
+			palette: ["#fff0f6", "#f52b96"],
+			type: "custom",
+			version: 1,
+		} as const;
+		const custom = createCustomAvatar(definition);
+		const markup = renderToStaticMarkup(
+			<CustomAvatar definition={definition} size={72} />
+		);
+
+		expect(markup).toContain('alt="Custom blob avatar"');
+		expect(markup).toContain('data-blobz-source="custom"');
+		expect(markup).toContain('height="72"');
+		expect(markup).toContain(
+			createAvatarDataUri(custom.svg).replaceAll("&", "&amp;")
+		);
 	});
 });
