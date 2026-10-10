@@ -49,6 +49,12 @@
 
   .big { width: min(220px, 62vw); aspect-ratio: 1; }
   .big svg, .tile-av svg { display: block; width: 100%; height: 100%; }
+  .preview { display: grid; gap: 10px; justify-items: start; min-width: 0; }
+  .png-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .png-row .hint { margin: 0; }
+  .png-fallback { display: grid; gap: 8px; max-width: 220px; }
+  .png-fallback .hint { margin: 0; }
+  .png-fallback img { width: 120px; height: 120px; border: 1px solid var(--line); border-radius: 12px; background: var(--bg); }
 
   .name-input {
     font: 700 1.7rem/1.2 var(--display); width: 100%; padding: 6px 0; color: var(--ink);
@@ -158,7 +164,8 @@
     .studio, .crowd { grid-template-columns: minmax(0, 1fr); }
     .page { padding-block: 28px 48px; gap: 34px; }
     .maker { grid-template-columns: minmax(180px, 220px) minmax(0, 1fr); align-items: start; }
-    .maker .big { grid-row: 1 / 4; width: 100%; }
+    .maker .preview { grid-row: 1 / 4; }
+    .maker .preview .big { width: 100%; }
     .crowd { gap: 16px; }
     textarea { min-height: 180px; }
   }
@@ -168,7 +175,9 @@
     h2 { font-size: 1.22rem; }
     .lede, .sub { font-size: 0.94rem; }
     .maker { grid-template-columns: minmax(0, 1fr); gap: 16px; }
-    .maker .big { grid-row: auto; width: min(100%, 220px); margin-inline: auto; }
+    .maker .preview { grid-row: auto; width: min(100%, 220px); margin-inline: auto; justify-items: stretch; }
+    .maker .preview .big { width: 100%; }
+    .png-row .btn { flex: 1; min-height: 44px; }
     .name-input { font-size: 1.45rem; }
     .seg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .seg label { min-height: 44px; padding: 10px 8px; display: grid; place-items: center; text-align: center; }
@@ -212,7 +221,18 @@
 
   <section class="studio" aria-label="Blob avatar maker">
     <div class="card maker" id="maker">
-      <div class="big" id="big" role="img" aria-label="Current avatar"></div>
+      <div class="preview">
+        <div class="big" id="big" role="img" aria-label="Current avatar"></div>
+        <div class="png-row">
+          <button class="btn" type="button" id="copy-png" title="Copies a 1280 × 1280 px PNG, 16 times the SVG's 80 px size">Copy as PNG</button>
+          <span class="hint">1280 × 1280 px</span>
+        </div>
+        <div class="png-fallback" id="png-fallback" hidden>
+          <p class="hint">Copying is blocked in this view. Press and hold, or right-click, the image to copy or save it.</p>
+          <img id="png-img" alt="Avatar as a 1280 pixel PNG">
+        </div>
+        <span class="sr" id="png-status" role="status"></span>
+      </div>
       <div>
         <label class="sr" for="name">Name or email</label>
         <input id="name" class="name-input" type="text" value="Maria Mitchell" autocomplete="off" spellcheck="false" placeholder="Type a name">
@@ -335,11 +355,11 @@
   }
 
   const CHOICE_LABELS = {
-    shape: ["eared", "lopsided", "triangle", "star", "ghost", "pebble", "squircle", "pentagon", "flower", "clover", "sun", "fuzz", "sparkle", "pill", "quarter", "round", "soft square", "soft triangle", "cloud", "drop", "bean"],
-    eyes: ["big", "dots", "sleepy", "happy", "wink", "squint", "dash", "grumpy", "uneven", "oval", "side-eye", "crossed", "shocked", "peep wink"],
+    shape: ["eared", "lopsided", "pillow", "star", "ghost", "pebble", "squircle", "pentagon", "flower", "clover", "sun", "fuzz", "sparkle", "pill", "quarter", "round", "leaf", "soft triangle", "cloud", "drop", "bean"],
+    eyes: ["big", "dots", "sleepy", "happy", "wink", "squint", "distorted", "grumpy", "uneven", "oval", "side-eye", "crossed", "shocked", "peep wink"],
     look: ["centre", "left", "right", "up", "down"],
     mouth: ["smile", "flat", "open", "frown", "oh", "smirk", "tongue out", "grin", "buck teeth", "wobbly", "wide smile"],
-    brows: ["none", "raised", "angry", "worried"],
+    brows: ["none", "raised", "angry", "worried", "flat", "quizzical", "high", "tilted", "unibrow"],
     gap: ["close", "medium", "wide"],
   };
 
@@ -353,10 +373,10 @@
     // Choices, always drawn in this order. Never reorder them or every blob changes.
     rand(); rand(); // Keep the original two colour draws so existing faces stay stable.
     let shapeI = int(21), eyeI = int(14), lookI = int(5), mouthI = int(11);
-    let tiltI = int(15), dxI = int(5), dyI = int(3), gapI = int(3), flip = int(2), browI = int(4);
+    let tiltI = int(15), dxI = int(5), dyI = int(3), gapI = int(3), flip = int(2), browI = int(9);
     // This extra, deliberately subtle face-only angle pushes the deterministic
     // feature space past one billion without changing the earlier hash draws.
-    let faceTiltI = int(13);
+    let faceTiltI = int(25);
     if (overrides) {
       const choice = (value, count, fallback) => Number.isInteger(value) && value >= 0 && value < count ? value : fallback;
       shapeI = choice(overrides.shapeI, 21, shapeI);
@@ -368,10 +388,10 @@
       dyI = choice(overrides.dyI, 3, dyI);
       gapI = choice(overrides.gapI, 3, gapI);
       flip = choice(overrides.flip, 2, flip);
-      browI = choice(overrides.browI, 4, browI);
-      faceTiltI = choice(overrides.faceTiltI, 13, faceTiltI);
+      browI = choice(overrides.browI, 9, browI);
+      faceTiltI = choice(overrides.faceTiltI, 25, faceTiltI);
     }
-    const tilt = (tiltI - 7) * 2, dx = dxI - 2, dy = dyI - 1, faceTilt = faceTiltI - 6;
+    const tilt = (tiltI - 7) * 2, dx = dxI - 2, dy = dyI - 1, faceTilt = faceTiltI - 12;
 
     // Flat colours only. The pupil is a very dark shade of the body colour.
     const bg = colours[0];
@@ -379,7 +399,7 @@
     const darkBlob = lum(blob) < 90;
     const P = darkBlob ? "#1b1b1b" : mix(blob, "#0a1030", 0.78);   // pupils, mouths
     const ink = darkBlob ? "#ffffff" : P;                           // lines drawn on the body
-    const id = "fp" + hash.toString(36);
+    const id = "fp" + hash.toString(36) + "-" + [shapeI, eyeI, mouthI, gapI].join("-") + shape.charAt(0);
 
     // Silhouettes, all soft flat blobs. Each has where the face sits and how big it is.
     const shp = (d, w = 2.5) => `<path d="${d}" fill="${blob}" stroke="${blob}" stroke-width="${w}" stroke-linejoin="round"/>`;
@@ -392,7 +412,7 @@
     const bodies = [
       { g: shp("M10 46C10 27 21 15 30 17C35 18 36 24 40 24C44 24 45 18 50 17C59 15 70 27 70 46C70 61 56 68 40 68C24 68 10 61 10 46Z"), f: [40, 46, 1] },      // eared
       { g: shp("M12 40C14 24 26 14 36 18C40 20 42 26 48 24C60 20 70 30 68 46C66 62 50 68 36 66C22 64 10 54 12 40Z"), f: [40, 44, 1] },                       // lopsided
-      { g: shp("M40 13C45 13 49 18 65 48C72 61 66 68 56 68H24C14 68 8 61 15 48C31 18 35 13 40 13Z"), f: [40, 52, 0.85] },                                    // triangle
+      { g: shp("M20 20Q40 29 60 20Q51 40 60 60Q40 51 20 60Q29 40 20 20Z", 12), f: [40, 40, 0.95] },   // pillow
       { g: burst(5, 27, 15, 8), f: [40, 45, 0.78] },                                                                                                          // star
       { g: shp("M16 66V38C16 22 28 14 40 14C52 14 64 22 64 38V66Q58 62 52 66T40 66T28 66T16 66Z"), f: [40, 42, 1] },                                         // ghost
       { g: shp("M16 50C10 38 20 28 30 30C36 31 38 22 46 22C58 22 70 36 68 50C66 62 56 68 42 68C30 68 20 62 16 50Z"), f: [41, 48, 1] },                       // pebble
@@ -406,7 +426,7 @@
       { g: shp("M24 22C34 20 46 24 56 22C68 20 74 30 72 42C70 56 62 64 52 62C42 60 30 64 22 62C12 60 6 50 8 40C10 28 14 24 24 22Z"), f: [40, 42, 1] },       // pill
       { g: shp("M21 61V20A41 41 0 0 1 62 61Z", 10), f: [38, 44, 1] },                                                                                         // quarter
       { g: `<ellipse cx="40" cy="42" rx="27.5" ry="26.5" fill="${blob}"/>`, f: [40, 42, 1] },                                                                 // round
-      { g: shp("M17 20C24 13 55 13 63 21C70 29 69 56 61 64C53 71 26 70 18 62C10 54 9 29 17 20Z"), f: [40, 42, 1] },                                        // soft square
+      { g: shp("M19 61C8 38 30 8 61 19C72 50 44 72 19 61Z", 9), f: [40, 41, 0.9] },   // leaf
       { g: shp("M40 13C47 13 51 22 58 35L68 54C73 64 64 69 53 69H27C16 69 7 64 12 54L22 35C29 22 33 13 40 13Z"), f: [40, 50, 0.88] },                       // soft triangle
       { g: lobes([[22, 47, 14], [31, 34, 17], [47, 34, 18], [59, 47, 14], [48, 56, 16], [31, 56, 16], [40, 46, 20]]), f: [40, 46, 0.92] },                    // cloud
       { g: shp("M40 12C47 22 62 36 62 50C62 63 52 70 40 70C28 70 18 63 18 50C18 36 33 22 40 12Z"), f: [40, 49, 0.9] },                                      // drop
@@ -418,7 +438,7 @@
     const glints = [
       ["M15.4 31.8C15.8 31.1 16.7 28.8 17.6 27.4C18.4 26.0 19.4 24.5 20.6 23.4C21.7 22.2 23.9 21.0 24.6 20.5", "M14.0 36.1L13.4 39.1"], // eared
       ["M15.4 37.4C15.6 36.7 16.1 34.6 16.6 33.3C17.1 31.9 17.7 30.6 18.4 29.4C19.1 28.1 20.4 26.4 20.8 25.8", "M14.7 41.9L14.8 44.9"], // lopsided
-      ["M19.1 46.4L25.3 35.1", "M17.0 50.4L15.8 53.2"], // triangle
+      ["M19.4 23.1L19.7 21.8L20.5 20.5L21.4 19.9L23.1 19.4L24.4 19.6L25.9 20.1L27.3 20.6L28.4 20.9", "M20.7 27.7L21.3 30.3"], // pillow
       ["M33.7 25.7L37.7 18.9", "M21.1 32.1L24.1 31.5"], // star
       ["M18.9 36.4C19.0 35.7 19.2 33.5 19.5 32.1C19.9 30.7 20.3 29.3 21.0 28.1C21.6 26.8 22.9 25.0 23.3 24.4", "M18.9 40.9L18.9 44.0"], // ghost
       ["M17.2 41.6C17.3 41.1 17.6 39.2 18.2 38.2C18.7 37.1 19.5 36.2 20.4 35.4C21.3 34.6 23.0 33.7 23.5 33.4", "M17.6 46.1L18.7 49.0"], // pebble
@@ -432,7 +452,7 @@
       ["M12.2 34.5C12.5 33.9 13.2 31.8 14.0 30.7C14.8 29.5 15.8 28.4 17.0 27.6C18.1 26.8 20.2 26.1 20.9 25.8", "M11.1 38.9L10.6 42.0"], // pill
       ["M21.5 37V31Q21.5 22.6 28.5 22.6", "M21.5 45V42.5"], // quarter
       ["M17.5 36.0C17.8 35.3 18.4 33.3 19.1 32.0C19.8 30.7 20.6 29.5 21.5 28.4C22.3 27.3 23.9 25.8 24.4 25.3", "M16.7 40.4L16.7 43.5"], // round
-      ["M14.6 35.1C14.7 34.4 14.9 32.3 15.2 30.9C15.5 29.5 15.9 28.1 16.4 26.8C16.9 25.4 18.0 23.6 18.4 22.9", "M14.3 39.6L14.4 42.7"], // soft square
+      ["M23.0 28.1L24.0 26.8L25.2 25.7L26.0 24.8L27.2 23.7L28.2 23.0L29.5 22.0L30.8 21.1L31.9 20.5", "M20.4 31.7L19.1 34.2"], // leaf
       ["M20.2 44.6L26.2 33.2", "M18.1 48.6L16.6 51.4"], // soft triangle
       ["M18.7 31.8A12.5 12.5 0 0 1 25.1 23.0", "M13.0 44.1A9.5 9.5 0 0 1 13.9 42.0"], // cloud
       ["M21.9 44.1L27.7 32.6", "M21.0 48.5L21.0 51.6"], // drop
@@ -441,8 +461,8 @@
     const whiteBody = bodySvg.split(blob).join("#fff");
     const shineMask = whiteBody;   // the shine sits inside the same mirrored group as the body, so no extra flip here
     const shine = `<g mask="url(#${id}s)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" opacity=".62">` +
-      `<path d="${glints[shapeI][0]}" stroke-width="2.7" vector-effect="non-scaling-stroke"/>` +
-      `<path d="${glints[shapeI][1]}" stroke-width="2.3" vector-effect="non-scaling-stroke"/></g>`;
+      `<path d="${glints[shapeI][0]}" stroke-width="2.3"/>` +
+      `<path d="${glints[shapeI][1]}" stroke-width="2"/></g>`;
 
     // Face, drawn around (0, 0) and then moved onto the body.
     const g = [8.5, 10, 11.5][gapI], lx = -g, rx = g;
@@ -469,6 +489,12 @@
     const peepWink = `<circle cx="${lx}" cy="-2.5" r="4.8" fill="#fff"/>` +
       `<circle cx="${lx + lk[0] * 0.45}" cy="${-2.5 + lk[1] * 0.45}" r="2.45" fill="${P}"/>` +
       `<path d="M${rx - 4.2} -1.4Q${rx} -7.2 ${rx + 4.4} -1.8" ${stroke(2.1)}/>`;
+    // Distorted eyes, after the flushed-face emoji: a big warped white with an oval pupil that stretches outwards.
+    const distortedEye = (x, s) => {   // s = +1 for the left eye, -1 for the right (mirrored)
+      const ex = x - s * 0.9, cy = -3.4, px = ex - s * 1.8 + lk[0] * 1.2, py = cy - 0.6 + lk[1] * 1.2;
+      return `<path transform="translate(${ex} ${cy}) scale(${1.04 * s} 1.04)" d="M-7.5 2.9C-7.6 -3.5 -4.2 -8.8 -0.5 -9.2C2.8 -9.5 6.2 -8.2 7 -5.6C7.9 -2.8 7.6 1.2 5.8 4.8C4 8.2 0.8 9.4 -1.2 9.3C-4.8 9.2 -7.3 6.2 -7.5 2.9Z" fill="#fff"/>` +
+        `<ellipse cx="${px}" cy="${py}" rx="2.6" ry="4.3" fill="${P}" transform="rotate(${25 * s} ${px} ${py})"/>`;
+    };
     const eyes = [
       big(lx) + big(rx),
       `<circle cx="${lx}" cy="-2" r="3.6" fill="${ink}"/><circle cx="${rx}" cy="-2" r="3.6" fill="${ink}"/>`,
@@ -476,8 +502,7 @@
       happy(lx) + happy(rx),
       big(lx) + happy(rx),
       `<path d="M${lx - 4} -6L${lx + 3} -2L${lx - 4} 2M${rx + 4} -6L${rx - 3} -2L${rx + 4} 2" ${stroke(2.4)}/>`,
-      `<circle cx="${lx}" cy="-2" r="6.8" fill="#fff"/><circle cx="${rx}" cy="-2" r="6.8" fill="#fff"/>` +
-        `<rect x="${lx - 3.2}" y="-3.1" width="6.4" height="2.2" rx="1.1" fill="${P}"/><rect x="${rx - 3.2}" y="-3.1" width="6.4" height="2.2" rx="1.1" fill="${P}"/>`,
+      distortedEye(lx, 1) + distortedEye(rx, -1),
       grumpy(lx, 1) + grumpy(rx, -1),
       big(lx, -3.5, 8) + big(rx, -0.5, 5.6),
       oval(lx) + oval(rx),
@@ -488,26 +513,41 @@
     ][eyeI];
 
     const my = 8, mf = darkBlob ? "#4a4a58" : P;
+    // Open mouths: a rounded bowl, with the tongue (and teeth) clipped inside it so nothing pokes out.
+    const openMouth = (w, h, top, teeth) => {
+      const d = `M${-w} ${top}H${w}C${w} ${top + h * 0.8} ${w * 0.55} ${top + h} 0 ${top + h}C${-w * 0.55} ${top + h} ${-w} ${top + h * 0.8} ${-w} ${top}Z`;
+      const cid = id + "m";
+      return `<clipPath id="${cid}"><path d="${d}"/></clipPath>` +
+        `<path d="${d}" fill="${mf}" stroke="${mf}" stroke-width="1.6" stroke-linejoin="round"/>` +
+        `<g clip-path="url(#${cid})">` +
+        (teeth ? `<rect x="${-w}" y="${top}" width="${w * 2}" height="2.6" fill="#fff"/>` : "") +
+        `<ellipse cx="0" cy="${top + h}" rx="${w * 0.62}" ry="${h * 0.42}" fill="#ff8fa3"/></g>`;
+    };
     const mouth = [
       `<path d="M-3.2 ${my}Q0 ${my + 3.8} 3.2 ${my}" ${stroke(2.2)}/>`,
       `<path d="M-2.6 ${my + 1}H2.6" ${stroke(2.2)}/>`,
-      `<path d="M-4 ${my - 1}H4a4 4 0 0 1-8 0Z" fill="${mf}"/><ellipse cx="0" cy="${my + 2.6}" rx="2.2" ry="1.2" fill="#ff8fa3"/>`,
+      openMouth(4.4, 7.2, 6.2, false),
       `<path d="M-3 ${my + 2}Q0 ${my - 1.6} 3 ${my + 2}" ${stroke(2.2)}/>`,
       `<ellipse cx="0" cy="${my + 1}" rx="2" ry="2.5" fill="${ink}"/>`,
       `<path d="M-3 ${my}Q0.5 ${my + 4} 3.5 ${my - 1}" ${stroke(2.2)}/>`,
       `<path d="M0.4 9.2V13.2a2.4 2.4 0 0 0 4.8 0V8.6Z" fill="#ff7a93"/><path d="M-5.5 7Q0 13 5.5 7" ${stroke(2.2)}/>`,
-      `<path d="M-6 6.5H6a6 6 0 0 1-12 0Z" fill="${mf}"/><path d="M-5.4 6.5H5.4L5 8.7H-5Z" fill="#fff"/><ellipse cx="0" cy="11" rx="2.8" ry="1.3" fill="#ff8fa3"/>`,
+      openMouth(7, 7.8, 5.6, true),
       `<path d="M-4 7.5H4" ${stroke(2.2)}/><rect x="-2.6" y="8" width="2.4" height="3.2" rx=".7" fill="#fff" stroke="${P}" stroke-width=".8"/><rect x=".2" y="8" width="2.4" height="3.2" rx=".7" fill="#fff" stroke="${P}" stroke-width=".8"/>`,
       `<path d="M-5 8Q-2.5 5 0 8T5 8" ${stroke(2.2)}/>`,
-      `<path d="M-6 6Q0 14 6 6" ${stroke(2.4)}/><path d="M-7 4.8l1.1 1.3M7 4.8l-1.1 1.3" ${stroke(1.6)}/>`,
+      `<path d="M-7 5.4Q0 14.6 7 5.4" ${stroke(2.4)}/>`,
     ][mouthI];
-    const brow = (x, s) => [
+    const brow = (x, s) => [      // s = +1 for the left eye, -1 for the right
       "",
-      `<path d="M${x - 4.5} -12Q${x} -16 ${x + 4.5} -12" ${stroke(2.2)}/>`,
-      `<path d="M${x - 5 * s} -15.5L${x + 5 * s} -11.5" ${stroke(2.2)}/>`,
-      `<path d="M${x - 5 * s} -11.5L${x + 5 * s} -15.5" ${stroke(2.2)}/>`,
+      `<path d="M${x - 4.5} -12Q${x} -16 ${x + 4.5} -12" ${stroke(2.2)}/>`,                                  // raised
+      `<path d="M${x - 5 * s} -15.5L${x + 5 * s} -11.5" ${stroke(2.2)}/>`,                                   // angry
+      `<path d="M${x - 5 * s} -11.5L${x + 5 * s} -15.5" ${stroke(2.2)}/>`,                                   // worried
+      `<path d="M${x - 4.6} -12.6H${x + 4.6}" ${stroke(2.4)}/>`,                                             // flat
+      s > 0 ? `<path d="M${x - 4.5} -13Q${x} -18.2 ${x + 4.5} -13" ${stroke(2.2)}/>` : `<path d="M${x - 4.5} -11.8H${x + 4.5}" ${stroke(2.2)}/>`, // quizzical
+      `<path d="M${x - 5} -14.6Q${x} -22.4 ${x + 5} -14.6" ${stroke(2.2)}/>`,                                // high
+      `<path d="M${x - 4.6} -11.6L${x + 4.6} -14.4" ${stroke(2.2)}/>`,                                       // tilted
+      s > 0 ? `<path d="M${x - 5} -12.6Q0 -15.8 ${-x + 5} -12.6" ${stroke(2.4)}/>` : "",                     // unibrow: one line across both eyes
     ][browI];
-    const brows = `<g transform="translate(0 ${eyeI === 8 ? -2.5 : 0})">${brow(lx, 1)}${brow(rx, -1)}</g>`;
+    const brows = `<g transform="translate(0 ${eyeI === 8 ? -2.5 : eyeI === 6 ? -3 : 0})">${brow(lx, 1)}${brow(rx, -1)}</g>`;
     const face = `<g transform="translate(${body.f[0] + dx} ${body.f[1] + dy}) scale(${body.f[2]}) rotate(${faceTilt})">${brows}${eyes}${mouth}</g>`;
 
     const radius = { square: 0, rounded: 18, circle: 40 }[shape] ?? 18;
@@ -529,8 +569,8 @@
       { label: "Looking", value: label.look[lookI], at: lookI + 1, of: 5 },
       { label: "Eye gap", value: label.gap[gapI], at: gapI + 1, of: 3 },
       { label: "Mouth", value: label.mouth[mouthI], at: mouthI + 1, of: 11 },
-      { label: "Brows", value: label.brows[browI], at: browI + 1, of: 4 },
-      { label: "Face angle", value: faceTilt + "°", at: faceTiltI + 1, of: 13 },
+      { label: "Brows", value: label.brows[browI], at: browI + 1, of: 9 },
+      { label: "Face angle", value: faceTilt + "°", at: faceTiltI + 1, of: 25 },
       { label: "Tilt", value: tilt + "°", at: tiltI + 1, of: 15 },
       { label: "Face shift", value: dx + ", " + dy, at: dxI * 3 + dyI + 1, of: 15 },
     ];
@@ -574,7 +614,7 @@
     simpleGroup("Looking", "lookI", CHOICE_LABELS.look),
     simpleGroup("Eye spacing", "gapI", CHOICE_LABELS.gap),
     simpleGroup("Mirroring", "flip", ["original", "mirrored"], false),
-    simpleGroup("Face angle", "faceTiltI", Array.from({ length: 13 }, (_, i) => (i - 6) + "°"), false),
+    simpleGroup("Face angle", "faceTiltI", Array.from({ length: 25 }, (_, i) => (i - 12) + "°"), false),
     simpleGroup("Body tilt", "tiltI", Array.from({ length: 15 }, (_, i) => ((i - 7) * 2) + "°"), false),
     {
       title: "Face position",
@@ -722,6 +762,8 @@
     if (state.mode === "custom" && !state.custom) state.custom = seededChoices();
     const av = makeAvatar(state.name, state.colours, state.shape, state.mode === "custom" ? state.custom : null);
     $("big").innerHTML = av.svg;
+    state.svg = av.svg;
+    $("png-fallback").hidden = true;
     $("big").setAttribute("aria-label", "Blob avatar for " + (av.key || "empty name"));
     $("hashline").innerHTML = "";
     const h = document.createElement("span");
@@ -787,7 +829,7 @@
     state.custom = {
       shapeI: random(21), eyeI: random(14), lookI: random(5), mouthI: random(11),
       tiltI: random(15), dxI: random(5), dyI: random(3), gapI: random(3),
-      flip: random(2), browI: random(4), faceTiltI: random(13),
+      flip: random(2), browI: random(9), faceTiltI: random(25),
     };
     render(false);
   });
@@ -814,6 +856,50 @@
       btn.textContent = "Selected, press Ctrl+C";
     }
     setTimeout(() => { btn.textContent = "Copy"; }, 1800);
+  });
+
+  // Copy as PNG: draw the current avatar at 16x its 80-unit size (1280 px) and put it on the clipboard.
+  function avatarPng(svg, scale = 16) {
+    const size = 80 * scale;
+    const markup = svg.replace(/^<svg([^>]*?) width="80" height="80"/, '<svg$1 width="' + size + '" height="' + size + '"');
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = canvas.height = size;
+        canvas.getContext("2d").drawImage(img, 0, 0, size, size);
+        canvas.toBlob((blob) => (blob ? resolve(blob) : reject(new Error("PNG export failed"))), "image/png");
+      };
+      img.onerror = () => reject(new Error("The avatar could not be drawn"));
+      img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(markup);
+    });
+  }
+
+  $("copy-png").addEventListener("click", async () => {
+    const btn = $("copy-png"), status = $("png-status");
+    const say = (text) => { btn.textContent = text; status.textContent = text; setTimeout(() => { btn.textContent = "Copy as PNG"; }, 2000); };
+    $("png-fallback").hidden = true;
+    const png = avatarPng(state.svg);   // started inside the click, so the browser allows the clipboard write
+    png.catch(() => {});                // failures are handled below
+    try {
+      await navigator.clipboard.write([new ClipboardItem({ "image/png": png })]);
+      say("Copied PNG");
+    } catch (err) {
+      try {
+        const blob = await png;
+        const url = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        });
+        $("png-img").src = url;
+        $("png-fallback").hidden = false;
+        say("Copy blocked, see below");
+      } catch (err2) {
+        say("Could not make the PNG");
+      }
+    }
   });
 
   render();
