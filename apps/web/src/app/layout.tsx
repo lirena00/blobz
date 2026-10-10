@@ -1,9 +1,17 @@
 import type { Metadata, Viewport } from "next";
-import { Bricolage_Grotesque, Geist, Geist_Mono } from "next/font/google";
+import {
+	Bricolage_Grotesque,
+	Geist,
+	Geist_Mono,
+	Inter,
+} from "next/font/google";
 
 import "../index.css";
+import { cn } from "@blobz/ui/lib/utils";
 import Header from "@/components/header";
 import Providers from "@/components/providers";
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 const geistSans = Geist({
 	subsets: ["latin"],
@@ -43,9 +51,13 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" suppressHydrationWarning>
+		<html
+			className={cn("font-sans", inter.variable)}
+			lang="en"
+			suppressHydrationWarning
+		>
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} ${bricolageGrotesque.variable} font-[family-name:var(--font-geist-sans)] antialiased`}
+				className={`${geistSans.variable} ${geistMono.variable} ${bricolageGrotesque.variable} antialiased`}
 			>
 				<Providers>
 					<div className="min-h-screen">

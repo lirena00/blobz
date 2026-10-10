@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema.json",
-  "style": "base-lyra",
+  "style": "base-maia",
   "rsc": true,
   "tsx": true,
   "tailwind": {
@@ -20,5 +20,6 @@
   },
   "menuColor": "default",
   "menuAccent": "subtle",
+  "rtl": false,
   "registries": {}
 }
