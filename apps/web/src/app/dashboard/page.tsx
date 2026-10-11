@@ -1,9 +1,26 @@
+import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { ENV } from "../../env.server";
 import { getDashboardState } from "../../lib/api-platform";
 import { auth, db } from "../../services";
 import Dashboard from "./dashboard";
+
+const description =
+	"Manage Blobz hosted API usage, approved origins, plan details, and billing.";
+
+export const metadata: Metadata = {
+	description,
+	openGraph: {
+		description,
+		title: "Blobz dashboard",
+	},
+	title: "Blobz dashboard",
+	twitter: {
+		description,
+		title: "Blobz dashboard",
+	},
+};
 
 export default async function DashboardPage({
 	searchParams,

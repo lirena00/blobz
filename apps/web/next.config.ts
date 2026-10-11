@@ -8,6 +8,14 @@ const withMDX = createMDX();
 const nextConfig: NextConfig = {
 	allowedDevOrigins: ["equation-straw-bamboo.ngrok-free.dev"],
 	reactCompiler: true,
+	async rewrites() {
+		return [
+			{
+				destination: "/llms.mdx/docs/:slug*/content.md",
+				source: "/docs/:slug*.md",
+			},
+		];
+	},
 	typedRoutes: true,
 };
 

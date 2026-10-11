@@ -31,7 +31,21 @@ const bricolageGrotesque = Bricolage_Grotesque({
 export const metadata: Metadata = {
 	description:
 		"Playful, deterministic SVG avatars for default profile pictures. Generate the same unique avatar from any username, email, or ID.",
+	metadataBase: new URL("https://blobz.dev"),
+	openGraph: {
+		description:
+			"Playful, deterministic SVG avatars for default profile pictures.",
+		siteName: "Blobz",
+		title: "Blobz — deterministic avatars worth keeping",
+		type: "website",
+	},
 	title: "Blobz — deterministic avatars worth keeping",
+	twitter: {
+		card: "summary_large_image",
+		description:
+			"Playful, deterministic SVG avatars for default profile pictures.",
+		title: "Blobz — deterministic avatars worth keeping",
+	},
 };
 
 export const viewport: Viewport = {
