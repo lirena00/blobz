@@ -1,0 +1,77 @@
+---
+title: Avatar
+description: Render a deterministic avatar from a name, email, number, or other stable seed.
+---
+
+import { Avatar } from "@blobz/react";
+
+## Basic usage
+
+```tsx
+import { Avatar } from "@blobz/react";
+
+<Avatar
+  name="Ada Lovelace"
+  palette={["#f2f1f4", "#7c6cf2"]}
+  frame="rounded"
+  size={64}
+/>
+```
+
+<Avatar
+  name="Ada Lovelace"
+  palette={["#f2f1f4", "#7c6cf2"]}
+  frame="rounded"
+  size={112}
+/>
+
+The seed accepts a `string` or `number`. Blobz converts it to a string, trims it, and lowercases it before hashing. These produce the same avatar:
+
+```tsx
+<Avatar name="Ada Lovelace" />
+<Avatar name="  ADA LOVELACE  " />
+```
+
+## Props
+
+| Prop | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `name` | `string \| number` | required | Stable value used to generate all face choices |
+| `frame` | `"rounded" \| "circle" \| "square"` | `"rounded"` | Outer SVG crop |
+| `palette` | `readonly [background, body]` | `["#f2f1f4", "#7c6cf2"]` | Two CSS hex colours |
+| `choices` | indexed override object or `null` | `null` | Pins selected generated features; unspecified fields remain deterministic |
+| `size` | `CSSProperties["width"]` | `80` | Applied to both CSS width and height |
+| `alt` | `string` | generated description | Pass `""` when decorative |
+
+All normal image props except `src`, `width`, `height`, `children`, and `alt` are forwarded to the underlying `<img>`. This includes `className`, `style`, `loading`, `fetchPriority`, `crossOrigin`, event handlers, `aria-*`, and `data-*` attributes.
+
+```tsx
+<Avatar
+  name={user.id}
+  alt={`${user.name}'s avatar`}
+  className="profile-avatar"
+  loading="lazy"
+  size="3rem"
+/>
+```
+
+Numeric sizes also set intrinsic `width` and `height` HTML attributes. CSS lengths such as `"3rem"`, `"100%"`, and `"clamp(3rem, 8vw, 6rem)"` are applied through inline style instead.
+
+## Ref forwarding in React 19
+
+`Avatar` accepts `ref` as a normal prop and forwards it to the image element:
+
+```tsx
+"use client";
+
+import { Avatar } from "@blobz/react";
+import { useRef } from "react";
+
+export function FocusableAvatar() {
+  const imageRef = useRef<HTMLImageElement>(null);
+
+  return <Avatar ref={imageRef} name="Ada" tabIndex={0} />;
+}
+```
+
+The rendered image includes `data-blobz-avatar` and `data-blobz-source="generated"` hooks for testing and targeted styling.

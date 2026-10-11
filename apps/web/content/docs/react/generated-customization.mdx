@@ -1,0 +1,68 @@
+---
+title: Generated customization
+description: Customize frames, palettes, and individual generated choices while preserving deterministic output.
+---
+
+import { Avatar } from "@blobz/react";
+
+## Frames
+
+```tsx
+<Avatar name="Ada" frame="rounded" />
+<Avatar name="Ada" frame="circle" />
+<Avatar name="Ada" frame="square" />
+```
+
+<div className="not-prose my-6 flex gap-4">
+  <Avatar name="Ada" frame="rounded" size={88} />
+  <Avatar name="Ada" frame="circle" size={88} />
+  <Avatar name="Ada" frame="square" size={88} />
+</div>
+
+## Palettes
+
+The first colour is the background and the second is the blob body:
+
+```tsx
+<Avatar name="Ada" palette={["#eef9ff", "#38bdf8"]} />
+```
+
+Any six-digit hex colours are accepted by the renderer. Keep sufficient contrast between the body, the generated ink colour, and the surrounding interface.
+
+## Pin only selected features
+
+`choices` uses zero-based indexes. Every omitted or invalid field falls back to the seed-generated choice, so you can pin one feature without taking ownership of the entire face.
+
+```tsx
+<Avatar
+  name="Ada"
+  choices={{
+    shapeI: 16,
+    eyeI: 6,
+    mouthI: 10,
+    browI: 5,
+  }}
+/>
+```
+
+<Avatar
+  name="Ada"
+  choices={{ shapeI: 16, eyeI: 6, mouthI: 10, browI: 5 }}
+  size={112}
+/>
+
+| Field | Valid indexes | Meaning |
+| --- | ---: | --- |
+| `shapeI` | 0–20 | 21 blob shapes |
+| `eyeI` | 0–13 | 14 eye styles |
+| `lookI` | 0–4 | centre, left, right, up, down |
+| `mouthI` | 0–10 | 11 mouth styles |
+| `browI` | 0–8 | 9 brow styles |
+| `gapI` | 0–2 | close, medium, wide eye spacing |
+| `tiltI` | 0–14 | body tilt from −14° to 14° in 2° steps |
+| `faceTiltI` | 0–24 | face angle from −12° to 12° |
+| `dxI` | 0–4 | horizontal face position from −2 to 2 |
+| `dyI` | 0–2 | vertical face position from −1 to 1 |
+| `flip` | 0–1 | normal or mirrored |
+
+Indexed overrides are compact and useful for procedural systems. For stored user choices or human-edited configuration, prefer the semantic [`CustomAvatar`](/docs/react/custom-avatar) definition.

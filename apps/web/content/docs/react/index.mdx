@@ -1,0 +1,50 @@
+---
+title: React package
+description: Deterministic generated avatars and complete custom faces for React 19.
+---
+
+import { Avatar } from "@blobz/react";
+
+`@blobz/react` renders Blobz avatars locally. It does not call the hosted API, require an account, or consume a request allowance.
+
+```tsx
+import { Avatar } from "@blobz/react";
+
+export function ProfileAvatar() {
+  return <Avatar name="Ada Lovelace" size={64} />;
+}
+```
+
+<div className="not-prose my-8 flex flex-wrap gap-3">
+  <Avatar
+    frame="rounded"
+    name="Ada Lovelace"
+    palette={["#f2f1f4", "#7c6cf2"]}
+    size={88}
+  />
+  <Avatar
+    frame="circle"
+    name="Grace Hopper"
+    palette={["#eef9ff", "#38bdf8"]}
+    size={88}
+  />
+  <Avatar
+    frame="square"
+    name="Katherine Johnson"
+    palette={["#fff7ed", "#fb923c"]}
+    size={88}
+  />
+</div>
+
+## Entry points
+
+| Import | Exports | Use it for |
+| --- | --- | --- |
+| `@blobz/react` | `Avatar`, `AvatarProps`, `AvatarSize`, `createAvatarDataUri` | Name-generated avatars and optional indexed overrides |
+| `@blobz/react/custom` | `CustomAvatar`, `CustomAvatarProps`, `CustomAvatarValue` | Complete semantic custom definitions |
+
+## Which component should I use?
+
+- Use [`Avatar`](/docs/react/avatar) for the common “stable seed in, avatar out” flow.
+- Add [indexed choice overrides](/docs/react/generated-customization) when most features should stay generated but a few must be pinned.
+- Use [`CustomAvatar`](/docs/react/custom-avatar) for a complete, human-readable face definition.

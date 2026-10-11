@@ -1,0 +1,232 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Blobz Hosted Avatar API",
+    "version": "1.0.0",
+    "description": "Render deterministic Blobz avatars through a browser-friendly SVG image endpoint. Each paid account receives one stable endpoint ID and approves up to five exact browser origins."
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "The Blobz deployment serving these docs"
+    },
+    {
+      "url": "http://localhost:3001",
+      "description": "Local development"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Avatars",
+      "description": "Deterministic SVG avatars for approved browser origins."
+    }
+  ],
+  "paths": {
+    "/api/v1/avatars/{endpointId}": {
+      "get": {
+        "operationId": "render-avatar",
+        "summary": "Render an avatar",
+        "description": "Returns a deterministic SVG avatar. The browser request must include an Origin header matching one of the account's approved origins. Only successful responses consume the account-wide monthly allowance.",
+        "tags": ["Avatars"],
+        "parameters": [
+          {
+            "name": "endpointId",
+            "in": "path",
+            "required": true,
+            "description": "The stable public endpoint ID shown in the Blobz dashboard.",
+            "schema": {
+              "type": "string",
+              "maxLength": 100
+            },
+            "example": "YOUR_ENDPOINT_ID"
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": true,
+            "description": "An exact approved HTTPS origin, or an approved localhost HTTP origin during development. Browsers set this when the image uses crossorigin=\"anonymous\".",
+            "schema": {
+              "type": "string",
+              "format": "uri"
+            },
+            "example": "https://app.example.com"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": true,
+            "description": "A name, username, email, or opaque stable ID. Input is trimmed and must contain 1 to 256 characters.",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "example": "Ada Lovelace"
+          },
+          {
+            "name": "frame",
+            "in": "query",
+            "required": false,
+            "description": "The outer crop shape.",
+            "schema": {
+              "type": "string",
+              "enum": ["rounded", "circle", "square"],
+              "default": "rounded"
+            }
+          },
+          {
+            "name": "palette",
+            "in": "query",
+            "required": false,
+            "description": "Two comma-separated six-digit hex colours: background first, body second. A leading # is optional before each colour.",
+            "schema": {
+              "type": "string",
+              "default": "#f2f1f4,#7c6cf2",
+              "pattern": "^#?[0-9a-fA-F]{6},#?[0-9a-fA-F]{6}$"
+            },
+            "example": "#eef9ff,#38bdf8"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "description": "The rendered SVG width and height in pixels.",
+            "schema": {
+              "type": "integer",
+              "minimum": 16,
+              "maximum": 1024,
+              "default": 80
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SVG avatar. RateLimit headers describe the account-wide monthly quota.",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "description": "The approved request origin echoed exactly.",
+                "schema": { "type": "string" }
+              },
+              "RateLimit-Limit": {
+                "description": "The monthly account allowance.",
+                "schema": { "type": "integer" }
+              },
+              "RateLimit-Remaining": {
+                "description": "Successful requests remaining in the current usage window.",
+                "schema": { "type": "integer", "minimum": 0 }
+              },
+              "RateLimit-Reset": {
+                "description": "Unix timestamp, in seconds, when the current usage window resets.",
+                "schema": { "type": "integer" }
+              }
+            },
+            "content": {
+              "image/svg+xml": {
+                "schema": { "type": "string" },
+                "example": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 80 80\" width=\"80\" height=\"80\">...</svg>"
+              }
+            }
+          },
+          "403": {
+            "description": "The Origin header is missing or unapproved, or the subscription is inactive.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" },
+                "examples": {
+                  "originRequired": {
+                    "value": {
+                      "code": "origin_required",
+                      "error": "Use an image with crossorigin from an approved origin."
+                    }
+                  },
+                  "originForbidden": {
+                    "value": {
+                      "code": "origin_forbidden",
+                      "error": "This origin is not approved for this account."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The endpoint ID does not exist or has been revoked.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" },
+                "example": {
+                  "code": "endpoint_not_found",
+                  "error": "Image endpoint not found."
+                }
+              }
+            }
+          },
+          "414": {
+            "description": "The complete request URL is longer than 4096 characters.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" },
+                "example": {
+                  "code": "invalid_request",
+                  "error": "Image URL is too long."
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "A required parameter is missing, unknown, repeated, or malformed.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" },
+                "example": {
+                  "code": "invalid_request",
+                  "error": "Invalid avatar parameters."
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "The monthly quota or the 10,000 requests/minute account burst limit was reached. Retry-After is expressed in seconds.",
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds until the request can be retried.",
+                "schema": { "type": "integer", "minimum": 1 }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" },
+                "examples": {
+                  "monthlyQuota": {
+                    "value": {
+                      "code": "monthly_quota_exceeded",
+                      "error": "Monthly request quota reached."
+                    }
+                  },
+                  "burstLimit": {
+                    "value": {
+                      "code": "burst_limit_exceeded",
+                      "error": "Too many requests this minute."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "required": ["code", "error"],
+        "properties": {
+          "code": { "type": "string" },
+          "error": { "type": "string" }
+        }
+      }
+    }
+  }
+}

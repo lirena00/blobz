@@ -8,8 +8,8 @@ import styles from "./header.module.css";
 import UserMenu from "./user-menu";
 
 const NAV_ITEMS = [
-	{ href: "/#docs", label: "Docs" },
-	{ href: "/#api", label: "Hosted API" },
+	{ href: { pathname: "/docs/react" }, label: "React" },
+	{ href: { pathname: "/docs/api" }, label: "Hosted API" },
 ] as const;
 
 const NAV_LINK_CLASS =
@@ -17,7 +17,10 @@ const NAV_LINK_CLASS =
 
 export default function Header() {
 	return (
-		<header className="pointer-events-none sticky top-3 z-50 -mb-[5.75rem] h-[5.75rem] px-4 max-[760px]:top-[0.6rem] max-[760px]:-mb-[5.4rem] max-[760px]:h-[5.4rem] max-[760px]:px-[0.6rem]">
+		<header
+			className="pointer-events-none sticky top-3 z-50 -mb-[5.75rem] h-[5.75rem] px-4 max-[760px]:top-[0.6rem] max-[760px]:-mb-[5.4rem] max-[760px]:h-[5.4rem] max-[760px]:px-[0.6rem]"
+			data-site-header=""
+		>
 			<div
 				className={`${styles.headerChrome} pointer-events-none relative isolate mx-auto h-[4.25rem] w-full max-w-[74rem] max-[760px]:h-16`}
 			>
@@ -43,7 +46,11 @@ export default function Header() {
 							className="flex items-center gap-4 max-[760px]:hidden"
 						>
 							{NAV_ITEMS.map(({ href, label }) => (
-								<Link className={NAV_LINK_CLASS} href={href} key={href}>
+								<Link
+									className={NAV_LINK_CLASS}
+									href={href}
+									key={href.pathname}
+								>
 									{label}
 								</Link>
 							))}

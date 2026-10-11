@@ -7,7 +7,6 @@ import {
 	DEFAULT_AVATAR_PALETTE,
 } from "@blobz/avatar-core";
 import { Avatar } from "@blobz/react";
-import { AvatarPalettePicker } from "@blobz/react/palette-picker";
 import {
 	Alert,
 	AlertDescription,
@@ -42,6 +41,7 @@ import {
 import { CodeXmlIcon, CopyIcon, InfoIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { AvatarPalettePicker } from "@/registry/blobz/avatar-palette-picker";
 
 interface EmbedQuickstartProps {
 	apiBaseUrl: string;

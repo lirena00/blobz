@@ -1,0 +1,78 @@
+---
+title: CustomAvatar
+description: Render a complete serializable face definition with semantic choice names.
+---
+
+import { CustomAvatar } from "@blobz/react/custom";
+
+`CustomAvatar` does not use a name to choose any facial feature. Every choice is explicit, readable, and serializable.
+
+```tsx
+import {
+  CustomAvatar,
+  type CustomAvatarValue,
+} from "@blobz/react/custom";
+
+const definition: CustomAvatarValue = {
+  type: "custom",
+  version: 1,
+  frame: "circle",
+  palette: ["#ffffff", "#12b76a"],
+  choices: {
+    shape: "leaf",
+    eyes: "distorted",
+    look: "centre",
+    eyeSpacing: "medium",
+    mouth: "wide smile",
+    brows: "quizzical",
+    mirrored: false,
+    faceAngle: 2,
+    bodyTilt: -4,
+    facePosition: { x: 1, y: 0 },
+  },
+};
+
+<CustomAvatar definition={definition} size={96} />;
+```
+
+<CustomAvatar
+  definition={{
+    type: "custom",
+    version: 1,
+    frame: "circle",
+    palette: ["#ffffff", "#12b76a"],
+    choices: {
+      shape: "leaf",
+      eyes: "distorted",
+      look: "centre",
+      eyeSpacing: "medium",
+      mouth: "wide smile",
+      brows: "quizzical",
+      mirrored: false,
+      faceAngle: 2,
+      bodyTilt: -4,
+      facePosition: { x: 1, y: 0 },
+    },
+  }}
+  size={128}
+/>
+
+## Choice catalogue
+
+| Property | Allowed values |
+| --- | --- |
+| `shape` | `eared`, `lopsided`, `pillow`, `star`, `ghost`, `pebble`, `squircle`, `pentagon`, `flower`, `clover`, `sun`, `fuzz`, `sparkle`, `pill`, `quarter`, `round`, `leaf`, `soft triangle`, `cloud`, `drop`, `bean` |
+| `eyes` | `big`, `dots`, `sleepy`, `happy`, `wink`, `squint`, `distorted`, `grumpy`, `uneven`, `oval`, `side-eye`, `crossed`, `shocked`, `peep wink` |
+| `look` | `centre`, `left`, `right`, `up`, `down` |
+| `eyeSpacing` | `close`, `medium`, `wide` |
+| `mouth` | `smile`, `flat`, `open`, `frown`, `oh`, `smirk`, `tongue out`, `grin`, `buck teeth`, `wobbly`, `wide smile` |
+| `brows` | `none`, `raised`, `angry`, `worried`, `flat`, `quizzical`, `high`, `tilted`, `unibrow` |
+| `mirrored` | `boolean` |
+| `faceAngle` | Integer from −12 to 12 |
+| `bodyTilt` | Even integer from −14 to 14 |
+| `facePosition.x` | Integer from −2 to 2 |
+| `facePosition.y` | Integer from −1 to 1 |
+
+Invalid semantic names or geometry throw a descriptive `RangeError` or `TypeError`. Validate persisted JSON at your application boundary before rendering untrusted values.
+
+`CustomAvatar` accepts the same `size`, `alt`, style, image props, and image ref behavior as `Avatar`. Its rendered image has `data-blobz-source="custom"` and defaults to the alt text `Custom blob avatar`.

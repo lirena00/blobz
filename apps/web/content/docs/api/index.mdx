@@ -1,0 +1,34 @@
+---
+title: Hosted Avatar API
+description: A stable public SVG image endpoint for approved browser origins.
+---
+
+The hosted API exposes one active image endpoint per paid account:
+
+```text
+GET /api/v1/avatars/ENDPOINT_ID
+```
+
+It is designed for direct browser embedding, not Bearer-token API calls. The endpoint ID is provisioned after the first verified successful payment and appears in the dashboard.
+
+```html
+<img
+  src="https://YOUR_BLOBZ_HOST/api/v1/avatars/ENDPOINT_ID?name=Ada&amp;frame=rounded&amp;palette=%23f2f1f4%2C%237c6cf2&amp;size=80"
+  crossorigin="anonymous"
+  width="80"
+  height="80"
+  alt="Ada avatar"
+/>
+```
+
+## Contract at a glance
+
+- `name` is required; frame, palette, and size are optional.
+- The same inputs use the same renderer and defaults as `@blobz/react`.
+- The browser must send an `Origin` matching one of the account's approved origins.
+- An account can approve five exact origins total.
+- Successful responses count toward the account's monthly allowance.
+- Rejected requests do not consume the monthly allowance.
+- Every response is uncached with `Cache-Control: no-store`, so every network request reaches quota enforcement.
+
+Continue with the [quickstart](/docs/api/quickstart), then review [origin security](/docs/api/origins-and-security) and [limits and errors](/docs/api/limits-and-errors). The [generated endpoint reference](/docs/api/reference/render-avatar) is sourced from the checked-in OpenAPI schema.

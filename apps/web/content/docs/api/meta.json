@@ -1,0 +1,12 @@
+{
+  "title": "Hosted API",
+  "description": "Serve Blobz avatars from a stable browser image endpoint.",
+  "root": true,
+  "pages": [
+    "index",
+    "quickstart",
+    "origins-and-security",
+    "limits-and-errors",
+    "reference"
+  ]
+}

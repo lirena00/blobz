@@ -5,7 +5,6 @@ import {
 	createAvatar,
 	createCustomAvatar,
 } from "@blobz/avatar-core";
-import { AvatarBuilder, type AvatarBuilderValue } from "@blobz/react/builder";
 import { Button } from "@blobz/ui/components/button";
 import {
 	Card,
@@ -32,6 +31,10 @@ import {
 import type { Language } from "prism-react-renderer";
 import { useCallback, useMemo, useState } from "react";
 import { toast } from "sonner";
+import {
+	AvatarBuilder,
+	type AvatarBuilderValue,
+} from "@/registry/blobz/avatar-builder";
 import { HighlightedCode } from "./highlighted-code";
 
 const EXPORT_SIZE_PX = 1280;

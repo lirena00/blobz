@@ -1,5 +1,7 @@
-@import "@blobz/react/builder.css";
 @import "@blobz/ui/globals.css";
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
+@import "fumadocs-openapi/css/preset.css";
 
 html {
 	-webkit-tap-highlight-color: transparent;
@@ -9,6 +11,14 @@ html {
 
 body {
 	background: #f8fcff;
+}
+
+body:has(#nd-docs-layout) {
+	background: var(--color-fd-background);
+}
+
+body:has(#nd-docs-layout) [data-site-header] {
+	display: none;
 }
 
 .blobz-creator .blobz-builder {

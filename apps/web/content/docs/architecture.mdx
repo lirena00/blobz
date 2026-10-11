@@ -1,0 +1,67 @@
+---
+title: Architecture
+description: How Blobz, Fumadocs, the React package, the framework-free renderer, and the hosted endpoint fit together.
+---
+
+## Product architecture
+
+```text
+                         ┌──────────────────────────┐
+                         │ @blobz/avatar-core       │
+                         │ hash · choices · SVG     │
+                         └────────────┬─────────────┘
+                                      │
+                    ┌─────────────────┴─────────────────┐
+                    │                                   │
+          ┌─────────▼──────────┐              ┌─────────▼──────────┐
+          │ @blobz/react       │              │ Hosted image route │
+          │ img data URI       │              │ SVG HTTP response  │
+          │ React image props  │              │ quota + CORS check │
+          └────────────────────┘              └────────────────────┘
+```
+
+### Shared renderer
+
+`@blobz/avatar-core` is framework-free and has no runtime dependencies. It owns:
+
+- seed normalization and stable hashing;
+- the complete feature catalogue and choice-index conversion;
+- generated and semantic custom-avatar definitions;
+- SVG rendering, XML escaping, palette handling, and frame geometry.
+
+The React package calls this renderer in-process and wraps the SVG in an image data URI. The hosted route calls the same renderer after request validation and returns the SVG as `image/svg+xml`. That shared dependency is why a React avatar and an API avatar match for the same inputs.
+
+## React path
+
+Use the React package when the application already ships React 19 or newer. Rendering is synchronous and local:
+
+1. `<Avatar>` converts `name`, `palette`, `frame`, and optional indexed overrides into SVG.
+2. `<CustomAvatar>` validates a complete semantic definition and renders it without a name-derived hash.
+
+No remote request, account, API key, or subscription is involved.
+
+## Hosted path
+
+Use the hosted endpoint when an ordinary image URL is the desired integration:
+
+1. A paid account owns one active, stable endpoint ID.
+2. The account approves up to five exact browser origins.
+3. The browser requests the image with `crossorigin="anonymous"`, causing it to send `Origin`.
+4. The server validates the URL, endpoint, origin, subscription, monthly allowance, and burst limit in that order.
+5. Successful requests are counted atomically and rendered by `@blobz/avatar-core`.
+
+The endpoint ID is public, not a secret. Origin enforcement prevents accidental embedding from unapproved browser sites; it is not cryptographic caller authentication because non-browser clients can spoof `Origin`.
+
+## Documentation architecture
+
+The docs are integrated into the existing Next.js application rather than deployed as a second site:
+
+| Layer | Responsibility |
+| --- | --- |
+| Fumadocs MDX | Compiles versioned content from `content/docs` |
+| Fumadocs Core | Builds the page tree, search index, static params, and LLM output |
+| Fumadocs UI | Renders navigation, search, page typography, table of contents, and responsive layouts |
+| Fumadocs OpenAPI | Generates and renders the hosted endpoint reference from `openapi.json` |
+| Next.js App Router | Owns `/docs`, `/api/search`, `/llms.txt`, and `/llms-full.txt` |
+
+The React and API directories are Fumadocs root folders. They appear as separate documentation sections while sharing search and the same application deployment.

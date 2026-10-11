@@ -1,0 +1,55 @@
+---
+title: Installation
+description: Install @blobz/react with your preferred package manager.
+---
+
+## Requirements
+
+- React 19 or newer
+- A bundler that supports ESM package exports
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+  <Tab>
+    ```bash
+    npm i @blobz/react
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    pnpm add @blobz/react
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    yarn add @blobz/react
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    bun add @blobz/react
+    ```
+  </Tab>
+</Tabs>
+
+## Basic setup
+
+Generated and semantic custom avatars need no global stylesheet:
+
+```tsx
+import { Avatar } from "@blobz/react";
+import { CustomAvatar } from "@blobz/react/custom";
+```
+
+Both components are usable from React Server Components because they render without hooks or browser-only APIs.
+
+## Tree-shakable entry points
+
+Import from the documented subpath instead of a package-wide barrel.
+
+```tsx
+// Generated avatar only
+import { Avatar } from "@blobz/react";
+
+// Semantic custom avatar only
+import { CustomAvatar } from "@blobz/react/custom";
+```

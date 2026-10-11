@@ -1,0 +1,60 @@
+---
+title: Limits, headers, and errors
+description: Account-wide quotas, rate-limit response headers, retry behavior, and every public error code.
+---
+
+## Monthly allowances
+
+| Plan | Successful requests per usage month |
+| --- | ---: |
+| Plus | 5,000,000 |
+| Pro | 10,000,000 |
+
+The allowance is account-wide because each account has one active endpoint. Monthly subscriptions reset with the billing period. Yearly subscriptions receive a fresh monthly window anchored to the annual billing start. Unused requests do not roll over.
+
+Only successful `200` image responses consume the monthly allowance. Validation failures, missing endpoints, rejected origins, and inactive subscriptions do not.
+
+## Burst protection
+
+An additional account-wide limit of 10,000 requests per minute applies. A burst rejection returns `429` and `Retry-After: 60`.
+
+## Success headers
+
+| Header | Meaning |
+| --- | --- |
+| `Content-Type` | `image/svg+xml; charset=utf-8` |
+| `Access-Control-Allow-Origin` | The exact approved request origin |
+| `RateLimit-Limit` | Monthly account allowance |
+| `RateLimit-Remaining` | Remaining successful requests, clamped at zero |
+| `RateLimit-Reset` | Unix timestamp in seconds for the current usage-window reset |
+| `Cache-Control` | `no-store` |
+| `Vary` | `Origin` |
+| `X-Content-Type-Options` | `nosniff` |
+
+## Error shape
+
+Errors are JSON:
+
+```json
+{
+  "code": "origin_forbidden",
+  "error": "This origin is not approved for this account."
+}
+```
+
+| Status | Code | Cause |
+| ---: | --- | --- |
+| `403` | `origin_required` | No valid `Origin` header was sent |
+| `403` | `origin_forbidden` | Origin is not on the account allowlist |
+| `403` | `subscription_inactive` | Subscription is not active |
+| `403` | `billing_period_unavailable` | Current billing window is not active |
+| `403` | `unknown_plan` | Subscription does not include API access |
+| `404` | `endpoint_not_found` | Endpoint is unknown or revoked |
+| `414` | `invalid_request` | Complete URL exceeds 4096 characters |
+| `422` | `invalid_request` | Query is missing, repeated, unknown, malformed, or out of range |
+| `429` | `monthly_quota_exceeded` | Monthly successful-request allowance is exhausted |
+| `429` | `burst_limit_exceeded` | Account exceeded 10,000 requests in the current minute |
+
+Both `429` cases include `Retry-After`. For a monthly quota response it is the number of seconds until the next usage window; for a burst response it is 60 seconds.
+
+Because `<img>` does not expose response bodies to application code, use browser network tools or a controlled `fetch` during diagnostics. Remember that browser JavaScript cannot manually set the forbidden `Origin` header; the page origin must itself be approved.

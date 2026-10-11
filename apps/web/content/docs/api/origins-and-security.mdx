@@ -1,0 +1,51 @@
+---
+title: Origins and security
+description: Understand the browser allowlist, public endpoint model, privacy limits, and safe operational practices.
+---
+
+## Exact-origin allowlist
+
+Each account can approve five origins total. Valid examples:
+
+```text
+https://example.com
+https://app.example.com
+https://app.example.com:8443
+http://localhost:3000
+http://127.0.0.1:3001
+```
+
+Invalid examples:
+
+```text
+http://example.com          # production HTTP
+https://*.example.com       # wildcard
+https://example.com/path    # path included
+https://user@example.com    # credentials included
+null                        # opaque origin
+```
+
+Subdomains and ports are different origins. Approving `https://example.com` does not approve `https://app.example.com` or `https://example.com:8443`.
+
+## What the check protects
+
+The route requires `Origin`, validates it before counting usage, and returns the exact approved value in `Access-Control-Allow-Origin`. This blocks ordinary browser pages on other origins from embedding the image successfully.
+
+## What it does not protect
+
+`Origin` is a browser control, not a secret credential. A non-browser HTTP client can send any `Origin` value and consume an account's allowance if it knows the public endpoint URL.
+
+- Treat the endpoint ID as public.
+- Do not use the endpoint for authorization or private images.
+- Rotate or revoke an endpoint through operator support if it is abused.
+- Use short-lived server-signed URLs in a different architecture if strong caller authentication is required.
+
+`Referer` is intentionally not used as authentication because browsers and site policies may omit it.
+
+## Seed privacy
+
+The `name` is part of the URL and can appear in browser history, analytics, proxies, CDN logs, server logs, and copied markup. Do not place private email addresses or sensitive identifiers there unless that exposure is acceptable. An opaque stable user ID produces the same deterministic behavior with less personal data in URLs.
+
+## Caching
+
+Successful images currently return `Cache-Control: no-store`. Every served network request reaches the quota transaction. Browser or service-worker behavior outside that contract should not be relied on to reduce usage.

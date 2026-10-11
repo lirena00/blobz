@@ -1,0 +1,35 @@
+---
+title: Styling and accessibility
+description: Style Blobz images while preserving image semantics and server rendering.
+---
+
+## Image styling
+
+`Avatar` and `CustomAvatar` render ordinary `<img>` elements. Style them with `className`, `style`, or a parent selector:
+
+```tsx
+<Avatar
+  className="profile-avatar"
+  name={user.id}
+  size="clamp(3rem, 8vw, 6rem)"
+  style={{ boxShadow: "0 8px 24px rgb(0 0 0 / 12%)" }}
+/>
+```
+
+The image source is an encoded in-memory SVG data URI. Image optimizers do not improve it, so use the Blobz component directly instead of wrapping it in `next/image`.
+
+## Alt text
+
+- Use a useful `alt` when the avatar conveys identity and no adjacent text already supplies it.
+- Use `alt=""` when the same person or account name appears beside the image.
+- Omitting `alt` uses `Blob avatar for {normalized seed}` for generated avatars and `Custom blob avatar` for custom avatars.
+- Avoid putting private email addresses in an automatically generated alt description. Pass a deliberate label or use an opaque seed.
+
+```tsx
+<Avatar name={user.id} alt={`${user.displayName}'s avatar`} />
+<Avatar name={user.id} alt="" />
+```
+
+## Server and client components
+
+`Avatar` and `CustomAvatar` use no hooks and can render from React Server Components.

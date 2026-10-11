@@ -1,0 +1,63 @@
+---
+title: API quickstart
+description: Approve a website and embed a deterministic SVG avatar in three steps.
+---
+
+## 1. Activate an endpoint
+
+Subscribe to Plus or Pro. Blobz creates one active endpoint for the account after Dodo confirms the first successful payment. Checkout redirects alone do not grant access.
+
+Copy the endpoint URL from the dashboard. Customers do not create API keys and do not need an Authorization header.
+
+## 2. Approve the website origin
+
+Add the exact origin that will embed the image:
+
+```text
+https://app.example.com
+```
+
+An origin is only the scheme, hostname, and optional port. Do not include a path, query, fragment, or wildcard. Production origins must use HTTPS. HTTP is accepted only for `localhost` and `127.0.0.1` during development.
+
+## 3. Add the image
+
+```html
+<img
+  src="https://YOUR_BLOBZ_HOST/api/v1/avatars/ENDPOINT_ID?name=Ada&amp;frame=rounded&amp;palette=%23f2f1f4%2C%237c6cf2&amp;size=80"
+  crossorigin="anonymous"
+  width="80"
+  height="80"
+  alt="Ada avatar"
+/>
+```
+
+`crossorigin="anonymous"` is required. It makes the cross-origin image request use CORS and send the page's `Origin` header. The server echoes an approved origin in `Access-Control-Allow-Origin`.
+
+## Query parameters
+
+| Parameter | Required | Default | Rules |
+| --- | --- | --- | --- |
+| `name` | yes | — | Trimmed string, 1–256 characters |
+| `frame` | no | `rounded` | `rounded`, `circle`, or `square` |
+| `palette` | no | `#f2f1f4,#7c6cf2` | Background and body as two comma-separated six-digit hex colours |
+| `size` | no | `80` | Integer from 16 to 1024 pixels |
+
+Unknown parameters, repeated parameters, missing `name`, malformed colours, and out-of-range sizes return `422`. The full URL may not exceed 4096 characters.
+
+## URL construction
+
+Use `URL` and `URLSearchParams` instead of string concatenation:
+
+```ts
+const imageUrl = new URL(
+  "/api/v1/avatars/ENDPOINT_ID",
+  "https://YOUR_BLOBZ_HOST",
+);
+
+imageUrl.searchParams.set("name", user.id);
+imageUrl.searchParams.set("frame", "circle");
+imageUrl.searchParams.set("palette", "#eef9ff,#38bdf8");
+imageUrl.searchParams.set("size", "96");
+```
+
+When writing literal HTML, escape query separators as `&amp;`. JSX accepts the normal URL string.

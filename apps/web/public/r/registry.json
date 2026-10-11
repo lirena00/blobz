@@ -1,0 +1,50 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "blobz",
+  "homepage": "https://github.com/lirena00/blobz",
+  "items": [
+    {
+      "name": "avatar-builder",
+      "type": "registry:block",
+      "title": "Avatar Builder",
+      "description": "A complete Blobz avatar editor with generated and custom modes.",
+      "dependencies": ["@blobz/avatar-core", "@blobz/react", "lucide-react"],
+      "files": [
+        {
+          "path": "src/registry/blobz/avatar-builder.tsx",
+          "type": "registry:component",
+          "target": "components/blobz/avatar-builder.tsx"
+        },
+        {
+          "path": "src/registry/blobz/avatar-palette-picker.tsx",
+          "type": "registry:component",
+          "target": "components/blobz/avatar-palette-picker.tsx"
+        },
+        {
+          "path": "src/registry/blobz/avatar-builder.css",
+          "type": "registry:style",
+          "target": "components/blobz/avatar-builder.css"
+        }
+      ]
+    },
+    {
+      "name": "avatar-palette-picker",
+      "type": "registry:component",
+      "title": "Avatar Palette Picker",
+      "description": "A controlled two-colour palette editor for Blobz avatars.",
+      "dependencies": ["@blobz/avatar-core"],
+      "files": [
+        {
+          "path": "src/registry/blobz/avatar-palette-picker.tsx",
+          "type": "registry:component",
+          "target": "components/blobz/avatar-palette-picker.tsx"
+        },
+        {
+          "path": "src/registry/blobz/avatar-builder.css",
+          "type": "registry:style",
+          "target": "components/blobz/avatar-builder.css"
+        }
+      ]
+    }
+  ]
+}
