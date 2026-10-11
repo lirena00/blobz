@@ -8,11 +8,8 @@ import z from "zod";
 
 import { authClient } from "@/lib/auth-client";
 
-import Loader from "./loader";
-
 export default function SignInForm({ onSwitchToSignUp }: { onSwitchToSignUp: () => void }) {
   const router = useRouter();
-  const { isPending } = authClient.useSession();
 
   const form = useForm({
     defaultValues: {
@@ -43,10 +40,6 @@ export default function SignInForm({ onSwitchToSignUp }: { onSwitchToSignUp: () 
       }),
     },
   });
-
-  if (isPending) {
-    return <Loader />;
-  }
 
   return (
     <div className="mx-auto w-full mt-10 max-w-md p-6">
