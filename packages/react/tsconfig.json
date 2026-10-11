@@ -1,6 +1,7 @@
 {
   "extends": "@blobz/config/tsconfig.base.json",
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "jsx": "react-jsx",
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "types": []

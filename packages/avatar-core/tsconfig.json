@@ -1,4 +1,7 @@
 {
   "extends": "@blobz/config/tsconfig.base.json",
+  "compilerOptions": {
+    "ignoreDeprecations": "6.0"
+  },
   "include": ["src/**/*.ts"]
 }

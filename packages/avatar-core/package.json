@@ -8,25 +8,41 @@
     "deterministic",
     "svg"
   ],
+  "homepage": "https://blobz.lirena.in",
+  "bugs": {
+    "url": "https://github.com/lirena00/blobz/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lirena00/blobz.git",
+    "directory": "packages/avatar-core"
+  },
   "sideEffects": false,
   "type": "module",
   "exports": {
     ".": {
-      "types": "./src/avatar.ts",
-      "default": "./src/avatar.ts"
+      "types": "./dist/avatar.d.ts",
+      "import": "./dist/avatar.js",
+      "default": "./dist/avatar.js"
     }
   },
   "files": [
-    "src",
+    "dist",
     "README.md"
   ],
   "scripts": {
+    "build": "tsup src/avatar.ts --format esm --dts --clean --sourcemap",
     "check-types": "tsc --noEmit",
+    "prepublishOnly": "bun run check-types && bun run test && bun run build",
     "test": "bun test"
   },
   "devDependencies": {
     "@blobz/config": "workspace:*",
     "@types/node": "catalog:",
     "typescript": "catalog:"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

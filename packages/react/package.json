@@ -8,28 +8,41 @@
     "react",
     "svg"
   ],
+  "homepage": "https://blobz.lirena.in",
+  "bugs": {
+    "url": "https://github.com/lirena00/blobz/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lirena00/blobz.git",
+    "directory": "packages/react"
+  },
   "sideEffects": false,
   "type": "module",
   "exports": {
     ".": {
-      "types": "./src/avatar.tsx",
-      "default": "./src/avatar.tsx"
+      "types": "./dist/avatar.d.ts",
+      "import": "./dist/avatar.js",
+      "default": "./dist/avatar.js"
     },
     "./custom": {
-      "types": "./src/custom-avatar.tsx",
-      "default": "./src/custom-avatar.tsx"
+      "types": "./dist/custom-avatar.d.ts",
+      "import": "./dist/custom-avatar.js",
+      "default": "./dist/custom-avatar.js"
     }
   },
   "files": [
-    "src",
+    "dist",
     "README.md"
   ],
   "scripts": {
+    "build": "tsup src/avatar.tsx src/custom-avatar.tsx --format esm --dts --clean --sourcemap --external react --external @blobz/avatar-core",
     "check-types": "tsc --noEmit",
+    "prepublishOnly": "bun run check-types && bun run test && bun run build",
     "test": "bun test"
   },
   "dependencies": {
-    "@blobz/avatar-core": "workspace:*"
+    "@blobz/avatar-core": "workspace:^"
   },
   "devDependencies": {
     "@blobz/config": "workspace:*",
@@ -42,5 +55,9 @@
   },
   "peerDependencies": {
     "react": ">=19.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }
