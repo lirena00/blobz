@@ -442,17 +442,17 @@ export function AvatarSwarmHero() {
 					>
 						<Link
 							className={`${styles.primaryAction} inline-flex h-[3.15rem] items-center justify-center gap-[0.55rem] rounded-[0.95rem] bg-[#0b1830] px-5 font-extrabold text-[0.9rem] text-white shadow-[0_15px_35px_rgb(15_23_42_/_20%)] transition-[transform,box-shadow,background] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-[3px] hover:bg-sky-600 hover:shadow-[0_18px_38px_rgb(14_165_233_/_28%)] active:scale-[0.97] motion-reduce:transition-none max-[640px]:w-full`}
-							href="#surfaces"
+							href="/create"
 						>
-							Generate an avatar
+							Try it live
 							<ArrowRight aria-hidden="true" className="size-4" />
 						</Link>
 						<Link
 							className={`${styles.secondaryAction} inline-flex h-[3.15rem] items-center justify-center gap-[0.55rem] rounded-[0.95rem] border border-[#cdeaff] bg-white/78 px-5 font-extrabold text-[#30425d] text-[0.9rem] shadow-[0_12px_30px_rgb(14_165_233_/_8%)] transition-[transform,box-shadow,background] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-[3px] active:scale-[0.97] motion-reduce:transition-none max-[640px]:w-full`}
-							href="#developers"
+							href="#docs"
 						>
 							<Code2 aria-hidden="true" className="size-4" />
-							Install for React
+							React docs
 						</Link>
 					</div>
 				</div>

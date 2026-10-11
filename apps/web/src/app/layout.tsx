@@ -53,16 +53,25 @@ export default function RootLayout({
 	return (
 		<html
 			className={cn("font-sans", inter.variable)}
+			data-scroll-behavior="smooth"
 			lang="en"
 			suppressHydrationWarning
 		>
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} ${bricolageGrotesque.variable} antialiased`}
 			>
+				<a
+					className="fixed -top-16 left-4 z-[60] rounded-full bg-primary px-4 py-2 font-medium text-primary-foreground text-sm focus:top-4 focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
+					href="#main-content"
+				>
+					Skip to content
+				</a>
 				<Providers>
 					<div className="min-h-screen">
 						<Header />
-						{children}
+						<div className="scroll-mt-24" id="main-content">
+							{children}
+						</div>
 					</div>
 				</Providers>
 			</body>

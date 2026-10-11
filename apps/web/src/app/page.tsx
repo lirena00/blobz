@@ -1,11 +1,25 @@
 import { Avatar } from "@blobz/react";
+import { Badge } from "@blobz/ui/components/badge";
+import {
+	Card,
+	CardAction,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from "@blobz/ui/components/card";
 import {
 	ArrowRight,
 	Box,
 	Braces,
+	Check,
+	Cloud,
 	Fingerprint,
 	MoveRight,
+	Package,
 	Palette,
+	Sparkles,
 	Zap,
 } from "lucide-react";
 import Link from "next/link";
@@ -46,6 +60,55 @@ const FOOTER_BLOBZ = [
 	["sol", ["#f0fdf4", "#4ade80"]],
 	["lumi", ["#faf5ff", "#c084fc"]],
 	["rio", ["#fff1f2", "#fb7185"]],
+] as const;
+
+const PRODUCT_OPTIONS = [
+	{
+		badge: "Free",
+		cta: "Read the React docs",
+		description:
+			"Generate SVG avatars inside your React app with no hosted service.",
+		features: [
+			"Unlimited client-side generations",
+			"Typed and SSR-ready",
+			"No account or image request",
+		],
+		href: "/#docs",
+		icon: Package,
+		name: "React package",
+		price: "$0",
+		priceNote: "free to install",
+	},
+	{
+		badge: "Hosted API",
+		cta: "Choose Plus",
+		description: "Use an image URL anywhere without shipping the generator.",
+		features: [
+			"5 million requests each month",
+			"Up to 5 approved origins",
+			"No overage charges",
+		],
+		href: "/dashboard",
+		icon: Cloud,
+		name: "Plus",
+		price: "$4.99",
+		priceNote: "/month · $49.90/year",
+	},
+	{
+		badge: "More volume",
+		cta: "Choose Pro",
+		description: "Double the monthly capacity for products with more traffic.",
+		features: [
+			"10 million requests each month",
+			"Up to 5 approved origins",
+			"No overage charges",
+		],
+		href: "/dashboard",
+		icon: Sparkles,
+		name: "Pro",
+		price: "$9.99",
+		priceNote: "/month · $99.90/year",
+	},
 ] as const;
 
 function ProfileCodeExample() {
@@ -219,7 +282,7 @@ export default function Home() {
 
 			<section
 				className="relative scroll-mt-[4.5rem] overflow-hidden bg-[#071426] text-white"
-				id="developers"
+				id="docs"
 			>
 				<div
 					aria-hidden="true"
@@ -254,10 +317,10 @@ export default function Home() {
 								<Fingerprint className="size-4" /> Deterministic
 							</span>
 						</div>
-						<div className="mt-5 grid max-w-[34rem] grid-cols-2 overflow-hidden rounded-xl border border-white/10 bg-white/[0.04] max-[480px]:grid-cols-1 [&>div+div]:border-white/10 [&>div+div]:border-l max-[480px]:[&>div+div]:border-t max-[480px]:[&>div+div]:border-l-0 [&>div]:px-4 [&>div]:py-3.5">
+						<div className="mt-5 grid max-w-[34rem] grid-cols-3 overflow-hidden rounded-xl border border-white/10 bg-white/[0.04] max-[560px]:grid-cols-1 [&>div+div]:border-white/10 [&>div+div]:border-l max-[560px]:[&>div+div]:border-t max-[560px]:[&>div+div]:border-l-0 [&>div]:px-4 [&>div]:py-3.5">
 							<div>
 								<span className="block font-bold text-[#6f8ca4] text-[0.62rem] uppercase tracking-[0.13em]">
-									Use today
+									Free · available
 								</span>
 								<strong className="mt-1 block text-[#d9effb] text-sm">
 									React package
@@ -265,10 +328,18 @@ export default function Home() {
 							</div>
 							<div>
 								<span className="block font-bold text-[#6f8ca4] text-[0.62rem] uppercase tracking-[0.13em]">
-									On the roadmap
+									Paid · available
 								</span>
 								<strong className="mt-1 block text-[#d9effb] text-sm">
-									API + shadcn CLI
+									Hosted API
+								</strong>
+							</div>
+							<div>
+								<span className="block font-bold text-[#6f8ca4] text-[0.62rem] uppercase tracking-[0.13em]">
+									Coming soon
+								</span>
+								<strong className="mt-1 block text-[#d9effb] text-sm">
+									shadcn components
 								</strong>
 							</div>
 						</div>
@@ -296,6 +367,102 @@ export default function Home() {
 							</strong>
 						</div>
 					</div>
+				</div>
+			</section>
+
+			<section
+				aria-labelledby="api-pricing-title"
+				className="scroll-mt-20 bg-[#f7fcff] px-6 py-32 max-[640px]:px-4 max-[640px]:py-24"
+				id="api"
+			>
+				<div className="mx-auto max-w-[82rem]">
+					<div className="grid grid-cols-[minmax(0,1fr)_minmax(18rem,0.45fr)] items-end gap-16 max-[820px]:grid-cols-1 max-[820px]:gap-6">
+						<div>
+							<p className={EYEBROW_CLASS}>Free package or hosted API</p>
+							<h2 className={SECTION_HEADING_CLASS} id="api-pricing-title">
+								Use the code.
+								<br />
+								Or use the URL.
+							</h2>
+						</div>
+						<p className={`max-w-[31rem] text-[1.02rem] ${SURFACE_COPY_CLASS}`}>
+							The React package is free and runs in your app. The hosted API is
+							paid because Blobz serves the images and tracks usage for you. You
+							only need an account for the API.
+						</p>
+					</div>
+
+					<div className="mt-14 grid items-stretch gap-5 lg:grid-cols-3">
+						{PRODUCT_OPTIONS.map(
+							({
+								badge,
+								cta,
+								description,
+								features,
+								href,
+								icon: Icon,
+								name,
+								price,
+								priceNote,
+							}) => (
+								<Card className="h-full" key={name}>
+									<CardHeader>
+										<div className="mb-2 grid size-11 place-items-center rounded-2xl bg-sky-100 text-sky-700">
+											<Icon aria-hidden="true" className="size-5" />
+										</div>
+										<CardTitle>
+											<h3 className="font-[760] text-xl tracking-[-0.025em]">
+												{name}
+											</h3>
+										</CardTitle>
+										<CardDescription>{description}</CardDescription>
+										<CardAction>
+											<Badge
+												variant={name === "Plus" ? "default" : "secondary"}
+											>
+												{badge}
+											</Badge>
+										</CardAction>
+									</CardHeader>
+									<CardContent className="flex flex-1 flex-col gap-6">
+										<p className="flex flex-wrap items-baseline gap-x-2 font-[family-name:var(--font-bricolage)] tabular-nums">
+											<strong className="font-[780] text-4xl tracking-[-0.045em]">
+												{price}
+											</strong>
+											<span className="text-muted-foreground text-sm">
+												{priceNote}
+											</span>
+										</p>
+										<ul className="flex flex-col gap-3 text-sm">
+											{features.map((feature) => (
+												<li className="flex items-start gap-2.5" key={feature}>
+													<Check
+														aria-hidden="true"
+														className="mt-0.5 size-4 shrink-0 text-sky-600"
+													/>
+													<span>{feature}</span>
+												</li>
+											))}
+										</ul>
+									</CardContent>
+									<CardFooter>
+										<Link
+											className="inline-flex h-10 items-center justify-center gap-2 rounded-full bg-primary px-4 font-medium text-primary-foreground text-sm transition-[background-color,transform] duration-150 hover:bg-primary/80 focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2 active:scale-[0.97]"
+											href={href}
+										>
+											{cta}
+											<ArrowRight aria-hidden="true" className="size-4" />
+										</Link>
+									</CardFooter>
+								</Card>
+							)
+						)}
+					</div>
+
+					<p className="mt-7 text-center text-[#71839a] text-sm">
+						Yearly API plans include the same monthly allowance and save the
+						equivalent of 2 months. shadcn components are coming soon.
+					</p>
 				</div>
 			</section>
 
@@ -353,7 +520,7 @@ export default function Home() {
 					</strong>
 					<span>Tiny faces. Serious utility.</span>
 				</div>
-				<span>Framework-free core and React components.</span>
+				<span>Free React package. Hosted API when you need it.</span>
 			</footer>
 		</main>
 	);
