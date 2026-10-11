@@ -21,6 +21,26 @@ body {
 	font-family: inherit;
 }
 
+.blobz-embed-palette {
+	--blobz-builder-accent: #0ea5e9;
+	--blobz-builder-border: var(--border);
+	--blobz-builder-foreground: var(--foreground);
+	--blobz-builder-muted: var(--muted-foreground);
+	--blobz-builder-surface: var(--card);
+}
+
+.blobz-embed-palette .blobz-builder__palette-row {
+	grid-template-columns: minmax(0, 1fr);
+}
+
+.blobz-embed-palette .blobz-builder__palette-label {
+	margin-top: 0;
+}
+
+.blobz-embed-palette .blobz-builder__palette-divider {
+	display: none;
+}
+
 ::selection {
 	color: #082f49;
 	background: #bae6fd;

@@ -3,6 +3,7 @@
 import { Avatar } from "@blobz/react";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import styles from "./header.module.css";
@@ -10,6 +11,8 @@ import styles from "./header.module.css";
 const SCROLL_COLLAPSE_THRESHOLD_PX = 24;
 
 export default function Header() {
+	const pathname = usePathname();
+	const isHome = pathname === "/";
 	const [isExpanded, setIsExpanded] = useState(true);
 
 	useEffect(() => {
@@ -66,19 +69,19 @@ export default function Header() {
 					>
 						<Link
 							className="rounded-full px-[0.85rem] py-[0.7rem] font-[720] text-[#52647c] text-[0.78rem] transition-colors duration-150 hover:bg-sky-100/80 hover:text-[#0b1830]"
-							href="#surfaces"
+							href="/#surfaces"
 						>
 							Live demo
 						</Link>
 						<Link
 							className="rounded-full px-[0.85rem] py-[0.7rem] font-[720] text-[#52647c] text-[0.78rem] transition-colors duration-150 hover:bg-sky-100/80 hover:text-[#0b1830]"
-							href="#principles"
+							href="/#principles"
 						>
 							Why Blobz
 						</Link>
 						<Link
 							className="rounded-full px-[0.85rem] py-[0.7rem] font-[720] text-[#52647c] text-[0.78rem] transition-colors duration-150 hover:bg-sky-100/80 hover:text-[#0b1830]"
-							href="#developers"
+							href="/#developers"
 						>
 							Developers
 						</Link>
@@ -86,9 +89,9 @@ export default function Header() {
 
 					<Link
 						className={`${styles.headerAction} pointer-events-auto inline-flex h-[3.25rem] items-center justify-center gap-[0.45rem] justify-self-end whitespace-nowrap rounded-full bg-[#0b1830] px-[1.15rem] font-[820] text-[0.8rem] text-white shadow-[0_12px_26px_rgb(11_24_48_/_18%)] transition-colors duration-150 hover:bg-sky-600 max-[760px]:h-12 max-[760px]:px-4`}
-						href="#surfaces"
+						href={isHome ? "/dashboard" : "/#surfaces"}
 					>
-						Try it live
+						{isHome ? "API dashboard" : "Try it live"}
 						<ArrowUpRight aria-hidden="true" className="size-[0.95rem]" />
 					</Link>
 				</div>
