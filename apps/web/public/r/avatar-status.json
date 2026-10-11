@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "avatar-status",
+  "title": "Avatar Status",
+  "description": "A Blobz avatar with an accessible presence indicator and logical-position variants.",
+  "dependencies": ["class-variance-authority", "cn"],
+  "registryDependencies": ["lirena00/blobz/avatar"],
+  "files": [
+    {
+      "path": "apps/web/src/registry/blobz/components/avatar-status.tsx",
+      "content": "import { cva, type VariantProps } from \"class-variance-authority\";\nimport { cn } from \"cn\";\nimport {\n\tBlobAvatar,\n\ttype BlobAvatarProps,\n} from \"@/registry/blobz/components/avatar\";\n\nconst avatarStatusVariants = cva(\n\t\"absolute rounded-full ring-2 ring-background\",\n\t{\n\t\tdefaultVariants: {\n\t\t\tposition: \"bottom-end\",\n\t\t\tsize: \"default\",\n\t\t\tstatus: \"offline\",\n\t\t},\n\t\tvariants: {\n\t\t\tposition: {\n\t\t\t\t\"bottom-end\": \"end-0 bottom-0\",\n\t\t\t\t\"bottom-start\": \"start-0 bottom-0\",\n\t\t\t\t\"top-end\": \"end-0 top-0\",\n\t\t\t\t\"top-start\": \"start-0 top-0\",\n\t\t\t},\n\t\t\tsize: {\n\t\t\t\tdefault: \"size-3\",\n\t\t\t\tlg: \"size-3.5\",\n\t\t\t\tsm: \"size-2.5\",\n\t\t\t\txl: \"size-4\",\n\t\t\t},\n\t\t\tstatus: {\n\t\t\t\taway: \"bg-[var(--blob-avatar-status-away)]\",\n\t\t\t\tbusy: \"bg-[var(--blob-avatar-status-busy)]\",\n\t\t\t\toffline: \"bg-[var(--blob-avatar-status-offline)]\",\n\t\t\t\tonline: \"bg-[var(--blob-avatar-status-online)]\",\n\t\t\t},\n\t\t},\n\t}\n);\n\nconst STATUS_LABELS = {\n\taway: \"Away\",\n\tbusy: \"Busy\",\n\toffline: \"Offline\",\n\tonline: \"Online\",\n} as const;\n\nexport interface BlobAvatarStatusProps\n\textends Omit<BlobAvatarProps, \"className\">,\n\t\tVariantProps<typeof avatarStatusVariants> {\n\treadonly avatarClassName?: string;\n\treadonly className?: string;\n\treadonly indicatorClassName?: string;\n\treadonly statusLabel?: string;\n}\n\nexport function BlobAvatarStatus({\n\tavatarClassName,\n\tclassName,\n\tindicatorClassName,\n\tposition = \"bottom-end\",\n\tsize = \"default\",\n\tstatus = \"offline\",\n\tstatusLabel,\n\t...avatarProps\n}: BlobAvatarStatusProps) {\n\tconst resolvedStatus = status ?? \"offline\";\n\n\treturn (\n\t\t<span\n\t\t\tclassName={cn(\"relative inline-flex\", className)}\n\t\t\tdata-slot=\"blob-avatar-status\"\n\t\t>\n\t\t\t<BlobAvatar {...avatarProps} className={avatarClassName} size={size} />\n\t\t\t<span\n\t\t\t\taria-label={statusLabel ?? STATUS_LABELS[resolvedStatus]}\n\t\t\t\tclassName={cn(\n\t\t\t\t\tavatarStatusVariants({ position, size, status: resolvedStatus }),\n\t\t\t\t\tindicatorClassName\n\t\t\t\t)}\n\t\t\t\tdata-slot=\"blob-avatar-status-indicator\"\n\t\t\t\trole=\"status\"\n\t\t\t/>\n\t\t</span>\n\t);\n}\n\nexport { avatarStatusVariants };\n",
+      "type": "registry:component",
+      "target": "@components/blobz/avatar-status.tsx"
+    }
+  ],
+  "cssVars": {
+    "light": {
+      "blob-avatar-status-away": "oklch(0.666 0.179 58.318)",
+      "blob-avatar-status-busy": "var(--destructive)",
+      "blob-avatar-status-offline": "var(--muted-foreground)",
+      "blob-avatar-status-online": "oklch(0.627 0.194 149.214)"
+    },
+    "dark": {
+      "blob-avatar-status-away": "oklch(0.828 0.189 84.429)",
+      "blob-avatar-status-online": "oklch(0.723 0.219 149.579)"
+    }
+  },
+  "type": "registry:component"
+}

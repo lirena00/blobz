@@ -38,11 +38,17 @@
 	--sidebar-border: oklch(0.922 0 0);
 	--sidebar-ring: oklch(0.708 0 0);
 	--background: oklch(1 0 0);
+	--blob-avatar-status-away: oklch(0.666 0.179 58.318);
+	--blob-avatar-status-busy: var(--destructive);
+	--blob-avatar-status-offline: var(--muted-foreground);
+	--blob-avatar-status-online: oklch(0.627 0.194 149.214);
 	--foreground: oklch(0.145 0 0);
 }
 
 .dark {
 	--background: oklch(0.145 0 0);
+	--blob-avatar-status-away: oklch(0.828 0.189 84.429);
+	--blob-avatar-status-online: oklch(0.723 0.219 149.579);
 	--foreground: oklch(0.985 0 0);
 	--card: oklch(0.205 0 0);
 	--card-foreground: oklch(0.985 0 0);

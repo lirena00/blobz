@@ -4,12 +4,13 @@
   "private": true,
   "scripts": {
     "auth:generate": "varlock run -- bun x auth@latest generate --config src/services.ts --output ../../packages/db/src/schema/auth.ts --yes",
-    "build": "next build",
+    "build": "bun run registry:build && next build",
     "check-types": "tsc --noEmit",
     "dev": "next dev --port 3001",
     "docs:generate-api": "bun scripts/generate-api-docs.ts",
     "env:generate": "varlock codegen",
-    "registry:build": "shadcn build registry.json",
+    "registry:build": "shadcn build registry.json --cwd ../.. --output apps/web/public/r && biome format --write public/r",
+    "registry:validate": "shadcn registry validate registry.json --cwd ../..",
     "start": "next start"
   },
   "dependencies": {

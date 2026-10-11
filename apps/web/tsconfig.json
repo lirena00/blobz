@@ -22,6 +22,7 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
+      "@/components/ui/*": ["../../packages/ui/src/components/*"],
       "@blobz/ui/*": ["../../packages/ui/src/*"]
     }
   },

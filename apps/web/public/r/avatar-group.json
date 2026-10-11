@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "avatar-group",
+  "title": "Avatar Group",
+  "description": "Composable overlapping Blobz avatars with a matching overflow count.",
+  "dependencies": ["class-variance-authority", "cn"],
+  "registryDependencies": ["lirena00/blobz/avatar"],
+  "files": [
+    {
+      "path": "apps/web/src/registry/blobz/components/avatar-group.tsx",
+      "content": "import { cva, type VariantProps } from \"class-variance-authority\";\nimport { cn } from \"cn\";\nimport type { ComponentProps } from \"react\";\n\nimport type { BlobAvatarProps } from \"@/registry/blobz/components/avatar\";\n\nconst avatarGroupFrameVariants = cva(\n\t\"relative not-first:-ms-2 inline-flex shrink-0 ring-2 ring-background\",\n\t{\n\t\tdefaultVariants: {\n\t\t\tframe: \"rounded\",\n\t\t},\n\t\tvariants: {\n\t\t\tframe: {\n\t\t\t\tcircle: \"rounded-full\",\n\t\t\t\trounded: \"rounded-lg\",\n\t\t\t\tsquare: \"rounded-none\",\n\t\t\t},\n\t\t},\n\t}\n);\n\nconst avatarGroupCountVariants = cva(\n\t\"relative inline-flex shrink-0 items-center justify-center bg-muted font-medium text-muted-foreground ring-2 ring-background\",\n\t{\n\t\tdefaultVariants: {\n\t\t\tframe: \"rounded\",\n\t\t\tsize: \"default\",\n\t\t},\n\t\tvariants: {\n\t\t\tframe: {\n\t\t\t\tcircle: \"rounded-full\",\n\t\t\t\trounded: \"rounded-lg\",\n\t\t\t\tsquare: \"rounded-none\",\n\t\t\t},\n\t\t\tsize: {\n\t\t\t\tdefault: \"size-10 text-sm\",\n\t\t\t\tlg: \"size-12 text-sm\",\n\t\t\t\tsm: \"size-8 text-xs\",\n\t\t\t\txl: \"size-16 text-base\",\n\t\t\t},\n\t\t},\n\t}\n);\n\nexport function BlobAvatarGroup({\n\tclassName,\n\t...props\n}: ComponentProps<\"fieldset\">) {\n\treturn (\n\t\t<fieldset\n\t\t\tclassName={cn(\"flex min-w-0 items-center border-0 p-0\", className)}\n\t\t\tdata-slot=\"blob-avatar-group\"\n\t\t\t{...props}\n\t\t/>\n\t);\n}\n\nexport function BlobAvatarGroupItem({\n\tclassName,\n\tframe = \"rounded\",\n\t...props\n}: ComponentProps<\"span\"> & { readonly frame?: BlobAvatarProps[\"frame\"] }) {\n\treturn (\n\t\t<span\n\t\t\tclassName={cn(avatarGroupFrameVariants({ frame }), className)}\n\t\t\tdata-frame={frame}\n\t\t\tdata-slot=\"blob-avatar-group-item\"\n\t\t\t{...props}\n\t\t/>\n\t);\n}\n\nexport interface BlobAvatarGroupCountProps\n\textends Omit<ComponentProps<\"span\">, \"children\">,\n\t\tVariantProps<typeof avatarGroupCountVariants> {\n\treadonly count: number;\n\treadonly label?: string;\n}\n\nexport function BlobAvatarGroupCount({\n\tclassName,\n\tcount,\n\tframe = \"rounded\",\n\tlabel = `${count} more people`,\n\tsize = \"default\",\n\t...props\n}: BlobAvatarGroupCountProps) {\n\treturn (\n\t\t<span\n\t\t\tclassName={cn(\n\t\t\t\tavatarGroupCountVariants({ frame, size }),\n\t\t\t\t\"not-first:-ms-2\",\n\t\t\t\tclassName\n\t\t\t)}\n\t\t\tdata-frame={frame}\n\t\t\tdata-slot=\"blob-avatar-group-count\"\n\t\t\t{...props}\n\t\t>\n\t\t\t<span aria-hidden=\"true\">+{count}</span>\n\t\t\t<span className=\"sr-only\">{label}</span>\n\t\t</span>\n\t);\n}\n\nexport { avatarGroupCountVariants, avatarGroupFrameVariants };\n",
+      "type": "registry:component",
+      "target": "@components/blobz/avatar-group.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

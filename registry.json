@@ -1,0 +1,9 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "blobz",
+  "homepage": "https://github.com/lirena00/blobz",
+  "include": [
+    "apps/web/src/registry/blobz/components/registry.json",
+    "apps/web/src/registry/blobz/blocks/registry.json"
+  ]
+}

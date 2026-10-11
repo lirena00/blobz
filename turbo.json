@@ -5,7 +5,7 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**", "public/r/**"]
     },
     "lint": {
       "dependsOn": ["^lint"]
@@ -53,5 +53,10 @@
     "VERCEL_URL",
     "_VARLOCK_ENV_KEY"
   ],
-  "globalDependencies": [".env*", "apps/*/.env*", "packages/*/.env*"]
+  "globalDependencies": [
+    ".env*",
+    "apps/*/.env*",
+    "packages/*/.env*",
+    "registry.json"
+  ]
 }

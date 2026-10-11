@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "avatar-profile",
+  "title": "Avatar Profile",
+  "description": "Compound profile-row primitives for an avatar, identity text, metadata, and actions.",
+  "dependencies": ["class-variance-authority", "cn"],
+  "registryDependencies": ["lirena00/blobz/avatar"],
+  "files": [
+    {
+      "path": "apps/web/src/registry/blobz/components/avatar-profile.tsx",
+      "content": "import { cva, type VariantProps } from \"class-variance-authority\";\nimport { cn } from \"cn\";\nimport type { ComponentProps } from \"react\";\nimport {\n\tBlobAvatar,\n\ttype BlobAvatarProps,\n} from \"@/registry/blobz/components/avatar\";\n\nconst avatarProfileVariants = cva(\n\t\"flex min-w-0 items-center gap-3 rounded-xl text-sm\",\n\t{\n\t\tdefaultVariants: {\n\t\t\tdensity: \"default\",\n\t\t\tvariant: \"default\",\n\t\t},\n\t\tvariants: {\n\t\t\tdensity: {\n\t\t\t\tcompact: \"gap-2 px-2 py-1.5\",\n\t\t\t\tdefault: \"px-3 py-2.5\",\n\t\t\t\tspacious: \"gap-4 px-4 py-3.5\",\n\t\t\t},\n\t\t\tvariant: {\n\t\t\t\tdefault: \"bg-transparent\",\n\t\t\t\tmuted: \"bg-muted/60\",\n\t\t\t\toutline: \"border border-border bg-background\",\n\t\t\t},\n\t\t},\n\t}\n);\n\nexport interface AvatarProfileProps\n\textends ComponentProps<\"div\">,\n\t\tVariantProps<typeof avatarProfileVariants> {}\n\nexport function AvatarProfile({\n\tclassName,\n\tdensity = \"default\",\n\tvariant = \"default\",\n\t...props\n}: AvatarProfileProps) {\n\treturn (\n\t\t<div\n\t\t\tclassName={cn(avatarProfileVariants({ density, variant }), className)}\n\t\t\tdata-slot=\"avatar-profile\"\n\t\t\t{...props}\n\t\t/>\n\t);\n}\n\nexport function AvatarProfileAvatar(props: BlobAvatarProps) {\n\treturn <BlobAvatar {...props} />;\n}\n\nexport function AvatarProfileContent({\n\tclassName,\n\t...props\n}: ComponentProps<\"div\">) {\n\treturn (\n\t\t<div\n\t\t\tclassName={cn(\"flex min-w-0 flex-1 flex-col gap-0.5\", className)}\n\t\t\tdata-slot=\"avatar-profile-content\"\n\t\t\t{...props}\n\t\t/>\n\t);\n}\n\nexport function AvatarProfileName({\n\tclassName,\n\t...props\n}: ComponentProps<\"p\">) {\n\treturn (\n\t\t<p\n\t\t\tclassName={cn(\"truncate font-medium text-foreground\", className)}\n\t\t\tdata-slot=\"avatar-profile-name\"\n\t\t\t{...props}\n\t\t/>\n\t);\n}\n\nexport function AvatarProfileDescription({\n\tclassName,\n\t...props\n}: ComponentProps<\"p\">) {\n\treturn (\n\t\t<p\n\t\t\tclassName={cn(\"truncate text-muted-foreground text-xs\", className)}\n\t\t\tdata-slot=\"avatar-profile-description\"\n\t\t\t{...props}\n\t\t/>\n\t);\n}\n\nexport function AvatarProfileAction({\n\tclassName,\n\t...props\n}: ComponentProps<\"div\">) {\n\treturn (\n\t\t<div\n\t\t\tclassName={cn(\"ms-auto flex shrink-0 items-center\", className)}\n\t\t\tdata-slot=\"avatar-profile-action\"\n\t\t\t{...props}\n\t\t/>\n\t);\n}\n\nexport { avatarProfileVariants };\n",
+      "type": "registry:component",
+      "target": "@components/blobz/avatar-profile.tsx"
+    }
+  ],
+  "type": "registry:component"
+}
