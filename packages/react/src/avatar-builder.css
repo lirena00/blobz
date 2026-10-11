@@ -187,6 +187,17 @@
 	min-width: 0;
 }
 
+.blobz-palette-picker {
+	padding: 0;
+	border: 0;
+}
+
+.blobz-palette-picker button:focus-visible,
+.blobz-palette-picker input:focus-visible {
+	outline: 2px solid var(--blobz-builder-accent);
+	outline-offset: 2px;
+}
+
 .blobz-builder__visually-hidden {
 	position: absolute;
 	width: 1px;

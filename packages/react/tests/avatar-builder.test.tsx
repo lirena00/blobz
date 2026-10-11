@@ -5,6 +5,7 @@ import { GlobalRegistrator } from "@happy-dom/global-registrator";
 import { act } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { AvatarBuilder } from "../src/avatar-builder";
+import { AvatarPalettePicker } from "../src/palette-picker";
 
 GlobalRegistrator.register();
 Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
@@ -129,4 +130,41 @@ describe("AvatarBuilder", () => {
 		}
 		expect(restored.choices.shape).toBe("leaf");
 	});
+});
+
+test("standalone palette picker renders presets and circular custom colours", () => {
+	const changes: [string, string][] = [];
+	const container = document.createElement("div");
+	document.body.append(container);
+	const root = createRoot(container);
+	mountedRoots.push(root);
+
+	const renderPicker = (palette: [string, string]) => {
+		act(() => {
+			root.render(
+				<AvatarPalettePicker
+					idPrefix="test-palette"
+					onPaletteChange={(nextPalette) => changes.push([...nextPalette])}
+					palette={palette}
+				/>
+			);
+		});
+	};
+	renderPicker(["#eef9ff", "#38bdf8"]);
+	click(container.querySelector("button[aria-label='Use Coral palette']"));
+	expect(changes.at(-1)).toEqual(["#fff1f2", "#fb7185"]);
+	renderPicker(["#fff1f2", "#fb7185"]);
+
+	const background = container.querySelector("#test-palette-background");
+	const body = container.querySelector("#test-palette-body");
+	expect(background).toBeInstanceOf(HTMLInputElement);
+	expect(body).toBeInstanceOf(HTMLInputElement);
+	if (!(background instanceof HTMLInputElement)) {
+		throw new Error("Expected custom background colour input.");
+	}
+	if (!(body instanceof HTMLInputElement)) {
+		throw new Error("Expected custom body colour input.");
+	}
+	expect(background.value).toBe("#fff1f2");
+	expect(body.value).toBe("#fb7185");
 });

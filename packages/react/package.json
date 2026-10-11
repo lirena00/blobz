@@ -22,6 +22,10 @@
       "default": "./src/avatar-builder.tsx"
     },
     "./builder.css": "./src/avatar-builder.css",
+    "./palette-picker": {
+      "types": "./src/palette-picker.tsx",
+      "default": "./src/palette-picker.tsx"
+    },
     "./custom": {
       "types": "./src/custom-avatar.tsx",
       "default": "./src/custom-avatar.tsx"
