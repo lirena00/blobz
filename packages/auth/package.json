@@ -12,7 +12,9 @@
     "@better-auth/core": "1.7.7",
     "@better-auth/drizzle-adapter": "1.7.7",
     "@blobz/db": "workspace:*",
+    "@dodopayments/better-auth": "^1.6.6",
     "better-auth": "catalog:",
+    "dodopayments": "^2.54.2",
     "drizzle-orm": "catalog:",
     "zod": "catalog:"
   },

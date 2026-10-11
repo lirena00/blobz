@@ -1,7 +1,11 @@
-import { createAuth } from "@blobz/auth";
+import { createAuth, createDodoClient } from "@blobz/auth";
 import { createDb } from "@blobz/db";
 
-import { ENV } from "./env.server";
+import { ENV as serverEnv } from "./env.server";
+import { handleDodoWebhook } from "./lib/dodo-webhook";
 
-export const db = createDb(ENV);
-export const auth = createAuth(ENV, db);
+export const db = createDb(serverEnv);
+export const dodoClient = createDodoClient(serverEnv);
+export const auth = createAuth(serverEnv, db, dodoClient, (payload) =>
+	handleDodoWebhook(db, serverEnv, payload)
+);

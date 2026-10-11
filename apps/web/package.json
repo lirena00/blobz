@@ -25,6 +25,7 @@
     "better-auth": "catalog:",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.4.0",
+    "drizzle-orm": "catalog:",
     "lucide-react": "catalog:",
     "next": "^16.3.4",
     "next-themes": "catalog:",
@@ -40,9 +41,11 @@
   "devDependencies": {
     "@blobz/config": "workspace:*",
     "@tailwindcss/postcss": "catalog:",
+    "@types/bun": "^1.4.2",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
+    "bun-types": "1.4.2",
     "tailwindcss": "catalog:",
     "typescript": "catalog:"
   }
