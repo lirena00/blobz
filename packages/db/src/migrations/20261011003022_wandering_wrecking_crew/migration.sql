@@ -1,0 +1,1 @@
+ALTER TABLE "api_entitlement" ADD COLUMN "cadence" text DEFAULT 'monthly' NOT NULL;

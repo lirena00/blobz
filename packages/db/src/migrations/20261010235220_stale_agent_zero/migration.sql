@@ -1,0 +1,3 @@
+CREATE UNIQUE INDEX "api_key_id_user_idx" ON "api_key" ("id","user_id");--> statement-breakpoint
+ALTER TABLE "api_key_origin" ADD CONSTRAINT "api_key_origin_key_account_fkey" FOREIGN KEY ("key_id","user_id") REFERENCES "api_key"("id","user_id") ON DELETE CASCADE;--> statement-breakpoint
+ALTER TABLE "api_key_origin" ADD CONSTRAINT "api_key_origin_approved_origin_fkey" FOREIGN KEY ("user_id","origin") REFERENCES "api_origin"("user_id","origin") ON DELETE CASCADE;

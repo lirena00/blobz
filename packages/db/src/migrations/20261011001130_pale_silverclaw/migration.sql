@@ -1,0 +1,1 @@
+CREATE INDEX "dodo_webhook_subscription_event_idx" ON "dodo_webhook_event" ("subscription_id","event_type","event_at");
