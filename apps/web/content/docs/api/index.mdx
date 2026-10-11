@@ -25,7 +25,7 @@ It is designed for direct browser embedding, not Bearer-token API calls. The end
 
 - `name` is required; frame, palette, and size are optional.
 - The same inputs use the same renderer and defaults as `@blobz/react`.
-- The browser must send an `Origin` matching one of the account's approved origins.
+- Cross-origin browsers must send an `Origin` matching one of the account's approved origins. The Blobz deployment serving the docs is trusted for its same-origin playground.
 - An account can approve five exact origins total.
 - Successful responses count toward the account's monthly allowance.
 - Rejected requests do not consume the monthly allowance.

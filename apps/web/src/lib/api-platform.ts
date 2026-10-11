@@ -17,6 +17,11 @@ const LOCAL_HTTP_ORIGIN = /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
 export type ApiPlan = keyof typeof PLAN_LIMITS;
 export type BillingCadence = "monthly" | "yearly";
 
+export interface AvatarRequestOrigin {
+	isPlatformOrigin: boolean;
+	origin: string;
+}
+
 export interface DodoProductConfig {
 	DODO_PRODUCT_PLUS_MONTHLY?: string;
 	DODO_PRODUCT_PLUS_YEARLY?: string;
@@ -86,6 +91,29 @@ export function normalizeOrigin(value: string): string {
 	}
 
 	return origin;
+}
+
+export function resolveAvatarRequestOrigin(
+	request: Request,
+	platformOriginValue: string
+): AvatarRequestOrigin | null {
+	const platformOrigin = normalizeOrigin(platformOriginValue);
+	const headerValue = request.headers.get("origin");
+	if (headerValue) {
+		try {
+			const origin = normalizeOrigin(headerValue);
+			return { isPlatformOrigin: origin === platformOrigin, origin };
+		} catch {
+			return null;
+		}
+	}
+
+	const requestOrigin = new URL(request.url).origin;
+	if (requestOrigin !== platformOrigin) {
+		return null;
+	}
+
+	return { isPlatformOrigin: true, origin: requestOrigin };
 }
 
 export function productForPlan(
@@ -309,7 +337,8 @@ type ConsumeResult =
 export async function consumeEmbeddedAvatarRequest(
 	db: Database,
 	endpointId: string,
-	origin: string
+	origin: string,
+	isPlatformOrigin = false
 ): Promise<ConsumeResult> {
 	if (endpointId.length > 100) {
 		return {
@@ -319,13 +348,19 @@ export async function consumeEmbeddedAvatarRequest(
 			status: 404,
 		};
 	}
-	return await consumeAvatarRequestForEndpoint(db, endpointId, origin);
+	return await consumeAvatarRequestForEndpoint(
+		db,
+		endpointId,
+		origin,
+		isPlatformOrigin
+	);
 }
 
 async function consumeAvatarRequestForEndpoint(
 	db: Database,
 	endpointId: string,
-	origin: string
+	origin: string,
+	isPlatformOrigin: boolean
 ): Promise<ConsumeResult> {
 	const now = new Date();
 	return await db
@@ -344,22 +379,24 @@ async function consumeAvatarRequestForEndpoint(
 				};
 			}
 
-			const allowed = await tx
-				.select()
-				.from(apiOrigin)
-				.where(
-					and(
-						eq(apiOrigin.userId, endpoint.userId),
-						eq(apiOrigin.origin, origin)
-					)
-				);
-			if (allowed.length === 0) {
-				return {
-					code: "origin_forbidden",
-					message: "This origin is not approved for this account.",
-					ok: false,
-					status: 403,
-				};
+			if (!isPlatformOrigin) {
+				const allowed = await tx
+					.select()
+					.from(apiOrigin)
+					.where(
+						and(
+							eq(apiOrigin.userId, endpoint.userId),
+							eq(apiOrigin.origin, origin)
+						)
+					);
+				if (allowed.length === 0) {
+					return {
+						code: "origin_forbidden",
+						message: "This origin is not approved for this account.",
+						ok: false,
+						status: 403,
+					};
+				}
 			}
 
 			const entitlementRows = await tx.execute(sql`

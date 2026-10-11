@@ -29,7 +29,7 @@ Subdomains and ports are different origins. Approving `https://example.com` does
 
 ## What the check protects
 
-The route requires `Origin`, validates it before counting usage, and returns the exact approved value in `Access-Control-Allow-Origin`. This blocks ordinary browser pages on other origins from embedding the image successfully.
+Cross-origin requests require `Origin`, which the route validates before counting usage. The configured Blobz deployment is trusted automatically for same-origin requests from its API playground. Every successful response returns the resolved origin in `Access-Control-Allow-Origin`. This blocks ordinary browser pages on other origins from embedding the image successfully.
 
 ## What it does not protect
 

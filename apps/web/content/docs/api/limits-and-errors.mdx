@@ -23,7 +23,7 @@ An additional account-wide limit of 10,000 requests per minute applies. A burst 
 | Header | Meaning |
 | --- | --- |
 | `Content-Type` | `image/svg+xml; charset=utf-8` |
-| `Access-Control-Allow-Origin` | The exact approved request origin |
+| `Access-Control-Allow-Origin` | The exact approved account origin or trusted platform origin |
 | `RateLimit-Limit` | Monthly account allowance |
 | `RateLimit-Remaining` | Remaining successful requests, clamped at zero |
 | `RateLimit-Reset` | Unix timestamp in seconds for the current usage-window reset |
@@ -44,7 +44,7 @@ Errors are JSON:
 
 | Status | Code | Cause |
 | ---: | --- | --- |
-| `403` | `origin_required` | No valid `Origin` header was sent |
+| `403` | `origin_required` | No valid `Origin` header was sent by a non-platform request |
 | `403` | `origin_forbidden` | Origin is not on the account allowlist |
 | `403` | `subscription_inactive` | Subscription is not active |
 | `403` | `billing_period_unavailable` | Current billing window is not active |

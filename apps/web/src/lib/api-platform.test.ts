@@ -7,6 +7,7 @@ import {
 	parseDatabaseTimestamp,
 	planForProduct,
 	productForPlan,
+	resolveAvatarRequestOrigin,
 } from "./api-platform";
 import { requiresInitialPayment } from "./dodo-webhook";
 
@@ -44,6 +45,74 @@ describe("account origin validation", () => {
 		]) {
 			expect(() => normalizeOrigin(candidate)).toThrow(ApiPlatformError);
 		}
+	});
+});
+
+describe("avatar request origin resolution", () => {
+	const platformOrigin = "https://blobz.lirena.in";
+
+	it("allows a same-origin platform request without an Origin header", () => {
+		const request = new Request(
+			"https://blobz.lirena.in/api/v1/avatars/example?name=Ada"
+		);
+
+		expect(resolveAvatarRequestOrigin(request, platformOrigin)).toEqual({
+			isPlatformOrigin: true,
+			origin: platformOrigin,
+		});
+	});
+
+	it("recognizes an explicit platform Origin header", () => {
+		const request = new Request(
+			"https://blobz.lirena.in/api/v1/avatars/example?name=Ada",
+			{ headers: { Origin: platformOrigin } }
+		);
+
+		expect(resolveAvatarRequestOrigin(request, platformOrigin)).toEqual({
+			isPlatformOrigin: true,
+			origin: platformOrigin,
+		});
+	});
+
+	it("keeps other valid origins subject to the account allowlist", () => {
+		const request = new Request(
+			"https://blobz.lirena.in/api/v1/avatars/example?name=Ada",
+			{ headers: { Origin: "https://app.example.com" } }
+		);
+
+		expect(resolveAvatarRequestOrigin(request, platformOrigin)).toEqual({
+			isPlatformOrigin: false,
+			origin: "https://app.example.com",
+		});
+	});
+
+	it("rejects a missing or invalid Origin from outside the platform", () => {
+		const crossOriginRequest = new Request(
+			"https://api.example.com/api/v1/avatars/example?name=Ada"
+		);
+		const invalidOriginRequest = new Request(
+			"https://blobz.lirena.in/api/v1/avatars/example?name=Ada",
+			{ headers: { Origin: "null" } }
+		);
+
+		expect(
+			resolveAvatarRequestOrigin(crossOriginRequest, platformOrigin)
+		).toBeNull();
+		expect(
+			resolveAvatarRequestOrigin(invalidOriginRequest, platformOrigin)
+		).toBeNull();
+	});
+
+	it("supports the configured localhost deployment", () => {
+		const localOrigin = "http://localhost:3001";
+		const request = new Request(
+			"http://localhost:3001/api/v1/avatars/example?name=Ada"
+		);
+
+		expect(resolveAvatarRequestOrigin(request, localOrigin)).toEqual({
+			isPlatformOrigin: true,
+			origin: localOrigin,
+		});
 	});
 });
 

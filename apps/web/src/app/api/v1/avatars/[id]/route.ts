@@ -1,6 +1,7 @@
+import { ENV } from "@/env.server";
 import {
 	consumeEmbeddedAvatarRequest,
-	normalizeOrigin,
+	resolveAvatarRequestOrigin,
 } from "@/lib/api-platform";
 import {
 	parseEmbedAvatarQuery,
@@ -18,21 +19,12 @@ interface RouteContext {
 	params: Promise<{ id: string }>;
 }
 
-const getOrigin = (request: Request): string | null => {
-	const value = request.headers.get("origin");
-	if (!value) {
-		return null;
-	}
-	try {
-		return normalizeOrigin(value);
-	} catch {
-		return null;
-	}
-};
-
 export async function GET(request: Request, context: RouteContext) {
-	const origin = getOrigin(request);
-	if (!origin) {
+	const requestOrigin = resolveAvatarRequestOrigin(
+		request,
+		ENV.BETTER_AUTH_URL
+	);
+	if (!requestOrigin) {
 		return Response.json(
 			{
 				code: "origin_required",
@@ -57,7 +49,12 @@ export async function GET(request: Request, context: RouteContext) {
 		);
 	}
 
-	const consumed = await consumeEmbeddedAvatarRequest(db, id, origin);
+	const consumed = await consumeEmbeddedAvatarRequest(
+		db,
+		id,
+		requestOrigin.origin,
+		requestOrigin.isPlatformOrigin
+	);
 	if (!consumed.ok) {
 		return Response.json(
 			{ code: consumed.code, error: consumed.message },
@@ -77,7 +74,7 @@ export async function GET(request: Request, context: RouteContext) {
 	return new Response(svg, {
 		headers: {
 			...NO_STORE_HEADERS,
-			"Access-Control-Allow-Origin": origin,
+			"Access-Control-Allow-Origin": requestOrigin.origin,
 			"Content-Type": "image/svg+xml; charset=utf-8",
 			"RateLimit-Limit": String(consumed.limit),
 			"RateLimit-Remaining": String(
