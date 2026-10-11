@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { createBlobzOgImage } from "@/components/og/blobz-og-image";
-import { APP_NAME, getPageImageUrl } from "@/lib/docs-shared";
+import { getPageImageUrl } from "@/lib/docs-shared";
 import { source } from "@/lib/source";
 
 export const revalidate = false;
@@ -16,11 +16,10 @@ export async function GET(
 		notFound();
 	}
 
-	return createBlobzOgImage({
+	return await createBlobzOgImage({
 		description:
 			page.data.description ??
 			"Ready-to-ship avatar components powered by the Blobz React package.",
-		eyebrow: `${APP_NAME} documentation`,
 		seed: page.url,
 		title: page.data.title,
 	});
