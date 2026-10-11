@@ -146,7 +146,7 @@ export function BlobzOgImage({
 						gap: "10px",
 					}}
 				>
-					<span>blobz.dev</span>
+					<span>blobz.lirena.in</span>
 					<span style={{ color: "#38bdf8" }}>→</span>
 					<span style={{ color: "#526880" }}>same seed, same face</span>
 				</div>

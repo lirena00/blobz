@@ -220,7 +220,7 @@ export function IdentitySurfaces() {
 						</div>
 					</div>
 					<div className="relative flex items-center justify-between font-mono text-[#7aa2b9] text-[0.58rem]">
-						<span>blobz.dev/{firstName.toLowerCase()}</span>
+						<span>blobz.lirena.in/{firstName.toLowerCase()}</span>
 						<span>1200 × 630</span>
 					</div>
 				</article>
