@@ -5,6 +5,7 @@ import { Badge } from "@blobz/ui/components/badge";
 import { Button } from "@blobz/ui/components/button";
 import {
 	Card,
+	CardAction,
 	CardContent,
 	CardDescription,
 	CardFooter,
@@ -23,8 +24,18 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 const PLAN_OPTIONS = [
-	{ label: "Plus", limit: "5 million", plan: "plus" },
-	{ label: "Pro", limit: "10 million", plan: "pro" },
+	{
+		label: "Plus",
+		limit: "5 million",
+		plan: "plus",
+		prices: { monthly: "$4.99", yearly: "$49.90" },
+	},
+	{
+		label: "Pro",
+		limit: "10 million",
+		plan: "pro",
+		prices: { monthly: "$9.99", yearly: "$99.90" },
+	},
 ] as const;
 const BILLING_CADENCES = ["monthly", "yearly"] as const;
 
@@ -102,13 +113,24 @@ export default function PlanPicker({
 						key={cadence}
 						value={cadence}
 					>
-						{PLAN_OPTIONS.map(({ label, limit, plan }) => (
+						{PLAN_OPTIONS.map(({ label, limit, plan, prices }) => (
 							<Card className="h-full" key={plan}>
 								<CardHeader>
 									<CardTitle>{label}</CardTitle>
 									<CardDescription>Billed {cadence}</CardDescription>
+									{cadence === "yearly" ? (
+										<CardAction>
+											<Badge variant="secondary">2 months on us</Badge>
+										</CardAction>
+									) : null}
 								</CardHeader>
 								<CardContent className="flex flex-col gap-4">
+									<p className="font-heading font-semibold text-4xl tracking-tight">
+										{prices[cadence]}
+										<span className="font-normal text-muted-foreground text-sm">
+											/{cadence === "monthly" ? "month" : "year"}
+										</span>
+									</p>
 									<p className="font-heading text-2xl tracking-tight">
 										{limit}
 										<span className="font-normal text-muted-foreground text-sm">
@@ -143,9 +165,9 @@ export default function PlanPicker({
 										)}
 										Choose {label}
 									</Button>
-									<Badge variant="outline">
-										Final price shown at secure checkout
-									</Badge>
+									<p className="text-muted-foreground text-xs">
+										Final total shown at secure checkout.
+									</p>
 								</CardFooter>
 							</Card>
 						))}
