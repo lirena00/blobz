@@ -21,7 +21,7 @@ export interface AvatarProps
 	> {
 	/** Accessible image description. Pass an empty string for a decorative avatar. */
 	readonly alt?: string;
-	/** Zero-based selections used by a custom face builder. */
+	/** Zero-based selections used to pin individual facial features. */
 	readonly choices?: AvatarChoiceOverrides | null;
 	/** Shape of the avatar's outer crop. */
 	readonly frame?: AvatarFrame;

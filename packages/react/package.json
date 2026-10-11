@@ -8,23 +8,12 @@
     "react",
     "svg"
   ],
-  "sideEffects": [
-    "**/*.css"
-  ],
+  "sideEffects": false,
   "type": "module",
   "exports": {
     ".": {
       "types": "./src/avatar.tsx",
       "default": "./src/avatar.tsx"
-    },
-    "./builder": {
-      "types": "./src/avatar-builder.tsx",
-      "default": "./src/avatar-builder.tsx"
-    },
-    "./builder.css": "./src/avatar-builder.css",
-    "./palette-picker": {
-      "types": "./src/palette-picker.tsx",
-      "default": "./src/palette-picker.tsx"
     },
     "./custom": {
       "types": "./src/custom-avatar.tsx",
@@ -40,12 +29,10 @@
     "test": "bun test"
   },
   "dependencies": {
-    "@blobz/avatar-core": "workspace:*",
-    "lucide-react": "catalog:"
+    "@blobz/avatar-core": "workspace:*"
   },
   "devDependencies": {
     "@blobz/config": "workspace:*",
-    "@happy-dom/global-registrator": "^20.14.6",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",

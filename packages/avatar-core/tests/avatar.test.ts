@@ -88,7 +88,7 @@ describe("avatar-core", () => {
 		);
 	});
 
-	test("exposes the complete builder catalogue", () => {
+	test("exposes the complete choice catalogue", () => {
 		expect(AVATAR_CHOICES.shape).toHaveLength(21);
 		expect(AVATAR_CHOICES.eyes).toHaveLength(14);
 		expect(AVATAR_CHOICES.look).toHaveLength(5);

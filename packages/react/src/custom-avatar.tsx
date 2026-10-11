@@ -15,7 +15,7 @@ export interface CustomAvatarProps
 	> {
 	/** Accessible image description. Pass an empty string for a decorative avatar. */
 	readonly alt?: string;
-	/** Complete, serializable face definition produced by AvatarBuilder. */
+	/** Complete, serializable face definition. */
 	readonly definition: CustomAvatarDefinition;
 	/** Square rendered size. Defaults to 80 pixels. */
 	readonly size?: AvatarSize;
