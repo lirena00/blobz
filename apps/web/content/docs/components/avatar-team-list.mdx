@@ -1,0 +1,74 @@
+---
+title: Avatar Team List
+description: A responsive roster with generated avatars, presence, roles, descriptions, and action slots.
+---
+
+import { AvatarTeamListExample } from "@/components/docs/examples/avatar-team-list-example";
+
+<ComponentPreview name="avatar-team-list">
+  <AvatarTeamListExample />
+</ComponentPreview>
+
+## Installation
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+  <Tab>
+    ```bash
+    npx shadcn@latest add lirena00/blobz/avatar-team-list
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    pnpm dlx shadcn@latest add lirena00/blobz/avatar-team-list
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    yarn dlx shadcn@latest add lirena00/blobz/avatar-team-list
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    bunx --bun shadcn@latest add lirena00/blobz/avatar-team-list
+    ```
+  </Tab>
+</Tabs>
+
+## Usage
+
+```tsx
+import { AvatarTeamList } from "@/components/blobz/avatar-team-list";
+
+<AvatarTeamList
+  members={[
+    {
+      id: "ada",
+      name: "Ada Lovelace",
+      description: "ada@example.com",
+      role: "Owner",
+      status: "online",
+      avatar: { name: "ada" },
+    },
+  ]}
+/>
+```
+
+The list uses semantic `ul` and `li` elements. Avatars are decorative because every row includes the member's visible name.
+
+## Member API
+
+<TypeTable
+  type={{
+    id: { type: "string", required: true },
+    name: { type: "string", required: true },
+    avatar: {
+      description: "BlobAvatar props, including the circle, rounded, and square frame variants.",
+      type: 'Omit<BlobAvatarProps, "alt">',
+      required: true,
+    },
+    description: { type: "string" },
+    role: { type: "string" },
+    status: { type: '"online" | "away" | "busy" | "offline"' },
+    action: { type: "ReactNode" },
+  }}
+/>

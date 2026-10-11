@@ -1,9 +1,8 @@
 {
   "title": "React Package",
   "description": "Components and utilities for local Blobz avatars.",
-  "root": true,
+  "icon": "react",
   "pages": [
-    "index",
     "installation",
     "avatar",
     "generated-customization",

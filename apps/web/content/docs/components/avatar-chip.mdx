@@ -1,0 +1,67 @@
+---
+title: Avatar Chip
+description: Display selected people, assignees, and recipients in a compact identity chip.
+---
+
+import { AvatarChipExample } from "@/components/docs/examples/avatar-chip-example";
+
+<ComponentPreview name="avatar-chip">
+  <AvatarChipExample />
+</ComponentPreview>
+
+## Installation
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+  <Tab>
+    ```bash
+    npx shadcn@latest add lirena00/blobz/avatar-chip
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    pnpm dlx shadcn@latest add lirena00/blobz/avatar-chip
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    yarn dlx shadcn@latest add lirena00/blobz/avatar-chip
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    bunx --bun shadcn@latest add lirena00/blobz/avatar-chip
+    ```
+  </Tab>
+</Tabs>
+
+## Usage
+
+```tsx
+import {
+  AvatarChip,
+  AvatarChipAvatar,
+  AvatarChipLabel,
+  AvatarChipRemove,
+} from "@/components/blobz/avatar-chip";
+
+<AvatarChip>
+  <AvatarChipAvatar alt="" name={user.id} />
+  <AvatarChipLabel>{user.name}</AvatarChipLabel>
+  <AvatarChipRemove aria-label={`Remove ${user.name}`} />
+</AvatarChip>
+```
+
+Always give the remove action a label that identifies what will be removed.
+
+## API
+
+<TypeTable
+  type={{
+    variant: {
+      type: '"secondary" | "outline" | "soft"',
+      default: '"secondary"',
+    },
+  }}
+/>
+
+`AvatarChipAvatar` accepts every `BlobAvatar` prop, including the `frame` variant.

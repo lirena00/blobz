@@ -1,0 +1,66 @@
+---
+title: Avatar Badge
+description: Pair a generated avatar with identity details and an optional role badge.
+---
+
+import { AvatarBadgeExample } from "@/components/docs/examples/avatar-badge-example";
+
+<ComponentPreview name="avatar-badge">
+  <AvatarBadgeExample />
+</ComponentPreview>
+
+## Installation
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+  <Tab>
+    ```bash
+    npx shadcn@latest add lirena00/blobz/avatar-badge
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    pnpm dlx shadcn@latest add lirena00/blobz/avatar-badge
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    yarn dlx shadcn@latest add lirena00/blobz/avatar-badge
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    bunx --bun shadcn@latest add lirena00/blobz/avatar-badge
+    ```
+  </Tab>
+</Tabs>
+
+The Blobz Avatar and official shadcn Badge components are installed automatically.
+
+## Usage
+
+```tsx
+import { AvatarBadge } from "@/components/blobz/avatar-badge";
+
+<AvatarBadge
+  avatar={{ name: user.id, size: "lg" }}
+  badge="Pro"
+  description="Founder & CEO"
+  name="Alex Johnson"
+/>
+```
+
+The avatar is decorative because the person's name is displayed beside it.
+
+## API
+
+<TypeTable
+  type={{
+    avatar: {
+      type: 'Omit<BlobAvatarProps, "alt">',
+      required: true,
+    },
+    name: { type: "string", required: true },
+    description: { type: "string" },
+    badge: { type: "string" },
+  }}
+/>

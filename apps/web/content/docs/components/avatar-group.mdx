@@ -1,0 +1,79 @@
+---
+title: Avatar Group
+description: Compose overlapping Blobz avatars and a matching overflow count.
+---
+
+import { AvatarGroupExample } from "@/components/docs/examples/avatar-group-example";
+
+<ComponentPreview name="avatar-group">
+  <AvatarGroupExample />
+</ComponentPreview>
+
+## Installation
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+  <Tab>
+    ```bash
+    npx shadcn@latest add lirena00/blobz/avatar-group
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    pnpm dlx shadcn@latest add lirena00/blobz/avatar-group
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    yarn dlx shadcn@latest add lirena00/blobz/avatar-group
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    bunx --bun shadcn@latest add lirena00/blobz/avatar-group
+    ```
+  </Tab>
+</Tabs>
+
+## Usage
+
+```tsx
+import { BlobAvatar } from "@/components/blobz/avatar";
+import {
+  BlobAvatarGroup,
+  BlobAvatarGroupCount,
+  BlobAvatarGroupItem,
+} from "@/components/blobz/avatar-group";
+
+<BlobAvatarGroup aria-label="Project team">
+  <BlobAvatarGroupItem>
+    <BlobAvatar alt="" name="Ada Lovelace" />
+  </BlobAvatarGroupItem>
+  <BlobAvatarGroupItem>
+    <BlobAvatar alt="" name="Grace Hopper" />
+  </BlobAvatarGroupItem>
+  <BlobAvatarGroupCount count={3} />
+</BlobAvatarGroup>
+```
+
+Give the group a useful accessible label. Individual avatars can remain decorative when the surrounding interface provides the member names.
+
+## Count API
+
+<TypeTable
+  type={{
+    count: {
+      description: "Number of additional people not rendered in the group.",
+      type: "number",
+      required: true,
+    },
+    size: {
+      type: '"sm" | "default" | "lg" | "xl"',
+      default: '"default"',
+    },
+    frame: {
+      description: "Matches the overflow count and item ring to the avatar crop.",
+      type: '"circle" | "rounded" | "square"',
+      default: '"rounded"',
+    },
+  }}
+/>

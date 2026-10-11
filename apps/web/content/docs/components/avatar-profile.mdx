@@ -1,0 +1,72 @@
+---
+title: Avatar Profile
+description: Compound primitives for identity rows with metadata and actions.
+---
+
+import { AvatarProfileExample } from "@/components/docs/examples/avatar-profile-example";
+
+<ComponentPreview name="avatar-profile">
+  <AvatarProfileExample />
+</ComponentPreview>
+
+## Installation
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+  <Tab>
+    ```bash
+    npx shadcn@latest add lirena00/blobz/avatar-profile
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    pnpm dlx shadcn@latest add lirena00/blobz/avatar-profile
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    yarn dlx shadcn@latest add lirena00/blobz/avatar-profile
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    bunx --bun shadcn@latest add lirena00/blobz/avatar-profile
+    ```
+  </Tab>
+</Tabs>
+
+## Usage
+
+```tsx
+import {
+  AvatarProfile,
+  AvatarProfileAvatar,
+  AvatarProfileContent,
+  AvatarProfileDescription,
+  AvatarProfileName,
+} from "@/components/blobz/avatar-profile";
+
+<AvatarProfile variant="outline">
+  <AvatarProfileAvatar alt="" name={user.id} size="lg" />
+  <AvatarProfileContent>
+    <AvatarProfileName>{user.name}</AvatarProfileName>
+    <AvatarProfileDescription>{user.email}</AvatarProfileDescription>
+  </AvatarProfileContent>
+</AvatarProfile>
+```
+
+## API
+
+<TypeTable
+  type={{
+    density: {
+      type: '"compact" | "default" | "spacious"',
+      default: '"default"',
+    },
+    variant: {
+      type: '"default" | "muted" | "outline"',
+      default: '"default"',
+    },
+  }}
+/>
+
+`AvatarProfileAvatar` accepts every `BlobAvatar` prop, including `frame="circle" | "rounded" | "square"`.

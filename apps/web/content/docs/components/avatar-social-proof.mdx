@@ -1,0 +1,64 @@
+---
+title: Avatar Social Proof
+description: Combine an overlapping avatar group with concise community or trust copy.
+---
+
+import { AvatarSocialProofExample } from "@/components/docs/examples/avatar-social-proof-example";
+
+<ComponentPreview name="avatar-social-proof">
+  <AvatarSocialProofExample />
+</ComponentPreview>
+
+## Installation
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+  <Tab>
+    ```bash
+    npx shadcn@latest add lirena00/blobz/avatar-social-proof
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    pnpm dlx shadcn@latest add lirena00/blobz/avatar-social-proof
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    yarn dlx shadcn@latest add lirena00/blobz/avatar-social-proof
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    bunx --bun shadcn@latest add lirena00/blobz/avatar-social-proof
+    ```
+  </Tab>
+</Tabs>
+
+## Usage
+
+```tsx
+import { AvatarSocialProof } from "@/components/blobz/avatar-social-proof";
+
+<AvatarSocialProof avatars={members}>
+  Joined by <strong>500+</strong> developers.
+</AvatarSocialProof>
+```
+
+Use concise copy and give `groupLabel` a meaningful description when the surrounding sentence does not identify the group.
+
+## API
+
+<TypeTable
+  type={{
+    avatars: {
+      type: "readonly AvatarSocialProofPerson[]",
+      required: true,
+    },
+    children: { type: "ReactNode", required: true },
+    groupLabel: { type: "string", default: '"Community members"' },
+    variant: {
+      type: '"default" | "muted" | "outline"',
+      default: '"outline"',
+    },
+  }}
+/>

@@ -1,0 +1,97 @@
+---
+title: Avatar Account Menu
+description: A ready-to-ship account menu with an avatar trigger, identity summary, and typed actions.
+---
+
+import { AvatarAccountMenuExample } from "@/components/docs/examples/avatar-account-menu-example";
+
+<ComponentPreview name="avatar-account-menu">
+  <AvatarAccountMenuExample />
+</ComponentPreview>
+
+## Installation
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+  <Tab>
+    ```bash
+    npx shadcn@latest add lirena00/blobz/avatar-account-menu
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    pnpm dlx shadcn@latest add lirena00/blobz/avatar-account-menu
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    yarn dlx shadcn@latest add lirena00/blobz/avatar-account-menu
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    bunx --bun shadcn@latest add lirena00/blobz/avatar-account-menu
+    ```
+  </Tab>
+</Tabs>
+
+The CLI also installs the official shadcn Dropdown Menu and the Blobz Avatar component.
+
+## Usage
+
+```tsx
+"use client";
+
+import { AvatarAccountMenu } from "@/components/blobz/avatar-account-menu";
+
+<AvatarAccountMenu
+  actions={[
+    { id: "profile", label: "View profile", onSelect: openProfile },
+    { id: "settings", label: "Settings", onSelect: openSettings },
+  ]}
+  avatar={{ name: user.id, size: "lg" }}
+  email={user.email}
+  name={user.name}
+  signOutAction={{ id: "sign-out", label: "Sign out", onSelect: signOut }}
+/>
+```
+
+This block is a Client Component because its action callbacks cross the menu interaction boundary.
+
+## API
+
+<TypeTable
+  type={{
+    actions: {
+      description: "Ordered menu actions with stable IDs and selection callbacks.",
+      type: "readonly AvatarAccountMenuAction[]",
+      required: true,
+    },
+    avatar: {
+      description: "BlobAvatar props, including frame. The rendered image is decorative because the name is visible.",
+      type: 'Omit<BlobAvatarProps, "alt">',
+      required: true,
+    },
+    name: { type: "string", required: true },
+    email: { type: "string" },
+    contentClassName: {
+      description: "Class name applied to the portalled menu content.",
+      type: "string",
+    },
+    signOutAction: { type: "AvatarAccountMenuAction" },
+    triggerLabel: { type: "string" },
+  }}
+/>
+
+## Installed files
+
+<Files>
+  <Folder name="components" defaultOpen>
+    <Folder name="blobz" defaultOpen>
+      <File name="avatar.tsx" />
+      <File name="avatar-account-menu.tsx" />
+    </Folder>
+    <Folder name="ui">
+      <File name="dropdown-menu.tsx" />
+    </Folder>
+  </Folder>
+</Files>

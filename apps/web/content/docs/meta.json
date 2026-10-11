@@ -1,4 +1,4 @@
 {
   "title": "Blobz",
-  "pages": ["index", "architecture", "react", "api"]
+  "pages": ["components", "react", "api"]
 }

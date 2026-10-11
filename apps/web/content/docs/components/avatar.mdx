@@ -1,0 +1,107 @@
+---
+title: Avatar
+description: A server-renderable Blobz avatar with semantic shadcn size, frame, and surface variants.
+---
+
+import { AvatarExample } from "@/components/docs/examples/avatar-example";
+import { AvatarCircleExample } from "@/components/docs/examples/avatar-circle-example";
+import { AvatarSquareExample } from "@/components/docs/examples/avatar-square-example";
+
+## Rounded
+
+Rounded is the default frame and does not require a `frame` prop.
+
+<ComponentPreview name="avatar">
+  <AvatarExample />
+</ComponentPreview>
+
+## Installation
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+  <Tab>
+    ```bash
+    npx shadcn@latest add lirena00/blobz/avatar
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    pnpm dlx shadcn@latest add lirena00/blobz/avatar
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    yarn dlx shadcn@latest add lirena00/blobz/avatar
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    bunx --bun shadcn@latest add lirena00/blobz/avatar
+    ```
+  </Tab>
+</Tabs>
+
+This installs `@blobz/react`, `class-variance-authority`, and `cn` when they are not already present.
+
+## Usage
+
+```tsx
+import { BlobAvatar } from "@/components/blobz/avatar";
+
+<BlobAvatar
+  alt="Ada Lovelace avatar"
+  name="Ada Lovelace"
+  size="lg"
+  variant="outline"
+/>
+```
+
+Use `alt=""` when a visible name beside the avatar already identifies the person.
+
+## Circle
+
+Use `frame="circle"` for profile photos, presence lists, and familiar account surfaces.
+
+<ComponentPreview name="avatar-circle">
+  <AvatarCircleExample />
+</ComponentPreview>
+
+## Square
+
+Use `frame="square"` when the avatar needs to align tightly with square media or dense data grids.
+
+<ComponentPreview name="avatar-square">
+  <AvatarSquareExample />
+</ComponentPreview>
+
+## API
+
+<TypeTable
+  type={{
+    name: {
+      description: "Stable string or number used to generate the avatar.",
+      type: "string | number",
+      required: true,
+    },
+    alt: {
+      description: "Accessible image description. Use an empty string when decorative.",
+      type: "string",
+    },
+    frame: {
+      description: "Outer crop used by both the generated SVG and every surrounding component surface.",
+      type: '"circle" | "rounded" | "square"',
+      default: '"rounded"',
+    },
+    size: {
+      type: '"sm" | "default" | "lg" | "xl"',
+      default: '"default"',
+    },
+    variant: {
+      type: '"default" | "outline" | "elevated"',
+      default: '"default"',
+    },
+    palette: {
+      description: "Background and body colours forwarded to @blobz/react.",
+      type: "readonly [string, string]",
+    },
+  }}
+/>

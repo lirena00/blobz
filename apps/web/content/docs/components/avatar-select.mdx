@@ -1,0 +1,71 @@
+---
+title: Avatar Select
+description: Select a person with a generated avatar in both the trigger and option list.
+---
+
+import { AvatarSelectExample } from "@/components/docs/examples/avatar-select-example";
+
+<ComponentPreview name="avatar-select">
+  <AvatarSelectExample />
+</ComponentPreview>
+
+## Installation
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+  <Tab>
+    ```bash
+    npx shadcn@latest add lirena00/blobz/avatar-select
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    pnpm dlx shadcn@latest add lirena00/blobz/avatar-select
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    yarn dlx shadcn@latest add lirena00/blobz/avatar-select
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    bunx --bun shadcn@latest add lirena00/blobz/avatar-select
+    ```
+  </Tab>
+</Tabs>
+
+The official shadcn Select and Blobz Avatar components are installed automatically.
+
+## Usage
+
+```tsx
+"use client";
+
+import { AvatarSelect } from "@/components/blobz/avatar-select";
+
+<AvatarSelect
+  defaultValue="paul"
+  items={people}
+  onValueChange={setSelectedPerson}
+/>
+```
+
+Each item requires a stable `id`, visible `name`, and Blobz avatar props. The optional description is shown as supporting text.
+
+## API
+
+<TypeTable
+  type={{
+    items: {
+      type: "readonly AvatarSelectOption[]",
+      required: true,
+    },
+    defaultValue: { type: "string" },
+    value: { type: "string | null" },
+    onValueChange: { type: "(value: string | null) => void" },
+    placeholder: { type: "string", default: '"Select a person"' },
+    triggerLabel: { type: "string", default: '"Select a person"' },
+    disabled: { type: "boolean" },
+    name: { type: "string" },
+  }}
+/>

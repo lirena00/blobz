@@ -1,6 +1,6 @@
 ---
 title: Blobz documentation
-description: Build deterministic blob avatars with React components or serve them from a hosted image URL.
+description: Use ready-to-ship components, React primitives, or a hosted image URL to add deterministic Blobz avatars.
 ---
 
 import { Avatar } from "@blobz/react";
@@ -11,18 +11,18 @@ import { Avatar } from "@blobz/react";
   <Avatar frame="square" name="Katherine Johnson" palette={["#f0fdf4", "#4ade80"]} size={88} />
 </div>
 
-Blobz has two delivery paths backed by the same deterministic renderer:
+Choose the layer that matches how much UI you want Blobz to provide:
 
-| Use case | Choose | What you ship |
+| Use case | Start here | What you get |
 | --- | --- | --- |
-| A React 19 application | [`@blobz/react`](/docs/react) | Local components, no network request, full generated and custom-face control |
-| A website that needs a copy-paste image URL | [Hosted API](/docs/api) | A stable public endpoint protected by an approved-origin allowlist and account quota |
-| A framework integration or server renderer | [`@blobz/avatar-core`](/docs/architecture#shared-renderer) | Framework-free SVG generation used internally by both products |
+| Ready-to-ship avatar interfaces | [Components](/docs/components) | shadcn-compatible components copied into your application |
+| Avatar rendering inside a React application | [React Package](/docs/react) | Local components with generated and custom-face control |
+| A copy-paste image URL | [Hosted API](/docs/api) | A stable hosted endpoint with origin and quota controls |
 
 ## Start here
 
-- [Install the React package](/docs/react/installation) for components rendered inside your bundle.
-- [Use the hosted API](/docs/api/quickstart) when you want an `<img>` URL instead.
-- [Read the architecture](/docs/architecture) to understand determinism, data flow, and where each layer belongs.
+- [Browse the component library](/docs/components) for complete UI patterns installed with the shadcn CLI.
+- [Install the React package](/docs/react) when you want to build your own interface.
+- [Use the hosted API](/docs/api) when you want an `<img>` URL instead.
 
-Both paths normalize a seed by converting it to a string, trimming whitespace, and lowercasing it. The same normalized seed, palette, frame, and choices produce the same SVG.
+Every path uses the same deterministic renderer. The same normalized seed, palette, frame, and choices produce the same SVG.

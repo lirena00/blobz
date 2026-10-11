@@ -1,0 +1,90 @@
+---
+title: Avatar Status
+description: Add an accessible presence indicator to a generated Blobz avatar.
+---
+
+import { AvatarStatusExample } from "@/components/docs/examples/avatar-status-example";
+import { AvatarStatusPositionsExample } from "@/components/docs/examples/avatar-status-positions-example";
+
+## Status colours
+
+<ComponentPreview name="avatar-status">
+  <AvatarStatusExample />
+</ComponentPreview>
+
+## Installation
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+  <Tab>
+    ```bash
+    npx shadcn@latest add lirena00/blobz/avatar-status
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    pnpm dlx shadcn@latest add lirena00/blobz/avatar-status
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    yarn dlx shadcn@latest add lirena00/blobz/avatar-status
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    bunx --bun shadcn@latest add lirena00/blobz/avatar-status
+    ```
+  </Tab>
+</Tabs>
+
+The base Avatar component is installed automatically.
+
+## Usage
+
+```tsx
+import { BlobAvatarStatus } from "@/components/blobz/avatar-status";
+
+<BlobAvatarStatus
+  alt="Ada Lovelace avatar"
+  name="Ada Lovelace"
+  status="online"
+/>
+```
+
+Online uses green, away uses amber, busy uses destructive red, and offline uses a neutral gray. The indicator also uses `role="status"` and an accessible label, so status is not communicated by color alone. Supply `statusLabel` when the product uses different terminology.
+
+## Indicator positions
+
+Position the indicator at any logical corner. Logical `start` and `end` values automatically follow the document direction.
+
+<ComponentPreview name="avatar-status-positions">
+  <AvatarStatusPositionsExample />
+</ComponentPreview>
+
+## API
+
+<TypeTable
+  type={{
+    status: {
+      type: '"online" | "away" | "busy" | "offline"',
+      default: '"offline"',
+    },
+    position: {
+      type: '"top-start" | "top-end" | "bottom-start" | "bottom-end"',
+      default: '"bottom-end"',
+    },
+    statusLabel: {
+      description: "Accessible label announced for the indicator.",
+      type: "string",
+    },
+    avatarClassName: {
+      description: "Class name applied to the nested BlobAvatar.",
+      type: "string",
+    },
+    frame: {
+      description: "Frame forwarded to the nested BlobAvatar.",
+      type: '"circle" | "rounded" | "square"',
+      default: '"rounded"',
+    },
+  }}
+/>

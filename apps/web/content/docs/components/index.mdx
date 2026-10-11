@@ -1,0 +1,55 @@
+---
+title: Components
+description: Ready-to-ship avatar components and blocks powered by @blobz/react and installed through the shadcn CLI.
+---
+
+Blobz components are copied into your application, so their source remains yours to adjust. Each item uses `@blobz/react` for deterministic avatar rendering and semantic shadcn tokens for the surrounding interface.
+
+Every preview includes the complete code used to render it. Open **View code** to inspect or copy the example. The [Avatar](/docs/components/avatar) page documents rounded, circle, and square frames as separate examples, with rounded as the default.
+
+## Components
+
+| Component | Use it for |
+| --- | --- |
+| [Avatar](/docs/components/avatar) | A styled generated avatar with size, frame, and surface variants |
+| [Avatar Status](/docs/components/avatar-status) | Presence indicators such as online, away, busy, and offline |
+| [Avatar Group](/docs/components/avatar-group) | Overlapping teams with an overflow count |
+| [Avatar Profile](/docs/components/avatar-profile) | Identity rows with supporting text and actions |
+| [Avatar Badge](/docs/components/avatar-badge) | Compact identity, supporting details, and a role badge |
+| [Avatar Chip](/docs/components/avatar-chip) | Compact selected users, assignees, and recipients |
+| [Avatar Social Proof](/docs/components/avatar-social-proof) | Avatar stacks paired with community or trust copy |
+
+## Blocks
+
+| Block | Use it for |
+| --- | --- |
+| [Avatar Account Menu](/docs/components/avatar-account-menu) | Account navigation behind an avatar trigger |
+| [Avatar Select](/docs/components/avatar-select) | A person selector with avatars in the trigger and options |
+| [Avatar Team List](/docs/components/avatar-team-list) | Responsive rosters with roles, statuses, and actions |
+
+## Install directly from GitHub
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+  <Tab>
+    ```bash
+    npx shadcn@latest add lirena00/blobz/avatar
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    pnpm dlx shadcn@latest add lirena00/blobz/avatar
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    yarn dlx shadcn@latest add lirena00/blobz/avatar
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    bunx --bun shadcn@latest add lirena00/blobz/avatar
+    ```
+  </Tab>
+</Tabs>
+
+The public GitHub registry is the canonical install path until the hosted `@blobz` registry namespace is assigned a production domain.
