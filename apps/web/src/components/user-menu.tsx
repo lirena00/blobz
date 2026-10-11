@@ -1,61 +1,109 @@
+"use client";
+
+import { Avatar } from "@blobz/react";
 import { Button } from "@blobz/ui/components/button";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuGroup,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
 } from "@blobz/ui/components/dropdown-menu";
 import { Skeleton } from "@blobz/ui/components/skeleton";
+import { LayoutDashboard, LogOut } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { authClient } from "@/lib/auth-client";
 
-export default function UserMenu() {
-  const router = useRouter();
-  const { data: session, isPending } = authClient.useSession();
+interface UserMenuProps {
+	readonly signInClassName: string;
+}
 
-  if (isPending) {
-    return <Skeleton className="h-9 w-24" />;
-  }
+export default function UserMenu({ signInClassName }: UserMenuProps) {
+	const router = useRouter();
+	const { data: session, isPending } = authClient.useSession();
 
-  if (!session) {
-    return (
-      <Link href="/login">
-        <Button variant="outline">Sign In</Button>
-      </Link>
-    );
-  }
+	const handleSignOut = async (): Promise<void> => {
+		await authClient.signOut();
+		router.push("/");
+		router.refresh();
+	};
 
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger render={<Button variant="outline" />}>
-        {session.user.name}
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="bg-card">
-        <DropdownMenuGroup>
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>{session.user.email}</DropdownMenuItem>
-          <DropdownMenuItem
-            variant="destructive"
-            onClick={() => {
-              authClient.signOut({
-                fetchOptions: {
-                  onSuccess: () => {
-                    router.push("/");
-                  },
-                },
-              });
-            }}
-          >
-            Sign Out
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
+	if (isPending) {
+		return (
+			<Skeleton aria-label="Loading account" className="size-10 rounded-full" />
+		);
+	}
+
+	if (!session) {
+		return (
+			<Link className={signInClassName} href="/login">
+				Sign in
+			</Link>
+		);
+	}
+
+	const displayName = session.user.name.trim() || "Blobz user";
+
+	return (
+		<DropdownMenu>
+			<DropdownMenuTrigger
+				render={
+					<Button
+						aria-label={`Open account menu for ${displayName}`}
+						size="icon-lg"
+						variant="ghost"
+					/>
+				}
+			>
+				<Avatar
+					alt=""
+					className="rounded-full bg-muted ring-1 ring-border"
+					frame="circle"
+					name={session.user.id}
+					palette={["#eaf8ff", "#38bdf8"]}
+					size={34}
+				/>
+			</DropdownMenuTrigger>
+			<DropdownMenuContent align="end" className="min-w-64" sideOffset={8}>
+				<DropdownMenuGroup>
+					<DropdownMenuLabel className="flex items-center gap-3">
+						<Avatar
+							alt=""
+							className="rounded-full bg-muted ring-1 ring-border"
+							frame="circle"
+							name={session.user.id}
+							palette={["#eaf8ff", "#38bdf8"]}
+							size={38}
+						/>
+						<span className="min-w-0">
+							<span className="block truncate font-medium text-foreground text-sm">
+								{displayName}
+							</span>
+							<span className="block truncate text-muted-foreground text-xs">
+								{session.user.email}
+							</span>
+						</span>
+					</DropdownMenuLabel>
+				</DropdownMenuGroup>
+				<DropdownMenuSeparator />
+				<DropdownMenuGroup>
+					<DropdownMenuItem render={<Link href="/dashboard" />}>
+						<LayoutDashboard />
+						API dashboard
+					</DropdownMenuItem>
+				</DropdownMenuGroup>
+				<DropdownMenuSeparator />
+				<DropdownMenuGroup>
+					<DropdownMenuItem onClick={handleSignOut} variant="destructive">
+						<LogOut />
+						Sign out
+					</DropdownMenuItem>
+				</DropdownMenuGroup>
+			</DropdownMenuContent>
+		</DropdownMenu>
+	);
 }
