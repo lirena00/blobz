@@ -21,7 +21,7 @@
       "title": "Avatar Status",
       "description": "A Blobz avatar with an accessible presence indicator and logical-position variants.",
       "dependencies": ["class-variance-authority", "cn"],
-      "registryDependencies": ["lirena00/blobz/avatar"],
+      "registryDependencies": ["@blobz/avatar"],
       "cssVars": {
         "light": {
           "blob-avatar-status-away": "oklch(0.666 0.179 58.318)",
@@ -48,7 +48,7 @@
       "title": "Avatar Group",
       "description": "Composable overlapping Blobz avatars with a matching overflow count.",
       "dependencies": ["class-variance-authority", "cn"],
-      "registryDependencies": ["lirena00/blobz/avatar"],
+      "registryDependencies": ["@blobz/avatar"],
       "files": [
         {
           "path": "avatar-group.tsx",
@@ -63,7 +63,7 @@
       "title": "Avatar Profile",
       "description": "Compound profile-row primitives for an avatar, identity text, metadata, and actions.",
       "dependencies": ["class-variance-authority", "cn"],
-      "registryDependencies": ["lirena00/blobz/avatar"],
+      "registryDependencies": ["@blobz/avatar"],
       "files": [
         {
           "path": "avatar-profile.tsx",
@@ -78,7 +78,7 @@
       "title": "Avatar Chip",
       "description": "A compact identity chip with a Blobz avatar and an optional accessible remove action.",
       "dependencies": ["class-variance-authority", "cn"],
-      "registryDependencies": ["lirena00/blobz/avatar"],
+      "registryDependencies": ["@blobz/avatar"],
       "files": [
         {
           "path": "avatar-chip.tsx",
@@ -93,7 +93,7 @@
       "title": "Avatar Badge",
       "description": "A compact identity badge with a Blobz avatar, name, supporting detail, and optional badge.",
       "dependencies": ["cn"],
-      "registryDependencies": ["badge", "lirena00/blobz/avatar"],
+      "registryDependencies": ["badge", "@blobz/avatar"],
       "files": [
         {
           "path": "avatar-badge.tsx",
@@ -109,8 +109,8 @@
       "description": "An overlapping avatar group paired with compact social-proof copy.",
       "dependencies": ["class-variance-authority", "cn"],
       "registryDependencies": [
-        "lirena00/blobz/avatar",
-        "lirena00/blobz/avatar-group"
+        "@blobz/avatar",
+        "@blobz/avatar-group"
       ],
       "files": [
         {
@@ -126,7 +126,7 @@
       "title": "Presence Avatar",
       "description": "A Blobz avatar with online, away, offline, thinking, and unread states.",
       "dependencies": ["cn"],
-      "registryDependencies": ["lirena00/blobz/avatar"],
+      "registryDependencies": ["@blobz/avatar"],
       "files": [
         {
           "path": "presence-avatar.tsx",

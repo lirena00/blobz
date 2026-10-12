@@ -4,7 +4,7 @@
   "title": "Avatar Select",
   "description": "A ready-to-ship person selector with Blobz avatars in the trigger and option list.",
   "dependencies": ["cn"],
-  "registryDependencies": ["select", "lirena00/blobz/avatar"],
+  "registryDependencies": ["select", "@blobz/avatar"],
   "files": [
     {
       "path": "apps/web/src/registry/blobz/blocks/avatar-select.tsx",

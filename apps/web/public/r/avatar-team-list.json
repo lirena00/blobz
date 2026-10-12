@@ -4,11 +4,7 @@
   "title": "Avatar Team List",
   "description": "A responsive team roster with Blobz avatars, presence, roles, descriptions, and action slots.",
   "dependencies": ["cn"],
-  "registryDependencies": [
-    "badge",
-    "lirena00/blobz/avatar",
-    "lirena00/blobz/avatar-status"
-  ],
+  "registryDependencies": ["badge", "@blobz/avatar", "@blobz/avatar-status"],
   "files": [
     {
       "path": "apps/web/src/registry/blobz/blocks/avatar-team-list.tsx",

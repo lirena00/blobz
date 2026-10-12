@@ -4,7 +4,7 @@
   "title": "Avatar Group",
   "description": "Composable overlapping Blobz avatars with a matching overflow count.",
   "dependencies": ["class-variance-authority", "cn"],
-  "registryDependencies": ["lirena00/blobz/avatar"],
+  "registryDependencies": ["@blobz/avatar"],
   "files": [
     {
       "path": "apps/web/src/registry/blobz/components/avatar-group.tsx",

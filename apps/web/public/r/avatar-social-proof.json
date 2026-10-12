@@ -4,10 +4,7 @@
   "title": "Avatar Social Proof",
   "description": "An overlapping avatar group paired with compact social-proof copy.",
   "dependencies": ["class-variance-authority", "cn"],
-  "registryDependencies": [
-    "lirena00/blobz/avatar",
-    "lirena00/blobz/avatar-group"
-  ],
+  "registryDependencies": ["@blobz/avatar", "@blobz/avatar-group"],
   "files": [
     {
       "path": "apps/web/src/registry/blobz/components/avatar-social-proof.tsx",

@@ -4,7 +4,7 @@
   "title": "Avatar Status",
   "description": "A Blobz avatar with an accessible presence indicator and logical-position variants.",
   "dependencies": ["class-variance-authority", "cn"],
-  "registryDependencies": ["lirena00/blobz/avatar"],
+  "registryDependencies": ["@blobz/avatar"],
   "files": [
     {
       "path": "apps/web/src/registry/blobz/components/avatar-status.tsx",

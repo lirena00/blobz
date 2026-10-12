@@ -4,10 +4,7 @@
   "title": "Group Chat",
   "description": "A conversation panel with Blobz avatars for messages, participants, and typing presence.",
   "dependencies": ["cn"],
-  "registryDependencies": [
-    "lirena00/blobz/avatar",
-    "lirena00/blobz/avatar-group"
-  ],
+  "registryDependencies": ["@blobz/avatar", "@blobz/avatar-group"],
   "files": [
     {
       "path": "apps/web/src/registry/blobz/blocks/group-chat.tsx",

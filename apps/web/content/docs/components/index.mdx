@@ -30,29 +30,56 @@ Every preview includes the complete code used to render it. Open **View code** t
 | [Group Chat](/docs/components/group-chat) | Conversation threads with participant avatars and typing presence |
 | [User Table](/docs/components/user-table) | People tables with roles, statuses, and activity |
 
-## Install directly from GitHub
+## Register the Blobz registry
+
+Until `@blobz` is listed in shadcn's registry index, run this once in each project that uses Blobz components. The command saves the registry URL in your project's `components.json`.
 
 <Tabs items={["npm", "pnpm", "yarn", "bun"]}>
   <Tab>
     ```bash
-    npx shadcn@latest add lirena00/blobz/avatar
+    npx shadcn@latest registry add @blobz=https://blobz.lirena.in/r/{name}.json
     ```
   </Tab>
   <Tab>
     ```bash
-    pnpm dlx shadcn@latest add lirena00/blobz/avatar
+    pnpm dlx shadcn@latest registry add @blobz=https://blobz.lirena.in/r/{name}.json
     ```
   </Tab>
   <Tab>
     ```bash
-    yarn dlx shadcn@latest add lirena00/blobz/avatar
+    yarn dlx shadcn@latest registry add @blobz=https://blobz.lirena.in/r/{name}.json
     ```
   </Tab>
   <Tab>
     ```bash
-    bunx --bun shadcn@latest add lirena00/blobz/avatar
+    bunx --bun shadcn@latest registry add @blobz=https://blobz.lirena.in/r/{name}.json
     ```
   </Tab>
 </Tabs>
 
-The public GitHub registry is the canonical install path until the hosted `@blobz` registry namespace is assigned a production domain.
+Then install any component by its `@blobz` name. For example:
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+  <Tab>
+    ```bash
+    npx shadcn@latest add @blobz/avatar
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    pnpm dlx shadcn@latest add @blobz/avatar
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    yarn dlx shadcn@latest add @blobz/avatar
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    bunx --bun shadcn@latest add @blobz/avatar
+    ```
+  </Tab>
+</Tabs>
+
+The registry setup is per project. You only need to run it once before installing your first Blobz component.

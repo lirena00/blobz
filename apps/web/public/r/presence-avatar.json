@@ -4,7 +4,7 @@
   "title": "Presence Avatar",
   "description": "A Blobz avatar with online, away, offline, thinking, and unread states.",
   "dependencies": ["cn"],
-  "registryDependencies": ["lirena00/blobz/avatar"],
+  "registryDependencies": ["@blobz/avatar"],
   "files": [
     {
       "path": "apps/web/src/registry/blobz/components/presence-avatar.tsx",

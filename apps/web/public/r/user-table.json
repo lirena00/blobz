@@ -4,7 +4,7 @@
   "title": "User Table",
   "description": "A responsive people table with generated avatars, roles, statuses, and last-seen details.",
   "dependencies": ["cn"],
-  "registryDependencies": ["lirena00/blobz/avatar"],
+  "registryDependencies": ["@blobz/avatar"],
   "files": [
     {
       "path": "apps/web/src/registry/blobz/blocks/user-table.tsx",
