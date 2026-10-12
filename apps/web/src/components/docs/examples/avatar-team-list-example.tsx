@@ -1,36 +1,37 @@
+import { DEMO_PEOPLE, getFirstName } from "@/lib/demo-people";
 import { AvatarTeamList } from "@/registry/blobz/blocks/avatar-team-list";
 
 const TEAM_MEMBERS = [
 	{
 		avatar: {
-			name: "Ada Lovelace",
+			name: getFirstName(DEMO_PEOPLE.janakiAmmal),
 			palette: ["#dff4ff", "#38bdf8"],
 		},
-		description: "ada@example.com",
-		id: "ada",
-		name: "Ada Lovelace",
+		description: "janaki@example.com",
+		id: "janaki",
+		name: DEMO_PEOPLE.janakiAmmal,
 		role: "Owner",
 		status: "online",
 	},
 	{
 		avatar: {
-			name: "Grace Hopper",
-			palette: ["#dff4ff", "#38bdf8"],
+			name: getFirstName(DEMO_PEOPLE.vikramSarabhai),
+			palette: ["#fff0e2", "#fa9769"],
 		},
-		description: "grace@example.com",
-		id: "grace",
-		name: "Grace Hopper",
+		description: "vikram@example.com",
+		id: "vikram",
+		name: DEMO_PEOPLE.vikramSarabhai,
 		role: "Engineer",
 		status: "away",
 	},
 	{
 		avatar: {
-			name: "Katherine Johnson",
-			palette: ["#dff4ff", "#38bdf8"],
+			name: getFirstName(DEMO_PEOPLE.kalpanaChawla),
+			palette: ["#e7fbe8", "#9ce786"],
 		},
-		description: "katherine@example.com",
-		id: "katherine",
-		name: "Katherine Johnson",
+		description: "kalpana@example.com",
+		id: "kalpana",
+		name: DEMO_PEOPLE.kalpanaChawla,
 		role: "Scientist",
 		status: "offline",
 	},

@@ -1,26 +1,34 @@
 "use client";
 
+import { DEMO_PEOPLE, getFirstName } from "@/lib/demo-people";
+
 import { AvatarSelect } from "@/registry/blobz/blocks/avatar-select";
 
 const BLUE_PALETTE = ["#dff4ff", "#38bdf8"] as const;
 const PEOPLE = [
 	{
-		avatar: { name: "Paul Smith", palette: BLUE_PALETTE },
+		avatar: { name: getFirstName(DEMO_PEOPLE.rajReddy), palette: BLUE_PALETTE },
 		description: "Product designer",
-		id: "paul",
-		name: "Paul Smith",
+		id: "raj",
+		name: DEMO_PEOPLE.rajReddy,
 	},
 	{
-		avatar: { name: "Ada Lovelace", palette: BLUE_PALETTE },
+		avatar: {
+			name: getFirstName(DEMO_PEOPLE.janakiAmmal),
+			palette: BLUE_PALETTE,
+		},
 		description: "Engineering lead",
-		id: "ada",
-		name: "Ada Lovelace",
+		id: "janaki",
+		name: DEMO_PEOPLE.janakiAmmal,
 	},
 	{
-		avatar: { name: "Grace Hopper", palette: BLUE_PALETTE },
+		avatar: {
+			name: getFirstName(DEMO_PEOPLE.vikramSarabhai),
+			palette: BLUE_PALETTE,
+		},
 		description: "Platform engineer",
-		id: "grace",
-		name: "Grace Hopper",
+		id: "vikram",
+		name: DEMO_PEOPLE.vikramSarabhai,
 	},
 ] as const;
 
@@ -29,7 +37,7 @@ export function AvatarSelectExample() {
 		<AvatarSelect
 			className="max-w-sm"
 			contentClassName="dark"
-			defaultValue="paul"
+			defaultValue="raj"
 			items={PEOPLE}
 		/>
 	);

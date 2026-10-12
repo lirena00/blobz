@@ -28,7 +28,7 @@ export const AVATAR_PALETTE_PRESETS = SHARED_PALETTE_PRESETS;
 
 const DEFAULT_BUILDER_VALUE = {
 	frame: "rounded",
-	name: "Maria Mitchell",
+	name: "Janaki",
 	palette: DEFAULT_AVATAR_PALETTE,
 	type: "generated",
 	version: 1,

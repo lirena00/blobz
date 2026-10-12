@@ -41,6 +41,7 @@ import {
 import { CodeXmlIcon, CopyIcon, InfoIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { DEMO_PEOPLE, getFirstName } from "@/lib/demo-people";
 import { AvatarPalettePicker } from "@/registry/blobz/avatar-palette-picker";
 
 interface EmbedQuickstartProps {
@@ -50,7 +51,7 @@ interface EmbedQuickstartProps {
 }
 
 const FRAMES = ["rounded", "circle", "square"] as const;
-const SAMPLE_NAME = "Ada";
+const SAMPLE_NAME = getFirstName(DEMO_PEOPLE.janakiAmmal);
 
 export default function EmbedQuickstart({
 	apiBaseUrl,

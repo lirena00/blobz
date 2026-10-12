@@ -1,6 +1,7 @@
 import { Avatar } from "@blobz/react";
 import { ArrowUpRight, Code2, Component, Globe2 } from "lucide-react";
 import Link from "next/link";
+import { DEMO_PEOPLE, getFirstName } from "@/lib/demo-people";
 
 const CARD_CLASS =
 	"flex min-h-[20rem] flex-col rounded-[1.6rem] border border-white/12 bg-white/[0.055] p-7 shadow-[0_20px_60px_rgb(0_0_0_/_10%)] max-[640px]:min-h-0 max-[640px]:p-6";
@@ -69,11 +70,11 @@ export function WaysToUse() {
 							<Avatar
 								alt=""
 								className="rounded-xl"
-								name="Alex"
+								name={getFirstName(DEMO_PEOPLE.janakiAmmal)}
 								palette={["#e8f7ff", "#38bdf8"]}
 								size={40}
 							/>
-							<span className="text-sm">Alex</span>
+							<span className="text-sm">{DEMO_PEOPLE.janakiAmmal}</span>
 							<span className="ml-auto rounded-full bg-emerald-400/15 px-2 py-1 text-[0.65rem] text-emerald-200">
 								Online
 							</span>

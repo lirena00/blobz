@@ -31,6 +31,7 @@ import {
 import type { Language } from "prism-react-renderer";
 import { useCallback, useMemo, useState } from "react";
 import { toast } from "sonner";
+import { DEFAULT_HOME_NAME } from "@/components/landing/landing-name";
 import {
 	AvatarBuilder,
 	type AvatarBuilderValue,
@@ -43,7 +44,7 @@ const LEADING_OR_TRAILING_DASH_PATTERN = /^-+|-+$/g;
 
 const INITIAL_AVATAR = {
 	frame: "rounded",
-	name: "Ada Lovelace",
+	name: DEFAULT_HOME_NAME,
 	palette: ["#eef9ff", "#38bdf8"],
 	type: "generated",
 	version: 1,

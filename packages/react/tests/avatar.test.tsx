@@ -10,22 +10,18 @@ import { CustomAvatar } from "../src/custom-avatar";
 
 describe("Avatar", () => {
 	test("renders the avatar-core result as an image", () => {
-		const coreAvatar = makeAvatar(
-			"Ada Lovelace",
-			["#f2f1f4", "#7c6cf2"],
-			"rounded"
-		);
+		const coreAvatar = makeAvatar("Janaki", ["#f2f1f4", "#7c6cf2"], "rounded");
 		const markup = renderToStaticMarkup(
 			<Avatar
 				className="profile-avatar"
-				name="Ada Lovelace"
+				name="Janaki"
 				palette={["#f2f1f4", "#7c6cf2"]}
 				size={48}
 			/>
 		);
 
 		expect(markup).toContain('class="profile-avatar"');
-		expect(markup).toContain('alt="Blob avatar for ada lovelace"');
+		expect(markup).toContain('alt="Blob avatar for janaki"');
 		expect(markup).toContain('height="48"');
 		expect(markup).toContain('width="48"');
 		expect(markup).toContain(

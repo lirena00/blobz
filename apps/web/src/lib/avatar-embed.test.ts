@@ -4,13 +4,13 @@ import { parseEmbedAvatarQuery, renderEmbeddedAvatar } from "./avatar-embed";
 
 describe("avatar image URLs", () => {
 	it("uses the same deterministic face and defaults as the React package", () => {
-		const options = parseEmbedAvatarQuery(new URLSearchParams("name=Ada"));
+		const options = parseEmbedAvatarQuery(new URLSearchParams("name=Janaki"));
 		expect(options).not.toBeNull();
 		if (!options) {
 			throw new Error("Expected a valid avatar URL.");
 		}
 		expect(renderEmbeddedAvatar(options)).toBe(
-			createAvatar({ name: "Ada" }).svg
+			createAvatar({ name: "Janaki" }).svg
 		);
 	});
 
@@ -18,14 +18,14 @@ describe("avatar image URLs", () => {
 		const options = parseEmbedAvatarQuery(
 			new URLSearchParams({
 				frame: "circle",
-				name: "Ada",
+				name: "Janaki",
 				palette: "#EEF9FF,#38BDF8",
 				size: "160",
 			})
 		);
 		expect(options).toEqual({
 			frame: "circle",
-			name: "Ada",
+			name: "Janaki",
 			palette: ["#eef9ff", "#38bdf8"],
 			size: 160,
 		});
@@ -38,14 +38,14 @@ describe("avatar image URLs", () => {
 
 	it("rejects unknown, repeated, and malformed parameters", () => {
 		for (const query of [
-			"name=Ada&variant=beam",
-			"name=Ada&__proto__=polluted",
-			"name=Ada&name=Other",
-			"name=Ada&palette=red,blue",
-			"name=Ada&palette=%23ffffff",
-			"name=Ada&frame=triangle",
-			"name=Ada&size=0",
-			"name=Ada&size=5000",
+			"name=Janaki&variant=beam",
+			"name=Janaki&__proto__=polluted",
+			"name=Janaki&name=Other",
+			"name=Janaki&palette=red,blue",
+			"name=Janaki&palette=%23ffffff",
+			"name=Janaki&frame=triangle",
+			"name=Janaki&size=0",
+			"name=Janaki&size=5000",
 			"name=%20",
 			"size=80",
 		]) {

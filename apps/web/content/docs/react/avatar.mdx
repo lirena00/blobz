@@ -11,7 +11,7 @@ import { Avatar } from "@blobz/react";
 import { Avatar } from "@blobz/react";
 
 <Avatar
-  name="Ada Lovelace"
+  name="Janaki"
   palette={["#f2f1f4", "#7c6cf2"]}
   frame="rounded"
   size={64}
@@ -19,7 +19,7 @@ import { Avatar } from "@blobz/react";
 ```
 
 <Avatar
-  name="Ada Lovelace"
+  name="Janaki"
   palette={["#f2f1f4", "#7c6cf2"]}
   frame="rounded"
   size={112}
@@ -28,7 +28,7 @@ import { Avatar } from "@blobz/react";
 The seed accepts a `string` or `number`. Blobz converts it to a string, trims it, and lowercases it before hashing. These produce the same avatar:
 
 ```tsx
-<Avatar name="Ada Lovelace" />
+<Avatar name="Janaki" />
 <Avatar name="  ADA LOVELACE  " />
 ```
 
@@ -70,7 +70,7 @@ import { useRef } from "react";
 export function FocusableAvatar() {
   const imageRef = useRef<HTMLImageElement>(null);
 
-  return <Avatar ref={imageRef} name="Ada" tabIndex={0} />;
+  return <Avatar ref={imageRef} name="Janaki" tabIndex={0} />;
 }
 ```
 

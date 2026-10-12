@@ -14,6 +14,7 @@ import { LandingNameProvider } from "@/components/landing/landing-name";
 import { PersonalizedHero } from "@/components/landing/personalized-hero";
 import { Pricing } from "@/components/landing/pricing";
 import { WaysToUse } from "@/components/landing/ways-to-use";
+import { DEMO_PEOPLE, getFirstName } from "@/lib/demo-people";
 import footerAvatarStyles from "./footer-avatars.module.css";
 
 const EYEBROW_CLASS =
@@ -45,11 +46,11 @@ const PRINCIPLES = [
 ] as const;
 
 const FOOTER_BLOBZ = [
-	["nova", ["#eef9ff", "#38bdf8"]],
-	["mika", ["#fff7ed", "#fb923c"]],
-	["sol", ["#f0fdf4", "#4ade80"]],
-	["lumi", ["#faf5ff", "#c084fc"]],
-	["rio", ["#fff1f2", "#fb7185"]],
+	[getFirstName(DEMO_PEOPLE.janakiAmmal), ["#eef9ff", "#38bdf8"]],
+	[getFirstName(DEMO_PEOPLE.vikramSarabhai), ["#fff7ed", "#fb923c"]],
+	[getFirstName(DEMO_PEOPLE.kalpanaChawla), ["#f0fdf4", "#4ade80"]],
+	[getFirstName(DEMO_PEOPLE.srinivasaRamanujan), ["#faf5ff", "#c084fc"]],
+	[getFirstName(DEMO_PEOPLE.gagandeepKang), ["#fff1f2", "#fb7185"]],
 ] as const;
 
 export default function Home() {
@@ -143,14 +144,14 @@ export default function Home() {
 					>
 						<Avatar
 							alt=""
-							name="something-bad"
+							name={getFirstName(DEMO_PEOPLE.janakiAmmal)}
 							palette={["#eef9ff", "#38bdf8"]}
 							size={92}
 						/>
 						<MoveRight className="size-6" />
 						<Avatar
 							alt=""
-							name="something-awesome"
+							name={getFirstName(DEMO_PEOPLE.vikramSarabhai)}
 							palette={["#f0fdf4", "#4ade80"]}
 							size={92}
 						/>

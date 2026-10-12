@@ -9,7 +9,7 @@ name and palette always produce the same avatar in Node.js, Bun, and the browser
 import { createAvatar } from "@blobz/avatar-core";
 
 const avatar = createAvatar({
-  name: "Ada Lovelace",
+  name: "Janaki",
   palette: ["#f2f1f4", "#7c6cf2"],
   frame: "rounded",
 });
@@ -26,7 +26,7 @@ the same positional API:
 import { makeAvatar } from "@blobz/avatar-core";
 
 const avatar = makeAvatar(
-  "Ada Lovelace",
+  "Janaki",
   ["#f2f1f4", "#7c6cf2"],
   "circle"
 );

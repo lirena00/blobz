@@ -8,6 +8,7 @@ interface LandingNameContextValue {
 }
 
 const LandingNameContext = createContext<LandingNameContextValue | null>(null);
+export const DEFAULT_HOME_NAME = "Saksham";
 
 export function LandingNameProvider({
 	children,

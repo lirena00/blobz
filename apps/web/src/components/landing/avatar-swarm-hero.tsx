@@ -6,6 +6,7 @@ import Link from "next/link";
 import { type CSSProperties, useEffect, useRef, useState } from "react";
 
 import styles from "@/app/landing.module.css";
+import { DEMO_PEOPLE, getFirstName } from "@/lib/demo-people";
 
 const PREFIXES = ["b", "bl", "blo", "blob", "blobz"] as const;
 const ORBIT_DURATION_MS = 42_000;
@@ -13,7 +14,7 @@ const ORBIT_DURATION_MS = 42_000;
 const SWARM = [
 	{
 		angle: -90,
-		name: "aster",
+		name: getFirstName(DEMO_PEOPLE.pingala),
 		palette: ["#f1f9ff", "#38bdf8"],
 		rotation: -3,
 		scale: 1.02,
@@ -23,7 +24,7 @@ const SWARM = [
 	},
 	{
 		angle: -66,
-		name: "mango",
+		name: getFirstName(DEMO_PEOPLE.panini),
 		palette: ["#fff7ed", "#fb923c"],
 		rotation: 5,
 		scale: 0.84,
@@ -33,7 +34,7 @@ const SWARM = [
 	},
 	{
 		angle: -43,
-		name: "plum",
+		name: getFirstName(DEMO_PEOPLE.sushruta),
 		palette: ["#faf5ff", "#c084fc"],
 		rotation: -7,
 		scale: 1.16,
@@ -43,7 +44,7 @@ const SWARM = [
 	},
 	{
 		angle: -20,
-		name: "fern",
+		name: getFirstName(DEMO_PEOPLE.aryabhata),
 		palette: ["#f0fdf4", "#4ade80"],
 		rotation: 2,
 		scale: 0.78,
@@ -53,7 +54,7 @@ const SWARM = [
 	},
 	{
 		angle: 2,
-		name: "coral",
+		name: getFirstName(DEMO_PEOPLE.shakuntalaDevi),
 		palette: ["#fff1f2", "#fb7185"],
 		rotation: 7,
 		scale: 1.08,
@@ -63,7 +64,7 @@ const SWARM = [
 	},
 	{
 		angle: 25,
-		name: "lake",
+		name: getFirstName(DEMO_PEOPLE.bibhaChowdhuri),
 		palette: ["#ecfeff", "#22d3ee"],
 		rotation: -4,
 		scale: 0.86,
@@ -73,7 +74,7 @@ const SWARM = [
 	},
 	{
 		angle: 47,
-		name: "lemon",
+		name: getFirstName(DEMO_PEOPLE.janakiAmmal),
 		palette: ["#fffbeb", "#fbbf24"],
 		rotation: 4,
 		scale: 1.12,
@@ -83,7 +84,7 @@ const SWARM = [
 	},
 	{
 		angle: 70,
-		name: "indigo",
+		name: getFirstName(DEMO_PEOPLE.asimaChatterjee),
 		palette: ["#eef2ff", "#818cf8"],
 		rotation: -6,
 		scale: 0.9,
@@ -93,7 +94,7 @@ const SWARM = [
 	},
 	{
 		angle: 92,
-		name: "peach",
+		name: getFirstName(DEMO_PEOPLE.kalpanaChawla),
 		palette: ["#fff7ed", "#fd8a6a"],
 		rotation: 5,
 		scale: 1.05,
@@ -103,7 +104,7 @@ const SWARM = [
 	},
 	{
 		angle: 115,
-		name: "mint",
+		name: getFirstName(DEMO_PEOPLE.tessyThomas),
 		palette: ["#ecfdf5", "#34d399"],
 		rotation: -3,
 		scale: 0.8,
@@ -113,7 +114,7 @@ const SWARM = [
 	},
 	{
 		angle: 138,
-		name: "berry",
+		name: getFirstName(DEMO_PEOPLE.rituKaridhal),
 		palette: ["#fdf2f8", "#e879b7"],
 		rotation: 6,
 		scale: 1.14,
@@ -123,7 +124,7 @@ const SWARM = [
 	},
 	{
 		angle: 160,
-		name: "violet",
+		name: getFirstName(DEMO_PEOPLE.rajeshwariChatterjee),
 		palette: ["#f5f3ff", "#a78bfa"],
 		rotation: -8,
 		scale: 0.84,
@@ -133,7 +134,7 @@ const SWARM = [
 	},
 	{
 		angle: 183,
-		name: "sea",
+		name: getFirstName(DEMO_PEOPLE.annaMani),
 		palette: ["#ecfeff", "#06b6d4"],
 		rotation: 2,
 		scale: 1.04,
@@ -143,7 +144,7 @@ const SWARM = [
 	},
 	{
 		angle: 206,
-		name: "poppy",
+		name: getFirstName(DEMO_PEOPLE.gagandeepKang),
 		palette: ["#fff1f2", "#f43f5e"],
 		rotation: 5,
 		scale: 0.82,

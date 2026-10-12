@@ -11,7 +11,11 @@ import {
 } from "react";
 
 import styles from "@/app/landing.module.css";
-import { useLandingName } from "@/components/landing/landing-name";
+import {
+	DEFAULT_HOME_NAME,
+	useLandingName,
+} from "@/components/landing/landing-name";
+import { DEMO_PEOPLE, getFirstName } from "@/lib/demo-people";
 
 const SURFACE_CARD_CLASS =
 	"relative min-w-0 border border-[rgb(201_230_245_/_92%)] bg-white/92 shadow-[0_24px_70px_rgb(14_87_120_/_15%)] backdrop-blur-2xl";
@@ -27,24 +31,24 @@ const PALETTES = [
 ] as const;
 
 const TEAM = [
-	{ name: "quinn", palette: PALETTES[0] },
-	{ name: "noor", palette: PALETTES[1] },
-	{ name: "mika", palette: PALETTES[2] },
-	{ name: "jo", palette: PALETTES[3] },
+	{ name: getFirstName(DEMO_PEOPLE.janakiAmmal), palette: PALETTES[0] },
+	{ name: getFirstName(DEMO_PEOPLE.vikramSarabhai), palette: PALETTES[1] },
+	{ name: getFirstName(DEMO_PEOPLE.kalpanaChawla), palette: PALETTES[2] },
+	{ name: getFirstName(DEMO_PEOPLE.srinivasaRamanujan), palette: PALETTES[3] },
 ] as const;
 
 const SECONDARY_ACTIVITY = [
 	{
 		action: "joined the tiny-wins channel",
-		id: "mika-joined",
-		name: "Mika",
+		id: "kalpana-joined",
+		name: getFirstName(DEMO_PEOPLE.kalpanaChawla),
 		palette: PALETTES[1],
 		time: "12m",
 	},
 	{
 		action: "remixed a new palette",
-		id: "noor-remixed",
-		name: "Noor",
+		id: "vikram-remixed",
+		name: getFirstName(DEMO_PEOPLE.vikramSarabhai),
 		palette: PALETTES[3],
 		time: "28m",
 	},
@@ -61,7 +65,7 @@ export function IdentitySurfaces() {
 		paletteIndex === null
 			? customPalette
 			: (PALETTES[paletteIndex] ?? PALETTES[0]);
-	const avatarName = name.trim() || "Alex";
+	const avatarName = name.trim() || DEFAULT_HOME_NAME;
 	const firstName = avatarName.split(WHITESPACE_PATTERN)[0] ?? "Blobz";
 	const handleNameChange = useCallback(
 		(event: ChangeEvent<HTMLInputElement>) => {

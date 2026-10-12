@@ -53,7 +53,7 @@ describe("avatar request origin resolution", () => {
 
 	it("allows a same-origin platform request without an Origin header", () => {
 		const request = new Request(
-			"https://blobz.lirena.in/api/v1/avatars/example?name=Ada"
+			"https://blobz.lirena.in/api/v1/avatars/example?name=Janaki"
 		);
 
 		expect(resolveAvatarRequestOrigin(request, platformOrigin)).toEqual({
@@ -64,7 +64,7 @@ describe("avatar request origin resolution", () => {
 
 	it("recognizes an explicit platform Origin header", () => {
 		const request = new Request(
-			"https://blobz.lirena.in/api/v1/avatars/example?name=Ada",
+			"https://blobz.lirena.in/api/v1/avatars/example?name=Janaki",
 			{ headers: { Origin: platformOrigin } }
 		);
 
@@ -76,7 +76,7 @@ describe("avatar request origin resolution", () => {
 
 	it("keeps other valid origins subject to the account allowlist", () => {
 		const request = new Request(
-			"https://blobz.lirena.in/api/v1/avatars/example?name=Ada",
+			"https://blobz.lirena.in/api/v1/avatars/example?name=Janaki",
 			{ headers: { Origin: "https://app.example.com" } }
 		);
 
@@ -88,10 +88,10 @@ describe("avatar request origin resolution", () => {
 
 	it("rejects a missing or invalid Origin from outside the platform", () => {
 		const crossOriginRequest = new Request(
-			"https://api.example.com/api/v1/avatars/example?name=Ada"
+			"https://api.example.com/api/v1/avatars/example?name=Janaki"
 		);
 		const invalidOriginRequest = new Request(
-			"https://blobz.lirena.in/api/v1/avatars/example?name=Ada",
+			"https://blobz.lirena.in/api/v1/avatars/example?name=Janaki",
 			{ headers: { Origin: "null" } }
 		);
 
@@ -106,7 +106,7 @@ describe("avatar request origin resolution", () => {
 	it("supports the configured localhost deployment", () => {
 		const localOrigin = "http://localhost:3001";
 		const request = new Request(
-			"http://localhost:3001/api/v1/avatars/example?name=Ada"
+			"http://localhost:3001/api/v1/avatars/example?name=Janaki"
 		);
 
 		expect(resolveAvatarRequestOrigin(request, localOrigin)).toEqual({

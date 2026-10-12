@@ -16,30 +16,26 @@ const digest = (value: string) =>
 
 describe("avatar-core", () => {
 	test("matches the rounded index.html output", () => {
-		const avatar = makeAvatar(
-			"Ada Lovelace",
-			["#f2f1f4", "#7c6cf2"],
-			"rounded"
-		);
+		const avatar = makeAvatar("Janaki", ["#f2f1f4", "#7c6cf2"], "rounded");
 
-		expect(avatar.key).toBe("ada lovelace");
-		expect(avatar.hash).toBe(426_552_004_313_640);
+		expect(avatar.key).toBe("janaki");
+		expect(avatar.hash).toBe(4_216_952_012_017_202);
 		expect(avatar.combos).toBe(4_911_637_500);
 		expect(avatar.choices).toEqual({
-			browI: 5,
-			dxI: 1,
-			dyI: 2,
-			eyeI: 5,
-			faceTiltI: 17,
-			flip: 0,
+			browI: 7,
+			dxI: 2,
+			dyI: 1,
+			eyeI: 0,
+			faceTiltI: 20,
+			flip: 1,
 			gapI: 1,
-			lookI: 3,
-			mouthI: 4,
-			shapeI: 14,
-			tiltI: 6,
+			lookI: 0,
+			mouthI: 8,
+			shapeI: 1,
+			tiltI: 0,
 		});
 		expect(digest(avatar.svg)).toBe(
-			"4e45506a7a7ffa48def5ece8496a4bce143a55772524f02b7ad24a29bc620572"
+			"48745f125fe596ff9e116476aaaf2295ecca286872dd20ce006bfb6a4782e32a"
 		);
 	});
 

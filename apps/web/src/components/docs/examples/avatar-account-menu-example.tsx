@@ -1,5 +1,7 @@
 "use client";
 
+import { DEMO_PEOPLE, getFirstName } from "@/lib/demo-people";
+
 import { AvatarAccountMenu } from "@/registry/blobz/blocks/avatar-account-menu";
 
 const ignoreAction = () => undefined;
@@ -23,10 +25,14 @@ export function AvatarAccountMenuExample() {
 	return (
 		<AvatarAccountMenu
 			actions={ACTIONS}
-			avatar={{ name: "Ada Lovelace", palette: BLUE_PALETTE, size: "xl" }}
+			avatar={{
+				name: getFirstName(DEMO_PEOPLE.janakiAmmal),
+				palette: BLUE_PALETTE,
+				size: "xl",
+			}}
 			contentClassName="dark"
-			email="ada@example.com"
-			name="Ada Lovelace"
+			email="janaki@example.com"
+			name={DEMO_PEOPLE.janakiAmmal}
 			signOutAction={{
 				id: "sign-out",
 				label: "Sign out",

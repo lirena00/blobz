@@ -51,7 +51,7 @@
               "minLength": 1,
               "maxLength": 256
             },
-            "example": "Ada Lovelace"
+            "example": "Janaki"
           },
           {
             "name": "frame",

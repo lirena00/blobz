@@ -1,3 +1,4 @@
+import { DEMO_PEOPLE, getFirstName } from "@/lib/demo-people";
 import { BlobAvatar } from "@/registry/blobz/components/avatar";
 import {
 	BlobAvatarGroup,
@@ -6,9 +7,9 @@ import {
 } from "@/registry/blobz/components/avatar-group";
 
 const TEAM = [
-	{ id: "ada", name: "Ada Lovelace" },
-	{ id: "grace", name: "Grace Hopper" },
-	{ id: "katherine", name: "Katherine Johnson" },
+	{ id: "janaki", name: getFirstName(DEMO_PEOPLE.janakiAmmal) },
+	{ id: "vikram", name: getFirstName(DEMO_PEOPLE.vikramSarabhai) },
+	{ id: "kalpana", name: getFirstName(DEMO_PEOPLE.kalpanaChawla) },
 ] as const;
 
 const BLUE_PALETTE = ["#dff4ff", "#38bdf8"] as const;

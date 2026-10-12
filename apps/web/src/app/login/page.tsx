@@ -7,6 +7,7 @@ import { useCallback, useState } from "react";
 
 import SignInForm from "@/components/sign-in-form";
 import SignUpForm from "@/components/sign-up-form";
+import { DEMO_PEOPLE, getFirstName } from "@/lib/demo-people";
 
 const BENEFITS = [
 	{
@@ -20,9 +21,9 @@ const BENEFITS = [
 ] as const;
 
 const AUTH_AVATARS = [
-	["api-lumi", ["#e8f7ff", "#38bdf8"]],
-	["api-mango", ["#fff7ed", "#fb923c"]],
-	["api-plum", ["#faf5ff", "#c084fc"]],
+	[getFirstName(DEMO_PEOPLE.janakiAmmal), ["#e8f7ff", "#38bdf8"]],
+	[getFirstName(DEMO_PEOPLE.vikramSarabhai), ["#fff7ed", "#fb923c"]],
+	[getFirstName(DEMO_PEOPLE.kalpanaChawla), ["#faf5ff", "#c084fc"]],
 ] as const;
 
 export default function LoginPage() {

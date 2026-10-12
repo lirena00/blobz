@@ -29,9 +29,9 @@ describe("avatar registry components", () => {
 	test("renders the avatar package inside the requested variants", () => {
 		const markup = renderToStaticMarkup(
 			<BlobAvatar
-				alt="Ada Lovelace avatar"
+				alt="Janaki avatar"
 				frame="rounded"
-				name="Ada Lovelace"
+				name="Janaki"
 				size="lg"
 				variant="outline"
 			/>
@@ -41,12 +41,12 @@ describe("avatar registry components", () => {
 		expect(markup).toContain('data-frame="rounded"');
 		expect(markup).toContain('data-size="lg"');
 		expect(markup).toContain('data-variant="outline"');
-		expect(markup).toContain('alt="Ada Lovelace avatar"');
+		expect(markup).toContain('alt="Janaki avatar"');
 	});
 
 	test("uses the larger rounded avatar as the default", () => {
 		const markup = renderToStaticMarkup(
-			<BlobAvatar alt="Grace Hopper avatar" name="Grace Hopper" />
+			<BlobAvatar alt="Vikram avatar" name="Vikram" />
 		);
 
 		expect(markup).toContain('data-frame="rounded"');
@@ -56,7 +56,7 @@ describe("avatar registry components", () => {
 
 	test("exposes an accessible presence label", () => {
 		const markup = renderToStaticMarkup(
-			<BlobAvatarStatus alt="" name="Grace Hopper" status="away" />
+			<BlobAvatarStatus alt="" name="Vikram" status="away" />
 		);
 
 		expect(markup).toContain('role="status"');
@@ -68,34 +68,34 @@ describe("avatar registry components", () => {
 		const groupMarkup = renderToStaticMarkup(
 			<BlobAvatarGroup aria-label="Project team">
 				<BlobAvatarGroupItem frame="rounded">
-					<BlobAvatar alt="" frame="rounded" name="Katherine Johnson" />
+					<BlobAvatar alt="" frame="rounded" name="Kalpana" />
 				</BlobAvatarGroupItem>
 				<BlobAvatarGroupCount count={3} frame="rounded" />
 			</BlobAvatarGroup>
 		);
 		const profileMarkup = renderToStaticMarkup(
 			<AvatarProfile variant="outline">
-				<AvatarProfileAvatar alt="" name="Dorothy Vaughan" />
+				<AvatarProfileAvatar alt="" name="Srinivasa" />
 				<AvatarProfileContent>
-					<AvatarProfileName>Dorothy Vaughan</AvatarProfileName>
+					<AvatarProfileName>Srinivasa</AvatarProfileName>
 					<AvatarProfileDescription>Mathematician</AvatarProfileDescription>
 				</AvatarProfileContent>
 			</AvatarProfile>
 		);
 		const chipMarkup = renderToStaticMarkup(
 			<AvatarChip>
-				<AvatarChipAvatar alt="" name="Mary Jackson" />
-				<AvatarChipLabel>Mary Jackson</AvatarChipLabel>
-				<AvatarChipRemove aria-label="Remove Mary Jackson" />
+				<AvatarChipAvatar alt="" name="Tessy" />
+				<AvatarChipLabel>Tessy</AvatarChipLabel>
+				<AvatarChipRemove aria-label="Remove Tessy" />
 			</AvatarChip>
 		);
 
 		expect(groupMarkup).toContain("Project team");
 		expect(groupMarkup).toContain("3 more people");
 		expect(groupMarkup).toContain('data-frame="rounded"');
-		expect(profileMarkup).toContain("Dorothy Vaughan");
+		expect(profileMarkup).toContain("Srinivasa");
 		expect(profileMarkup).toContain("Mathematician");
-		expect(chipMarkup).toContain('aria-label="Remove Mary Jackson"');
+		expect(chipMarkup).toContain('aria-label="Remove Tessy"');
 	});
 
 	test("renders a team roster with identity, role, and status", () => {
@@ -104,10 +104,10 @@ describe("avatar registry components", () => {
 				aria-label="Engineering team"
 				members={[
 					{
-						avatar: { name: "Margaret Hamilton" },
-						description: "margaret@example.com",
-						id: "margaret",
-						name: "Margaret Hamilton",
+						avatar: { name: "Ritu" },
+						description: "ritu@example.com",
+						id: "ritu",
+						name: "Ritu",
 						role: "Lead",
 						status: "online",
 					},
@@ -116,8 +116,8 @@ describe("avatar registry components", () => {
 		);
 
 		expect(markup).toContain('aria-label="Engineering team"');
-		expect(markup).toContain("Margaret Hamilton");
-		expect(markup).toContain("margaret@example.com");
+		expect(markup).toContain("Ritu");
+		expect(markup).toContain("ritu@example.com");
 		expect(markup).toContain("Lead");
 		expect(markup).toContain('aria-label="Online"');
 	});
@@ -125,24 +125,24 @@ describe("avatar registry components", () => {
 	test("renders identity badges and social proof", () => {
 		const badgeMarkup = renderToStaticMarkup(
 			<AvatarBadge
-				avatar={{ name: "Alex Johnson" }}
+				avatar={{ name: "Gagandeep" }}
 				badge="Pro"
 				description="Founder & CEO"
-				name="Alex Johnson"
+				name="Gagandeep"
 			/>
 		);
 		const socialProofMarkup = renderToStaticMarkup(
 			<AvatarSocialProof
 				avatars={[
-					{ id: "ada", name: "Ada Lovelace" },
-					{ id: "grace", name: "Grace Hopper" },
+					{ id: "janaki", name: "Janaki" },
+					{ id: "vikram", name: "Vikram" },
 				]}
 			>
 				Joined by <strong>500+</strong> developers.
 			</AvatarSocialProof>
 		);
 
-		expect(badgeMarkup).toContain("Alex Johnson");
+		expect(badgeMarkup).toContain("Gagandeep");
 		expect(badgeMarkup).toContain("Founder &amp; CEO");
 		expect(badgeMarkup).toContain("Pro");
 		expect(socialProofMarkup).toContain("Community members");
@@ -152,13 +152,13 @@ describe("avatar registry components", () => {
 	test("renders an avatar select with a labelled initial value", () => {
 		const markup = renderToStaticMarkup(
 			<AvatarSelect
-				defaultValue="paul"
+				defaultValue="raj"
 				items={[
 					{
-						avatar: { name: "Paul Smith" },
+						avatar: { name: "Raj" },
 						description: "Product designer",
-						id: "paul",
-						name: "Paul Smith",
+						id: "raj",
+						name: "Raj",
 					},
 				]}
 			/>
@@ -168,7 +168,7 @@ describe("avatar registry components", () => {
 		expect(markup).toContain("data-[size=default]:h-16");
 		expect(markup).toContain('data-size="default"');
 		expect(markup).toContain("size-10");
-		expect(markup).toContain("Paul Smith");
+		expect(markup).toContain("Raj");
 		expect(markup).toContain("Product designer");
 	});
 });

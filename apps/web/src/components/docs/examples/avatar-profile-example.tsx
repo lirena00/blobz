@@ -1,4 +1,5 @@
 import { Button } from "@blobz/ui/components/button";
+import { DEMO_PEOPLE, getFirstName } from "@/lib/demo-people";
 
 import {
 	AvatarProfile,
@@ -20,14 +21,14 @@ export function AvatarProfileExample() {
 		>
 			<AvatarProfileAvatar
 				alt=""
-				name="Ada Lovelace"
+				name={getFirstName(DEMO_PEOPLE.janakiAmmal)}
 				palette={BLUE_PALETTE}
 				size="xl"
 			/>
 			<AvatarProfileContent>
-				<AvatarProfileName>Ada Lovelace</AvatarProfileName>
+				<AvatarProfileName>{DEMO_PEOPLE.janakiAmmal}</AvatarProfileName>
 				<AvatarProfileDescription>
-					Computing pioneer · London
+					Botanist and cytogeneticist · India
 				</AvatarProfileDescription>
 			</AvatarProfileContent>
 			<AvatarProfileAction>

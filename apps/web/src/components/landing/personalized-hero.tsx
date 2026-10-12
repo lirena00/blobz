@@ -25,9 +25,12 @@ import Link from "next/link";
 import { type ChangeEvent, useCallback, useState } from "react";
 
 import styles from "@/app/personalized-hero.module.css";
-import { useLandingName } from "@/components/landing/landing-name";
+import {
+	DEFAULT_HOME_NAME,
+	useLandingName,
+} from "@/components/landing/landing-name";
 
-const SAMPLE_NAME = "Alex";
+const SAMPLE_NAME = DEFAULT_HOME_NAME;
 const HERO_PALETTE = ["#e8f7ff", "#38bdf8"] as const;
 const FILE_NAME_CHARACTERS = /[^a-z0-9]+/g;
 const FILE_NAME_EDGES = /^-+|-+$/g;

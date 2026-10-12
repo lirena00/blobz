@@ -1,3 +1,4 @@
+import { DEMO_PEOPLE, getFirstName } from "@/lib/demo-people";
 import {
 	AvatarChip,
 	AvatarChipAvatar,
@@ -11,13 +12,21 @@ export function AvatarChipExample() {
 	return (
 		<div className="flex flex-wrap items-center gap-3">
 			<AvatarChip>
-				<AvatarChipAvatar alt="" name="Ada Lovelace" palette={BLUE_PALETTE} />
-				<AvatarChipLabel>Ada Lovelace</AvatarChipLabel>
+				<AvatarChipAvatar
+					alt=""
+					name={getFirstName(DEMO_PEOPLE.janakiAmmal)}
+					palette={["#fff0e2", "#fa9769"]}
+				/>
+				<AvatarChipLabel>{DEMO_PEOPLE.janakiAmmal}</AvatarChipLabel>
 			</AvatarChip>
 			<AvatarChip variant="outline">
-				<AvatarChipAvatar alt="" name="Grace Hopper" palette={BLUE_PALETTE} />
-				<AvatarChipLabel>Grace Hopper</AvatarChipLabel>
-				<AvatarChipRemove aria-label="Remove Grace Hopper" />
+				<AvatarChipAvatar
+					alt=""
+					name={getFirstName(DEMO_PEOPLE.vikramSarabhai)}
+					palette={BLUE_PALETTE}
+				/>
+				<AvatarChipLabel>{DEMO_PEOPLE.vikramSarabhai}</AvatarChipLabel>
+				<AvatarChipRemove aria-label={`Remove ${DEMO_PEOPLE.vikramSarabhai}`} />
 			</AvatarChip>
 		</div>
 	);

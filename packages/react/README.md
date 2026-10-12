@@ -11,7 +11,7 @@ import { Avatar } from "@blobz/react";
 export function Profile() {
   return (
     <Avatar
-      name="Ada Lovelace"
+      name="Janaki"
       palette={["#f2f1f4", "#7c6cf2"]}
       frame="rounded"
       size={64}
