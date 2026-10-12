@@ -10,13 +10,19 @@ const description =
 	"Manage Blobz hosted API usage, approved origins, plan details, and billing.";
 
 export const metadata: Metadata = {
+	alternates: { canonical: "/dashboard" },
 	description,
 	openGraph: {
 		description,
+		siteName: "Blobz",
 		title: "Blobz dashboard",
+		type: "website",
+		url: "/dashboard",
 	},
+	robots: { follow: false, index: false },
 	title: "Blobz dashboard",
 	twitter: {
+		card: "summary_large_image",
 		description,
 		title: "Blobz dashboard",
 	},

@@ -10,6 +10,7 @@ import "../index.css";
 import { cn } from "@blobz/ui/lib/utils";
 import Header from "@/components/header";
 import Providers from "@/components/providers";
+import { SITE_URL } from "@/lib/site";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -29,32 +30,32 @@ const bricolageGrotesque = Bricolage_Grotesque({
 });
 
 export const metadata: Metadata = {
+	alternates: { canonical: "/" },
+	applicationName: "Blobz",
 	description:
 		"Playful, deterministic SVG avatars for default profile pictures. Generate the same unique avatar from any username, email, or ID.",
-	metadataBase: new URL("https://blobz.lirena.in"),
+	metadataBase: SITE_URL,
 	openGraph: {
 		description:
-			"Playful, deterministic SVG avatars for default profile pictures.",
+			"Playful, deterministic SVG avatars for default profile pictures. Generate the same unique avatar from any username, email, or ID.",
 		siteName: "Blobz",
-		title: "Blobz — deterministic avatars worth keeping",
+		title: "Blobz: deterministic avatars worth keeping",
 		type: "website",
+		url: "/",
 	},
-	title: "Blobz — deterministic avatars worth keeping",
+	title: "Blobz: deterministic avatars worth keeping",
 	twitter: {
 		card: "summary_large_image",
 		description:
-			"Playful, deterministic SVG avatars for default profile pictures.",
-		title: "Blobz — deterministic avatars worth keeping",
+			"Playful, deterministic SVG avatars for default profile pictures. Generate the same unique avatar from any username, email, or ID.",
+		title: "Blobz: deterministic avatars worth keeping",
 	},
 };
 
 export const viewport: Viewport = {
 	initialScale: 1,
 	interactiveWidget: "resizes-content",
-	themeColor: [
-		{ color: "#f4fbff", media: "(prefers-color-scheme: light)" },
-		{ color: "#f4fbff", media: "(prefers-color-scheme: dark)" },
-	],
+	themeColor: "#38bdf8",
 	viewportFit: "cover",
 	width: "device-width",
 };
