@@ -24,6 +24,7 @@ import {
 } from "@blobz/ui/components/table";
 import { ActivityIcon, CreditCardIcon, ShieldCheckIcon } from "lucide-react";
 import ApprovedOrigins from "./approved-origins";
+import CancelSubscription from "./cancel-subscription";
 import EmbedQuickstart from "./embed-quickstart";
 import PaymentStatusRefresh from "./payment-status-refresh";
 import PlanPicker from "./plan-picker";
@@ -39,6 +40,7 @@ export interface DashboardProps {
 	} | null;
 	entitlement: {
 		cadence: "monthly" | "yearly";
+		cancelAtPeriodEnd: boolean;
 		periodEnd: string | null;
 		periodStart: string | null;
 		plan: string;
@@ -136,7 +138,11 @@ function UsageOverview({
 					<CardTitle>Current plan</CardTitle>
 					<CardDescription>Subscription and endpoint</CardDescription>
 					<CardAction>
-						<Badge>Active</Badge>
+						<Badge>
+							{entitlement.cancelAtPeriodEnd
+								? "Cancellation scheduled"
+								: "Active"}
+						</Badge>
 					</CardAction>
 				</CardHeader>
 				<CardContent className="flex flex-col gap-3">
@@ -144,11 +150,21 @@ function UsageOverview({
 						{planName(entitlement.plan)} · {entitlement.cadence}
 					</p>
 					<p className="text-muted-foreground text-sm">
-						Next billing date: {formatDate(entitlement.periodEnd)} (UTC)
+						{entitlement.cancelAtPeriodEnd
+							? "Access ends"
+							: "Next billing date"}
+						: {formatDate(entitlement.periodEnd)} (UTC)
 					</p>
 					<p className="text-muted-foreground text-sm">
 						Image endpoint: {endpoint ? "Ready" : "Provisioning"}
 					</p>
+					{entitlement.subscriptionId ? (
+						<CancelSubscription
+							cancelAtPeriodEnd={entitlement.cancelAtPeriodEnd}
+							key={entitlement.subscriptionId}
+							periodEnd={entitlement.periodEnd}
+						/>
+					) : null}
 				</CardContent>
 			</Card>
 		</section>
@@ -281,7 +297,9 @@ export default function Dashboard({
 		(checkoutReturned || entitlement?.status === "pending_payment");
 	let subscriptionLabel = "No active subscription";
 	if (isActive) {
-		subscriptionLabel = "Subscription active";
+		subscriptionLabel = entitlement.cancelAtPeriodEnd
+			? "Cancellation scheduled"
+			: "Subscription active";
 	} else if (awaitingPayment) {
 		subscriptionLabel = "Payment pending";
 	}

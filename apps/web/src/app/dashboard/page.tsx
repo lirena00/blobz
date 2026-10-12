@@ -61,6 +61,7 @@ export default async function DashboardPage({
 				entitlement
 					? {
 							cadence: entitlement.cadence === "yearly" ? "yearly" : "monthly",
+							cancelAtPeriodEnd: entitlement.cancelAtPeriodEnd,
 							periodEnd: entitlement.periodEnd?.toISOString() ?? null,
 							periodStart: entitlement.periodStart?.toISOString() ?? null,
 							plan: entitlement.plan,
