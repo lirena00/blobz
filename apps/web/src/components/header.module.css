@@ -20,6 +20,10 @@
 	transform: scale(0.97);
 }
 
+.githubLink:active {
+	transform: scale(0.97);
+}
+
 @media (prefers-reduced-transparency: reduce) {
 	.headerChrome::before {
 		background: #fff;

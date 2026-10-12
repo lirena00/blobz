@@ -1,0 +1,61 @@
+.content {
+	max-width: 48rem;
+}
+
+.section {
+	padding-block: 2.5rem;
+	scroll-margin-top: 7rem;
+	border-top: 1px solid #d8eef9;
+}
+
+.section:first-child {
+	padding-top: 0;
+	border-top: 0;
+}
+
+.section h2 {
+	margin-bottom: 1.2rem;
+	font-family: var(--font-bricolage);
+	font-size: clamp(1.65rem, 3vw, 2.2rem);
+	font-weight: 750;
+	line-height: 1.15;
+	letter-spacing: -0.04em;
+}
+
+.section p,
+.section li {
+	font-size: 0.975rem;
+	line-height: 1.85;
+	color: #52647c;
+}
+
+.section ul {
+	padding-left: 1.4rem;
+	list-style: disc;
+}
+
+.section li + li {
+	margin-top: 0.5rem;
+}
+
+.section p + p,
+.section p + ul,
+.section ul + p {
+	margin-top: 1rem;
+}
+
+.section a {
+	color: #0369a1;
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.section a:hover {
+	color: #0b1830;
+}
+
+.section a:focus-visible {
+	outline: 2px solid #0284c7;
+	outline-offset: 3px;
+	border-radius: 2px;
+}

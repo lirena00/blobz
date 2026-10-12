@@ -1,9 +1,8 @@
 import { createGetUrl } from "fumadocs-core/source";
+import { GITHUB_REPOSITORY_URL } from "./site";
 
 export const APP_NAME = "Blobz";
 export const DOCS_CONTENT_ROUTE = "/llms.mdx/docs";
-export const GITHUB_REPOSITORY_URL = "https://github.com/lirena00/blobz";
-export const SITE_URL = new URL("https://blobz.lirena.in");
 
 const getContentUrl = createGetUrl(DOCS_CONTENT_ROUTE);
 

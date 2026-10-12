@@ -1,9 +1,9 @@
-"use client";
-
 import { Avatar } from "@blobz/react";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
 
+import { GitHubStars } from "./github-stars";
 import styles from "./header.module.css";
 import UserMenu from "./user-menu";
 
@@ -23,7 +23,7 @@ export default function Header() {
 			data-site-header=""
 		>
 			<div
-				className={`${styles.headerChrome} pointer-events-none relative isolate mx-auto h-[4.25rem] w-full max-w-[74rem] max-[760px]:h-16`}
+				className={`${styles.headerChrome} pointer-events-none relative isolate mx-auto h-[4.25rem] w-full max-w-[86rem] max-[760px]:h-16`}
 			>
 				<div className="pointer-events-none relative z-1 grid h-full grid-cols-[auto_1fr] items-center py-[0.45rem] pr-[0.55rem] pl-4 max-[760px]:pl-[0.8rem]">
 					<Link
@@ -56,6 +56,9 @@ export default function Header() {
 								</Link>
 							))}
 						</nav>
+						<Suspense fallback={null}>
+							<GitHubStars />
+						</Suspense>
 						<UserMenu signInClassName={NAV_LINK_CLASS} />
 						<Link
 							className={`${styles.headerAction} inline-flex h-[3.25rem] items-center justify-center gap-[0.45rem] whitespace-nowrap rounded-full bg-[#0b1830] px-[1.15rem] font-[820] text-[0.8rem] text-white shadow-[0_12px_26px_rgb(11_24_48_/_18%)] transition-[background-color,transform] duration-150 hover:bg-sky-600 focus-visible:outline-2 focus-visible:outline-sky-600 focus-visible:outline-offset-2 max-[460px]:size-11 max-[760px]:h-12 max-[460px]:px-0 max-[760px]:px-4`}

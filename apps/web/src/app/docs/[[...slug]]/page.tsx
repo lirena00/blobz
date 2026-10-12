@@ -16,9 +16,9 @@ import {
 	getPageImageUrl,
 	getPageMarkdownUrl,
 	getPageSourceUrl,
-	SITE_URL,
 } from "@/lib/docs-shared";
 import { openapi } from "@/lib/openapi";
+import { SITE_URL } from "@/lib/site";
 import { source } from "@/lib/source";
 
 interface DocumentationPageProps {
@@ -45,12 +45,13 @@ export async function generateMetadata({
 			description: page.data.description,
 			images: [
 				{
-					alt: `${page.data.title} — Blobz documentation`,
+					alt: `${page.data.title}: Blobz documentation`,
 					height: 630,
 					url: image.url,
 					width: 1200,
 				},
 			],
+			siteName: "Blobz",
 			title: page.data.title,
 			type: "article",
 			url: page.url,
