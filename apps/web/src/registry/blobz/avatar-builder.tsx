@@ -14,6 +14,24 @@ import {
 } from "@blobz/avatar-core";
 import { Avatar } from "@blobz/react";
 import { CustomAvatar } from "@blobz/react/custom";
+import { Checkbox } from "@blobz/ui/components/checkbox";
+import {
+	Field,
+	FieldGroup,
+	FieldLabel,
+	FieldLegend,
+	FieldSet,
+	FieldTitle,
+} from "@blobz/ui/components/field";
+import {
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@blobz/ui/components/select";
+import { Slider } from "@blobz/ui/components/slider";
 import { RotateCcwIcon, ShuffleIcon } from "lucide-react";
 import type { ChangeEvent, ComponentPropsWithoutRef, MouseEvent } from "react";
 import { useId, useState } from "react";
@@ -38,6 +56,14 @@ const BODY_TILTS = Array.from({ length: 15 }, (_, index) => (index - 7) * 2);
 const FACE_ANGLES = Array.from({ length: 25 }, (_, index) => index - 12);
 const HORIZONTAL_POSITIONS = [-2, -1, 0, 1, 2] as const;
 const VERTICAL_POSITIONS = [-1, 0, 1] as const;
+const LOOK_ITEMS = AVATAR_CHOICES.look.map((look) => ({
+	label: look,
+	value: look,
+}));
+const EYE_SPACING_ITEMS = AVATAR_CHOICES.gap.map((spacing) => ({
+	label: spacing,
+	value: spacing,
+}));
 
 const joinClassNames = (
 	baseClassName: string,
@@ -302,24 +328,28 @@ function RangeControl({
 	suffix = "",
 	value,
 }: RangeControlProps) {
-	const handleValueChange = (event: ChangeEvent<HTMLInputElement>) => {
-		onValueChange(Number(event.currentTarget.value));
+	const handleValueChange = (nextValue: number | readonly number[]) => {
+		onValueChange(
+			typeof nextValue === "number" ? nextValue : (nextValue[0] ?? value)
+		);
 	};
 
 	return (
-		<label className="blobz-builder__range" htmlFor={id}>
-			<span>{label}</span>
-			<input
-				id={id}
+		<Field className="blobz-builder__range">
+			<div className="blobz-builder__range-heading">
+				<FieldTitle id={`${id}-label`}>{label}</FieldTitle>
+				<output>{`${value}${suffix}`}</output>
+			</div>
+			<Slider
+				aria-labelledby={`${id}-label`}
+				className="max-w-44"
 				max={maximum}
 				min={minimum}
-				onChange={handleValueChange}
+				onValueChange={handleValueChange}
 				step={step}
-				type="range"
-				value={value}
+				value={[value]}
 			/>
-			<output htmlFor={id}>{`${value}${suffix}`}</output>
-		</label>
+		</Field>
 	);
 }
 
@@ -367,22 +397,28 @@ function CustomControls({
 	const selectBrows = (brows: CustomAvatarChoices["brows"]) => {
 		updateChoices({ ...currentChoices, brows });
 	};
-	const handleLookChange = (event: ChangeEvent<HTMLSelectElement>) => {
+	const handleLookChange = (look: string | null) => {
+		if (look === null) {
+			return;
+		}
 		updateChoices({
 			...currentChoices,
-			look: readChoice(AVATAR_CHOICES.look, event.currentTarget.value),
+			look: readChoice(AVATAR_CHOICES.look, look),
 		});
 	};
-	const handleEyeSpacingChange = (event: ChangeEvent<HTMLSelectElement>) => {
+	const handleEyeSpacingChange = (spacing: string | null) => {
+		if (spacing === null) {
+			return;
+		}
 		updateChoices({
 			...currentChoices,
-			eyeSpacing: readChoice(AVATAR_CHOICES.gap, event.currentTarget.value),
+			eyeSpacing: readChoice(AVATAR_CHOICES.gap, spacing),
 		});
 	};
-	const handleMirroredChange = (event: ChangeEvent<HTMLInputElement>) => {
+	const handleMirroredChange = (mirrored: boolean) => {
 		updateChoices({
 			...currentChoices,
-			mirrored: event.currentTarget.checked,
+			mirrored,
 		});
 	};
 	const handleFaceAngleChange = (faceAngle: number) => {
@@ -446,83 +482,103 @@ function CustomControls({
 				selected={currentChoices.brows}
 			/>
 
-			<fieldset className="blobz-builder__details">
-				<legend>Face details</legend>
-				<label htmlFor={`${idPrefix}-look`}>
-					<span>Looking</span>
-					<select
-						id={`${idPrefix}-look`}
-						onChange={handleLookChange}
-						value={currentChoices.look}
-					>
-						{AVATAR_CHOICES.look.map((look) => (
-							<option key={look} value={look}>
-								{look}
-							</option>
-						))}
-					</select>
-				</label>
+			<FieldSet className="blobz-builder__details">
+				<FieldLegend variant="label">Face details</FieldLegend>
+				<FieldGroup className="blobz-builder__details-grid">
+					<Field>
+						<FieldLabel htmlFor={`${idPrefix}-look`}>Looking</FieldLabel>
+						<Select
+							items={LOOK_ITEMS}
+							onValueChange={handleLookChange}
+							value={currentChoices.look}
+						>
+							<SelectTrigger className="w-full" id={`${idPrefix}-look`}>
+								<SelectValue />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectGroup>
+									{AVATAR_CHOICES.look.map((look) => (
+										<SelectItem key={look} value={look}>
+											{look}
+										</SelectItem>
+									))}
+								</SelectGroup>
+							</SelectContent>
+						</Select>
+					</Field>
 
-				<label htmlFor={`${idPrefix}-eye-spacing`}>
-					<span>Eye spacing</span>
-					<select
-						id={`${idPrefix}-eye-spacing`}
-						onChange={handleEyeSpacingChange}
-						value={currentChoices.eyeSpacing}
-					>
-						{AVATAR_CHOICES.gap.map((spacing) => (
-							<option key={spacing} value={spacing}>
-								{spacing}
-							</option>
-						))}
-					</select>
-				</label>
+					<Field>
+						<FieldLabel htmlFor={`${idPrefix}-eye-spacing`}>
+							Eye spacing
+						</FieldLabel>
+						<Select
+							items={EYE_SPACING_ITEMS}
+							onValueChange={handleEyeSpacingChange}
+							value={currentChoices.eyeSpacing}
+						>
+							<SelectTrigger className="w-full" id={`${idPrefix}-eye-spacing`}>
+								<SelectValue />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectGroup>
+									{AVATAR_CHOICES.gap.map((spacing) => (
+										<SelectItem key={spacing} value={spacing}>
+											{spacing}
+										</SelectItem>
+									))}
+								</SelectGroup>
+							</SelectContent>
+						</Select>
+					</Field>
 
-				<label className="blobz-builder__checkbox">
-					<input
-						checked={currentChoices.mirrored}
-						onChange={handleMirroredChange}
-						type="checkbox"
+					<Field className="blobz-builder__mirror" orientation="horizontal">
+						<Checkbox
+							checked={currentChoices.mirrored}
+							id={`${idPrefix}-mirrored`}
+							onCheckedChange={handleMirroredChange}
+						/>
+						<FieldLabel htmlFor={`${idPrefix}-mirrored`}>
+							Mirror body and face
+						</FieldLabel>
+					</Field>
+
+					<RangeControl
+						id={`${idPrefix}-face-angle`}
+						label="Face angle"
+						maximum={12}
+						minimum={-12}
+						onValueChange={handleFaceAngleChange}
+						suffix="°"
+						value={currentChoices.faceAngle}
 					/>
-					<span>Mirror body and face</span>
-				</label>
-
-				<RangeControl
-					id={`${idPrefix}-face-angle`}
-					label="Face angle"
-					maximum={12}
-					minimum={-12}
-					onValueChange={handleFaceAngleChange}
-					suffix="°"
-					value={currentChoices.faceAngle}
-				/>
-				<RangeControl
-					id={`${idPrefix}-body-tilt`}
-					label="Body tilt"
-					maximum={14}
-					minimum={-14}
-					onValueChange={handleBodyTiltChange}
-					step={2}
-					suffix="°"
-					value={currentChoices.bodyTilt}
-				/>
-				<RangeControl
-					id={`${idPrefix}-face-x`}
-					label="Face position, horizontal"
-					maximum={2}
-					minimum={-2}
-					onValueChange={handleFaceXChange}
-					value={currentChoices.facePosition.x}
-				/>
-				<RangeControl
-					id={`${idPrefix}-face-y`}
-					label="Face position, vertical"
-					maximum={1}
-					minimum={-1}
-					onValueChange={handleFaceYChange}
-					value={currentChoices.facePosition.y}
-				/>
-			</fieldset>
+					<RangeControl
+						id={`${idPrefix}-body-tilt`}
+						label="Body tilt"
+						maximum={14}
+						minimum={-14}
+						onValueChange={handleBodyTiltChange}
+						step={2}
+						suffix="°"
+						value={currentChoices.bodyTilt}
+					/>
+					<RangeControl
+						id={`${idPrefix}-face-x`}
+						label="Face position, horizontal"
+						maximum={2}
+						minimum={-2}
+						onValueChange={handleFaceXChange}
+						value={currentChoices.facePosition.x}
+					/>
+					<RangeControl
+						id={`${idPrefix}-face-y`}
+						label="Face position, vertical"
+						maximum={1}
+						minimum={-1}
+						onValueChange={handleFaceYChange}
+						value={currentChoices.facePosition.y}
+					/>
+				</FieldGroup>
+			</FieldSet>
 		</div>
 	);
 }
