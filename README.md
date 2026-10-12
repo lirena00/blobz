@@ -56,12 +56,15 @@ Set these server-side values in `apps/web/.env` for local development and in you
 | `DATABASE_URL` | Neon pooled Postgres URL for web requests. |
 | `DATABASE_MIGRATION_URL` | Optional direct Neon URL for migrations; otherwise `DATABASE_URL` is used. |
 | `BETTER_AUTH_URL`, `BETTER_AUTH_SECRET` | Canonical site URL and a 32+ character secret. |
+| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | Google OAuth web client credentials for API account sign-in. |
 | `DODO_PAYMENTS_API_KEY` | Dodo test or live API key. |
 | `DODO_PAYMENTS_WEBHOOK_SECRET` | Signing secret for the Dodo webhook endpoint. |
 | `DODO_PAYMENTS_ENVIRONMENT` | `test_mode` or `live_mode`; match the API key and products. |
 | `DODO_PRODUCT_PLUS_MONTHLY`, `DODO_PRODUCT_PLUS_YEARLY` | IDs of the Plus monthly and yearly recurring Dodo products (5M requests per month). |
 | `DODO_PRODUCT_PRO_MONTHLY`, `DODO_PRODUCT_PRO_YEARLY` | IDs of the Pro monthly and yearly recurring Dodo products (10M requests per month). All four product IDs must be distinct. |
 | `CRON_SECRET` | Optional 32+ character secret for the daily maintenance endpoint. |
+
+In Google Cloud Console, register `http://localhost:3001/api/auth/callback/google` for local development and `https://YOUR_SITE/api/auth/callback/google` for production as authorized redirect URIs. Set `BETTER_AUTH_URL` to the matching site origin. Existing email/password accounts with the same Google-verified email are linked on first Google sign-in.
 
 Create the four products and their prices in Dodo, then register `https://YOUR_SITE/api/auth/dodopayments/webhooks` as a webhook. Subscribe to `payment.succeeded` and subscription lifecycle events (`active`, `updated`, `renewed`, `plan_changed`, `on_hold`, `paused`, `unpaused`, `failed`, `cancelled`, `expired`). The [Better Auth Dodo plugin](https://better-auth.com/docs/plugins/dodopayments) verifies signatures before the app applies entitlements. The checkout route chooses product IDs on the server; it does not accept a client-supplied product cart. A new subscription stays pending until its first signed successful-payment event. The image endpoint is inserted in the same transaction that activates the entitlement, including when the payment and subscription webhooks arrive in either order. Checkout redirects do not grant access. In-app plan switching is disabled for now; keep the `plan_changed` webhook enabled so external Dodo changes are still reflected. Configure the products without a free trial and without a renewal grace period, because this API is designed to stop access outside the paid billing period. A yearly subscription still receives a fresh 5M/10M allowance every month, anchored to its annual billing start; unused requests do not roll over.
 

@@ -35,8 +35,10 @@ export default function PrivacyPolicyPage() {
 			<LegalSection id="data" title="Information we handle">
 				<ul>
 					<li>
-						<strong>Account data:</strong> your name, email address, password
-						credential, and session information when you sign up or sign in.
+						<strong>Account data:</strong> your name, email address, Google
+						account identifier, and session information when you sign in.
+						Existing accounts may also have a password credential from an
+						earlier sign-up.
 					</li>
 					<li>
 						<strong>Security and usage data:</strong> session IP address and
@@ -67,11 +69,12 @@ export default function PrivacyPolicyPage() {
 			</LegalSection>
 			<LegalSection id="sharing" title="Service providers">
 				<p>
-					Dodo Payments processes checkout and subscriptions. Hosting and
-					infrastructure providers may process requests and logs needed to
-					deliver the service. We share information with providers only as
-					needed for these purposes, or when required by law. If you follow a
-					link to a third-party service, its own privacy terms apply.
+					Google handles account sign-in. Dodo Payments processes checkout and
+					subscriptions. Hosting and infrastructure providers may process
+					requests and logs needed to deliver the service. We share information
+					with providers only as needed for these purposes, or when required by
+					law. If you follow a link to a third-party service, its own privacy
+					terms apply.
 				</p>
 			</LegalSection>
 			<LegalSection id="retention" title="Retention and security">

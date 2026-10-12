@@ -1,12 +1,8 @@
-"use client";
-
 import { Avatar } from "@blobz/react";
 import { ArrowUpRight, Check, Code2, Globe2 } from "lucide-react";
 import Link from "next/link";
-import { useCallback, useState } from "react";
 
 import SignInForm from "@/components/sign-in-form";
-import SignUpForm from "@/components/sign-up-form";
 import { DEMO_PEOPLE, getFirstName } from "@/lib/demo-people";
 
 const BENEFITS = [
@@ -26,10 +22,16 @@ const AUTH_AVATARS = [
 	[getFirstName(DEMO_PEOPLE.kalpanaChawla), ["#faf5ff", "#c084fc"]],
 ] as const;
 
-export default function LoginPage() {
-	const [showSignIn, setShowSignIn] = useState(true);
-	const showSignInForm = useCallback(() => setShowSignIn(true), []);
-	const showSignUpForm = useCallback(() => setShowSignIn(false), []);
+export default async function LoginPage({
+	searchParams,
+}: {
+	searchParams: Promise<{ billing?: string; error?: string }>;
+}) {
+	const { billing, error } = await searchParams;
+	const callbackURL =
+		billing === "monthly" ? "/dashboard?billing=monthly" : "/dashboard";
+	const errorCallbackURL =
+		billing === "monthly" ? "/login?billing=monthly" : "/login";
 
 	return (
 		<main className="relative min-h-svh overflow-hidden bg-[#f4fbff] px-4 pt-28 pb-12 text-[#0b1830] sm:px-6 sm:pt-32">
@@ -111,11 +113,11 @@ export default function LoginPage() {
 							Try it live
 						</Link>
 					</div>
-					{showSignIn ? (
-						<SignInForm onSwitchToSignUp={showSignUpForm} />
-					) : (
-						<SignUpForm onSwitchToSignIn={showSignInForm} />
-					)}
+					<SignInForm
+						callbackURL={callbackURL}
+						errorCallbackURL={errorCallbackURL}
+						hasAuthError={Boolean(error)}
+					/>
 				</div>
 			</section>
 		</main>

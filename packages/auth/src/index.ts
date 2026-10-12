@@ -18,6 +18,8 @@ export interface AuthConfig {
 	DODO_PAYMENTS_API_KEY?: string;
 	DODO_PAYMENTS_ENVIRONMENT?: "test_mode" | "live_mode";
 	DODO_PAYMENTS_WEBHOOK_SECRET?: string;
+	GOOGLE_CLIENT_ID: string;
+	GOOGLE_CLIENT_SECRET: string;
 }
 
 const schema = { account, authRelations, session, user, verification };
@@ -45,7 +47,6 @@ export function createAuth(
 			provider: "pg",
 			schema,
 		}),
-		emailAndPassword: { enabled: true },
 		plugins: [
 			...(dodoClient && env.DODO_PAYMENTS_WEBHOOK_SECRET
 				? [
@@ -63,6 +64,12 @@ export function createAuth(
 			nextCookies(),
 		],
 		secret: env.BETTER_AUTH_SECRET,
+		socialProviders: {
+			google: {
+				clientId: env.GOOGLE_CLIENT_ID,
+				clientSecret: env.GOOGLE_CLIENT_SECRET,
+			},
+		},
 		trustedOrigins: [env.BETTER_AUTH_URL],
 	});
 }
