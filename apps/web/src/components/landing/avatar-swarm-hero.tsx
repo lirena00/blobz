@@ -8,7 +8,7 @@ import { type CSSProperties, useEffect, useRef, useState } from "react";
 import styles from "@/app/landing.module.css";
 
 const PREFIXES = ["b", "bl", "blo", "blob", "blobz"] as const;
-const ORBIT_DURATION_MS = 24_000;
+const ORBIT_DURATION_MS = 42_000;
 
 const SWARM = [
 	{
@@ -151,39 +151,18 @@ const SWARM = [
 		scatterY: -0.17,
 		size: 66,
 	},
-	{
-		angle: 229,
-		name: "lime",
-		palette: ["#f7fee7", "#a3e635"],
-		rotation: -4,
-		scale: 1.1,
-		scatterX: -0.38,
-		scatterY: -0.29,
-		size: 84,
-	},
-	{
-		angle: 252,
-		name: "ocean",
-		palette: ["#eff6ff", "#3b82f6"],
-		rotation: 7,
-		scale: 0.9,
-		scatterX: 0.05,
-		scatterY: -0.36,
-		size: 72,
-	},
 ] as const;
+
+const MOBILE_SWARM_INDICES = [0, 1, 3, 4, 6, 7, 8, 10, 11, 13] as const;
 
 const toRadians = (degrees: number): number => (degrees * Math.PI) / 180;
 const smoothStep = (value: number): number => value * value * (3 - 2 * value);
 const clampUnit = (value: number): number => Math.min(Math.max(value, 0), 1);
-const clampToLimit = (value: number, limit: number): number =>
-	Math.min(Math.max(value, -limit), limit);
-
 interface SwarmLayout {
-	readonly compact: boolean;
 	readonly height: number;
 	readonly orbitDegrees: number;
 	readonly progress: number;
+	readonly tileSize: number;
 	readonly width: number;
 }
 
@@ -195,7 +174,7 @@ const setHeroTransitionVariables = (
 	hero.style.setProperty("--hero-scale", (1 - progress * 0.08).toFixed(4));
 	hero.style.setProperty(
 		"--hero-opacity",
-		clampUnit(1 - progress * 2.2).toFixed(4)
+		clampUnit(1 - progress * 2.5).toFixed(4)
 	);
 	hero.style.setProperty(
 		"--scatter-shift",
@@ -203,7 +182,7 @@ const setHeroTransitionVariables = (
 	);
 	hero.style.setProperty(
 		"--scatter-opacity",
-		clampUnit(progress * 2.2 - 1.15).toFixed(4)
+		clampUnit((progress - 0.25) * 4).toFixed(4)
 	);
 	hero.style.setProperty(
 		"--cue-opacity",
@@ -213,54 +192,42 @@ const setHeroTransitionVariables = (
 
 const positionSwarmItem = (
 	item: HTMLElement,
-	{ compact, height, orbitDegrees, progress, width }: SwarmLayout
+	avatarIndex: number,
+	orbitIndex: number,
+	orbitCount: number,
+	{ height, orbitDegrees, progress, tileSize, width }: SwarmLayout
 ): void => {
-	const baseAngle = Number(item.dataset.angle ?? 0);
-	const orbitInfluence = (1 - progress) ** 2;
-	const angle = toRadians(baseAngle + orbitDegrees * orbitInfluence);
-	const tileHalf = item.offsetWidth / 2;
-	const horizontalGutter = compact ? 10 : 24;
-	const verticalGutter = compact ? 14 : 24;
-	const horizontalLimit = Math.max(0, width / 2 - tileHalf - horizontalGutter);
-	const verticalLimit = Math.max(0, height / 2 - tileHalf - verticalGutter);
-	const scatterHorizontalLimit = Math.max(0, width / 2 - tileHalf * 0.2);
-	const scatterVerticalLimit = Math.max(0, height / 2 - tileHalf * 0.2);
-	const radiusX = Math.min(width * (compact ? 0.42 : 0.38), horizontalLimit);
-	const radiusY = Math.min(height * (compact ? 0.38 : 0.36), verticalLimit);
-	const scatterRatioX = Number(item.dataset.scatterX ?? 0);
-	const scatterRatioY = Number(item.dataset.scatterY ?? 0);
-	const scatterDistance = Math.hypot(scatterRatioX, scatterRatioY);
-	const minimumScatterDistance = compact ? 0.42 : 0.44;
-	const scatterBoost = Math.max(
-		1,
-		minimumScatterDistance / Math.max(scatterDistance, 0.001)
+	const avatar = SWARM[avatarIndex];
+	const angle = toRadians(-90 + (orbitIndex * 360) / orbitCount + orbitDegrees);
+	let horizontalGutter = 28;
+	let horizontalRadiusRatio = 0.39;
+	if (width < 480) {
+		horizontalGutter = 8;
+		horizontalRadiusRatio = 0.44;
+	} else if (width < 640) {
+		horizontalGutter = 10;
+		horizontalRadiusRatio = 0.4;
+	}
+	const topGutter = width < 640 ? 72 : 106;
+	const bottomGutter = width < 640 ? 38 : 48;
+	const radiusX = Math.min(
+		width * horizontalRadiusRatio,
+		width / 2 - tileSize / 2 - horizontalGutter
 	);
-	const scatterX = clampToLimit(
-		scatterRatioX * scatterBoost * width,
-		scatterHorizontalLimit
+	const radiusY = Math.min(
+		height * (width < 480 ? 0.35 : 0.33),
+		height / 2 - tileSize / 2 - topGutter,
+		height / 2 - tileSize / 2 - bottomGutter
 	);
-	const scatterY = clampToLimit(
-		scatterRatioY * scatterBoost * height,
-		scatterVerticalLimit
-	);
-	const rotation = Number(item.dataset.rotation ?? 0);
-	const endScale = Number(item.dataset.scale ?? 1);
-	const ringX = Math.cos(angle) * radiusX;
-	const ringY = Math.sin(angle) * radiusY;
-	const orbitDepth = (Math.sin(angle) + 1) / 2;
-	const ringScale = 0.9 + orbitDepth * 0.14;
+	const ringX = Math.cos(angle) * Math.max(0, radiusX);
+	const ringY = Math.sin(angle) * Math.max(0, radiusY);
+	const scatterX = avatar.scatterX * width * 1.6;
+	const scatterY = avatar.scatterY * height * 1.6;
 	const x = ringX + (scatterX - ringX) * progress;
 	const y = ringY + (scatterY - ringY) * progress;
-	const scale = ringScale + (endScale - ringScale) * progress;
+	const scale = 1 + (avatar.scale - 1) * progress;
 
-	item.style.setProperty("--swarm-x", `${x.toFixed(1)}px`);
-	item.style.setProperty("--swarm-y", `${y.toFixed(1)}px`);
-	item.style.setProperty(
-		"--swarm-rotation",
-		`${(rotation * progress).toFixed(2)}deg`
-	);
-	item.style.setProperty("--swarm-scale", scale.toFixed(3));
-	item.style.zIndex = String(Math.round(orbitDepth * 10));
+	item.style.transform = `translate3d(calc(-50% + ${x.toFixed(1)}px), calc(-50% + ${y.toFixed(1)}px), 0) scale(${scale.toFixed(3)})`;
 };
 
 export function AvatarSwarmHero() {
@@ -279,86 +246,138 @@ export function AvatarSwarmHero() {
 	}, [step]);
 
 	useEffect(() => {
-		const hero = heroRef.current as HTMLElement;
-		const sticky = stickyRef.current as HTMLDivElement;
+		const hero = heroRef.current;
+		const sticky = stickyRef.current;
+		if (hero === null || sticky === null) {
+			return;
+		}
+
 		const items = hero.querySelectorAll<HTMLElement>("[data-swarm-item]");
 		const prefersReducedMotion = window.matchMedia(
 			"(prefers-reduced-motion: reduce)"
 		);
 		let animationFrame = 0;
-		let isVisible = true;
+		let isVisible = false;
+		let orbitDegrees = 0;
+		let previousTimestamp = 0;
+		let progress = 0;
+		let width = sticky.clientWidth;
+		let height = sticky.clientHeight;
+		let tileSize = items[0]?.offsetWidth ?? 72;
+		let scrollDistance = 1;
+		let stickyTop = 0;
+		let activeIndices: readonly number[] = SWARM.map((_, index) => index);
 
-		const update = (timestamp = performance.now()) => {
+		const render = (timestamp: number) => {
 			animationFrame = 0;
-			const rect = hero.getBoundingClientRect();
-			const stickyStyle = window.getComputedStyle(sticky);
-			const stickyTop = Number.parseFloat(stickyStyle.top) || 0;
-			const scrollDistance = Math.max(
-				hero.offsetHeight - sticky.clientHeight,
-				1
-			);
-			const rawProgress = Math.min(
-				Math.max((stickyTop - rect.top) / scrollDistance, 0),
-				1
-			);
-			const progress = prefersReducedMotion.matches
-				? 0
-				: smoothStep(rawProgress);
-			const width = sticky.clientWidth;
-			const height = sticky.clientHeight;
-			const compact = width < 720;
-			const orbitDegrees = prefersReducedMotion.matches
-				? 0
-				: ((timestamp % ORBIT_DURATION_MS) / ORBIT_DURATION_MS) * 360;
+			if (
+				isVisible &&
+				!document.hidden &&
+				!prefersReducedMotion.matches &&
+				progress < 1
+			) {
+				const elapsed = Math.min(
+					timestamp - (previousTimestamp || timestamp),
+					64
+				);
+				orbitDegrees =
+					(orbitDegrees + (elapsed / ORBIT_DURATION_MS) * 360) % 360;
+			}
+			previousTimestamp = timestamp;
 
-			setHeroTransitionVariables(hero, progress);
-
-			for (const item of items) {
-				positionSwarmItem(item, {
-					compact,
+			for (const [orbitIndex, avatarIndex] of activeIndices.entries()) {
+				const item = items[avatarIndex];
+				positionSwarmItem(item, avatarIndex, orbitIndex, activeIndices.length, {
 					height,
-					orbitDegrees,
+					orbitDegrees: orbitDegrees * (1 - progress) ** 2,
 					progress,
+					tileSize,
 					width,
 				});
 			}
 
-			if (isVisible && !prefersReducedMotion.matches && progress < 1) {
-				animationFrame = window.requestAnimationFrame(update);
+			if (
+				isVisible &&
+				!document.hidden &&
+				!prefersReducedMotion.matches &&
+				progress < 1
+			) {
+				animationFrame = window.requestAnimationFrame(render);
 			}
 		};
 
-		const scheduleUpdate = () => {
+		const scheduleRender = () => {
 			if (animationFrame === 0) {
-				animationFrame = window.requestAnimationFrame(update);
+				animationFrame = window.requestAnimationFrame(render);
 			}
+		};
+
+		const updateScroll = () => {
+			const rawProgress = clampUnit(
+				(stickyTop - hero.getBoundingClientRect().top) / scrollDistance
+			);
+			progress = prefersReducedMotion.matches ? 0 : smoothStep(rawProgress);
+			setHeroTransitionVariables(hero, progress);
+			scheduleRender();
+		};
+
+		const measure = () => {
+			width = sticky.clientWidth;
+			height = sticky.clientHeight;
+			activeIndices =
+				width < 480 ? MOBILE_SWARM_INDICES : SWARM.map((_, index) => index);
+			for (const [index, item] of items.entries()) {
+				item.hidden = !activeIndices.includes(index);
+			}
+			tileSize = items[0]?.offsetWidth ?? 72;
+			stickyTop = Number.parseFloat(window.getComputedStyle(sticky).top) || 0;
+			scrollDistance = Math.max(hero.offsetHeight - height, 1);
+			updateScroll();
 		};
 
 		const visibilityObserver = new IntersectionObserver(
 			(entries) => {
 				isVisible = entries.some((entry) => entry.isIntersecting);
 				if (isVisible) {
-					scheduleUpdate();
+					previousTimestamp = 0;
+					updateScroll();
+				} else {
+					window.cancelAnimationFrame(animationFrame);
+					animationFrame = 0;
 				}
 			},
 			{ rootMargin: "120px" }
 		);
+		const handleScroll = () => {
+			if (isVisible) {
+				updateScroll();
+			}
+		};
+		const handleVisibilityChange = () => {
+			if (document.hidden) {
+				window.cancelAnimationFrame(animationFrame);
+				animationFrame = 0;
+				return;
+			}
+			previousTimestamp = 0;
+			scheduleRender();
+		};
 
-		update();
-		const resizeObserver = new ResizeObserver(scheduleUpdate);
+		measure();
+		const resizeObserver = new ResizeObserver(measure);
 		resizeObserver.observe(sticky);
 		visibilityObserver.observe(hero);
-		prefersReducedMotion.addEventListener("change", scheduleUpdate);
-		window.addEventListener("resize", scheduleUpdate);
-		window.addEventListener("scroll", scheduleUpdate, { passive: true });
+		prefersReducedMotion.addEventListener("change", updateScroll);
+		window.addEventListener("scroll", handleScroll, { passive: true });
+		document.addEventListener("visibilitychange", handleVisibilityChange);
 
 		return () => {
 			window.cancelAnimationFrame(animationFrame);
 			resizeObserver.disconnect();
 			visibilityObserver.disconnect();
-			prefersReducedMotion.removeEventListener("change", scheduleUpdate);
-			window.removeEventListener("resize", scheduleUpdate);
-			window.removeEventListener("scroll", scheduleUpdate);
+			prefersReducedMotion.removeEventListener("change", updateScroll);
+			window.removeEventListener("scroll", handleScroll);
+			document.removeEventListener("visibilitychange", handleVisibilityChange);
 		};
 	}, []);
 
@@ -373,24 +392,16 @@ export function AvatarSwarmHero() {
 					aria-hidden="true"
 					className="pointer-events-none absolute inset-0 z-2"
 				>
-					{SWARM.map((item) => {
-						const angle = toRadians(item.angle);
+					{SWARM.map((item, index) => {
+						const angle = toRadians(-90 + (index * 360) / SWARM.length);
 						const initialStyle = {
-							"--swarm-rotation": "0deg",
-							"--swarm-scale": 1,
-							"--swarm-x": `${(Math.cos(angle) * 38).toFixed(2)}vw`,
-							"--swarm-y": `${(Math.sin(angle) * 34).toFixed(2)}vh`,
-							"--tile-size": `${item.size}px`,
+							"--swarm-x": `${(Math.cos(angle) * 39).toFixed(2)}vw`,
+							"--swarm-y": `${(Math.sin(angle) * 30).toFixed(2)}vh`,
 						} as CSSProperties;
 
 						return (
 							<div
 								className={styles.swarmItem}
-								data-angle={item.angle}
-								data-rotation={item.rotation}
-								data-scale={item.scale}
-								data-scatter-x={item.scatterX}
-								data-scatter-y={item.scatterY}
 								data-swarm-item=""
 								key={item.name}
 								style={initialStyle}
@@ -461,7 +472,7 @@ export function AvatarSwarmHero() {
 					<p className="font-bold text-[#4e6582] text-[clamp(1.15rem,2vw,1.5rem)]">
 						Same seed.
 					</p>
-					<strong className="mt-1 block font-[780] font-[family-name:var(--font-bricolage)] text-[clamp(3rem,7.5vw,6.4rem)] leading-[0.95] tracking-[-0.055em] max-[640px]:text-[3.25rem]">
+					<strong className="mt-1 block font-[780] font-[family-name:var(--font-bricolage)] text-[clamp(2.75rem,5vw,4.5rem)] leading-[0.98] tracking-[-0.055em] max-[640px]:text-[2.7rem]">
 						Same face. Every time.
 					</strong>
 				</div>
