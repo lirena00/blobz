@@ -3,6 +3,92 @@
 @import "fumadocs-ui/css/preset.css";
 @import "fumadocs-openapi/css/preset.css";
 
+html:has(#nd-docs-layout) {
+	--color-fd-background: #f9fdff;
+	--color-fd-foreground: #0b1830;
+	--color-fd-muted: #eef9ff;
+	--color-fd-muted-foreground: #60708a;
+	--color-fd-popover: #ffffff;
+	--color-fd-popover-foreground: #0b1830;
+	--color-fd-card: #ffffff;
+	--color-fd-card-foreground: #0b1830;
+	--color-fd-border: #d8eef9;
+	--color-fd-primary: #0369a1;
+	--color-fd-primary-foreground: #ffffff;
+	--color-fd-secondary: #e8f7ff;
+	--color-fd-secondary-foreground: #0b1830;
+	--color-fd-accent: #dff4ff;
+	--color-fd-accent-foreground: #075985;
+	--color-fd-ring: #38bdf8;
+	--color-fd-overlay: #0b18304d;
+}
+
+html.dark:has(#nd-docs-layout) {
+	--color-fd-background: #071426;
+	--color-fd-foreground: #eef9ff;
+	--color-fd-muted: #10253c;
+	--color-fd-muted-foreground: #9fb4ca;
+	--color-fd-popover: #0b1b32;
+	--color-fd-popover-foreground: #eef9ff;
+	--color-fd-card: #0b1b32;
+	--color-fd-card-foreground: #eef9ff;
+	--color-fd-border: #234158;
+	--color-fd-primary: #7dd3fc;
+	--color-fd-primary-foreground: #06101e;
+	--color-fd-secondary: #10283f;
+	--color-fd-secondary-foreground: #d9effc;
+	--color-fd-accent: #163750;
+	--color-fd-accent-foreground: #b9e8ff;
+	--color-fd-ring: #38bdf8;
+	--color-fd-overlay: #02081799;
+}
+
+#nd-docs-layout {
+	--background: #f9fdff;
+	--foreground: #0b1830;
+	--card: #ffffff;
+	--card-foreground: #0b1830;
+	--popover: #ffffff;
+	--popover-foreground: #0b1830;
+	--primary: #0369a1;
+	--primary-foreground: #ffffff;
+	--secondary: #e8f7ff;
+	--secondary-foreground: #0b1830;
+	--muted: #eef9ff;
+	--muted-foreground: #60708a;
+	--accent: #dff4ff;
+	--accent-foreground: #075985;
+	--border: #d8eef9;
+	--input: #c7e5f5;
+	--ring: #38bdf8;
+}
+
+html.dark #nd-docs-layout {
+	--background: #071426;
+	--foreground: #eef9ff;
+	--card: #0b1b32;
+	--card-foreground: #eef9ff;
+	--popover: #0b1b32;
+	--popover-foreground: #eef9ff;
+	--primary: #7dd3fc;
+	--primary-foreground: #06101e;
+	--secondary: #10283f;
+	--secondary-foreground: #d9effc;
+	--muted: #10253c;
+	--muted-foreground: #9fb4ca;
+	--accent: #163750;
+	--accent-foreground: #b9e8ff;
+	--border: #234158;
+	--input: #234158;
+	--ring: #38bdf8;
+}
+
+html.dark #nd-sidebar {
+	--color-fd-muted: #10253c;
+	--color-fd-muted-foreground: #9fb4ca;
+	--color-fd-secondary: #10283f;
+}
+
 html {
 	-webkit-tap-highlight-color: transparent;
 	-webkit-text-size-adjust: 100%;
