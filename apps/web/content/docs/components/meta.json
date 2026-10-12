@@ -12,6 +12,9 @@
     "avatar-social-proof",
     "avatar-select",
     "avatar-account-menu",
-    "avatar-team-list"
+    "avatar-team-list",
+    "presence-avatar",
+    "group-chat",
+    "user-table"
   ]
 }

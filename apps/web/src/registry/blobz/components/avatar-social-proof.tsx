@@ -11,7 +11,7 @@ import {
 } from "@/registry/blobz/components/avatar-group";
 
 const avatarSocialProofVariants = cva(
-	"inline-flex max-w-full items-center gap-3 rounded-2xl text-muted-foreground text-sm",
+	"inline-flex max-w-full items-center gap-3 rounded-full text-muted-foreground text-sm",
 	{
 		defaultVariants: {
 			variant: "outline",
@@ -19,7 +19,7 @@ const avatarSocialProofVariants = cva(
 		variants: {
 			variant: {
 				default: "bg-transparent",
-				muted: "bg-muted px-3 py-2",
+				muted: "bg-muted/70 px-3 py-2",
 				outline: "border border-border bg-card px-3 py-2 shadow-sm",
 			},
 		},

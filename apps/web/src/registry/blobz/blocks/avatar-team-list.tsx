@@ -33,7 +33,7 @@ export function AvatarTeamList({
 	return (
 		<ul
 			className={cn(
-				"flex w-full flex-col divide-y divide-border overflow-hidden rounded-xl border border-border bg-background",
+				"flex w-full flex-col divide-y divide-border/80 overflow-hidden rounded-2xl border border-border bg-card shadow-sm",
 				className
 			)}
 			data-slot="avatar-team-list"
@@ -41,7 +41,7 @@ export function AvatarTeamList({
 		>
 			{members.map((member) => (
 				<li
-					className="flex min-w-0 items-center gap-3 px-4 py-3"
+					className="flex min-w-0 items-center gap-3 px-4 py-3.5 transition-colors hover:bg-muted/35"
 					data-slot="avatar-team-list-item"
 					key={member.id}
 				>

@@ -7,7 +7,7 @@ import {
 } from "@/registry/blobz/components/avatar";
 
 const avatarProfileVariants = cva(
-	"flex min-w-0 items-center gap-3 rounded-xl text-sm",
+	"flex min-w-0 items-center gap-3 rounded-2xl text-sm",
 	{
 		defaultVariants: {
 			density: "default",
@@ -21,8 +21,8 @@ const avatarProfileVariants = cva(
 			},
 			variant: {
 				default: "bg-transparent",
-				muted: "bg-muted/60",
-				outline: "border border-border bg-background",
+				muted: "bg-muted/50",
+				outline: "border border-border bg-card shadow-sm",
 			},
 		},
 	}

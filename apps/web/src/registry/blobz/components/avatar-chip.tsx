@@ -7,16 +7,16 @@ import {
 } from "@/registry/blobz/components/avatar";
 
 const avatarChipVariants = cva(
-	"inline-flex h-10 max-w-full items-center gap-2 rounded-full px-1.5 pe-3 text-sm",
+	"inline-flex h-10 max-w-full items-center gap-2 rounded-full border px-1.5 pe-3 text-sm shadow-xs transition-colors",
 	{
 		defaultVariants: {
 			variant: "secondary",
 		},
 		variants: {
 			variant: {
-				outline: "border border-border bg-background text-foreground",
-				secondary: "bg-secondary text-secondary-foreground",
-				soft: "bg-muted text-foreground",
+				outline: "border-border bg-card text-foreground",
+				secondary: "border-border/60 bg-secondary/65 text-secondary-foreground",
+				soft: "border-transparent bg-muted/70 text-foreground",
 			},
 		},
 	}

@@ -1,0 +1,32 @@
+---
+title: Group Chat
+description: A conversation panel with avatars for messages, members, and typing presence.
+---
+
+import { GroupChatExample } from "@/components/docs/examples/group-chat-example";
+
+<ComponentPreview name="group-chat">
+  <GroupChatExample />
+</ComponentPreview>
+
+## Installation
+
+```bash
+npx shadcn@latest add lirena00/blobz/group-chat
+```
+
+The avatar and avatar group components are installed automatically.
+
+## Usage
+
+```tsx
+import { GroupChat } from "@/components/blobz/group-chat";
+
+<GroupChat
+  channel="release"
+  participants={[{ id: "janaki", name: "Janaki Ammal", avatar: { name: "Janaki" } }]}
+  messages={[{ id: "1", author: { id: "janaki", name: "Janaki Ammal", avatar: { name: "Janaki" } }, time: "9:41", text: "The new avatars are live." }]}
+/>
+```
+
+Pass a `typing` person to show the live typing row. Message text is rendered as plain text, with line breaks preserved.

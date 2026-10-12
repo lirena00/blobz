@@ -91,6 +91,21 @@ const EXAMPLE_SOURCES = {
 		),
 		"utf8"
 	),
+	"group-chat": readFileSync(
+		join(process.cwd(), "src/components/docs/examples/group-chat-example.tsx"),
+		"utf8"
+	),
+	"presence-avatar": readFileSync(
+		join(
+			process.cwd(),
+			"src/components/docs/examples/presence-avatar-example.tsx"
+		),
+		"utf8"
+	),
+	"user-table": readFileSync(
+		join(process.cwd(), "src/components/docs/examples/user-table-example.tsx"),
+		"utf8"
+	),
 } as const;
 
 const EXAMPLE_FILENAMES = {
@@ -107,6 +122,9 @@ const EXAMPLE_FILENAMES = {
 	"avatar-status": "avatar-status-example.tsx",
 	"avatar-status-positions": "avatar-status-positions-example.tsx",
 	"avatar-team-list": "avatar-team-list-example.tsx",
+	"group-chat": "group-chat-example.tsx",
+	"presence-avatar": "presence-avatar-example.tsx",
+	"user-table": "user-table-example.tsx",
 } as const;
 
 export type ComponentPreviewName = keyof typeof EXAMPLE_SOURCES;
@@ -150,12 +168,12 @@ export async function ComponentPreview({
 	return (
 		<section
 			className={cn(
-				"not-prose my-7 overflow-hidden rounded-3xl border border-border bg-card shadow-sm",
+				"not-prose my-7 overflow-hidden rounded-3xl border border-border/80 bg-card shadow-sm",
 				className
 			)}
 			data-slot="component-preview"
 		>
-			<div className="flex min-h-80 items-center justify-center overflow-hidden bg-background px-6 py-14">
+			<div className="flex min-h-80 items-center justify-center overflow-hidden bg-gradient-to-br from-background via-background to-muted/30 px-5 py-12 sm:px-10">
 				<div className="flex w-full items-center justify-center">
 					{children}
 				</div>

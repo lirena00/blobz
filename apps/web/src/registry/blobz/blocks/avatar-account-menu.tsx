@@ -18,7 +18,7 @@ import {
 } from "@/registry/blobz/components/avatar";
 
 const avatarAccountMenuTriggerVariants = cva(
-	"inline-flex outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
+	"inline-flex rounded-xl border border-border bg-card p-1 shadow-sm outline-none transition-colors hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring/50",
 	{
 		defaultVariants: {
 			frame: "rounded",

@@ -119,6 +119,21 @@
           "target": "@components/blobz/avatar-social-proof.tsx"
         }
       ]
+    },
+    {
+      "name": "presence-avatar",
+      "type": "registry:component",
+      "title": "Presence Avatar",
+      "description": "A Blobz avatar with online, away, offline, thinking, and unread states.",
+      "dependencies": ["cn"],
+      "registryDependencies": ["lirena00/blobz/avatar"],
+      "files": [
+        {
+          "path": "presence-avatar.tsx",
+          "type": "registry:component",
+          "target": "@components/blobz/presence-avatar.tsx"
+        }
+      ]
     }
   ]
 }

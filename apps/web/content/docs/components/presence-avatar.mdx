@@ -1,0 +1,32 @@
+---
+title: Presence Avatar
+description: Show presence, thinking, and unread messages on a Blobz avatar.
+---
+
+import { PresenceAvatarExample } from "@/components/docs/examples/presence-avatar-example";
+
+<ComponentPreview name="presence-avatar">
+  <PresenceAvatarExample />
+</ComponentPreview>
+
+## Installation
+
+```bash
+npx shadcn@latest add lirena00/blobz/presence-avatar
+```
+
+The base avatar is installed automatically.
+
+## Usage
+
+```tsx
+import { PresenceAvatar } from "@/components/blobz/presence-avatar";
+
+<PresenceAvatar
+  avatar={{ alt: "Janaki Ammal avatar", name: "Janaki", frame: "circle" }}
+  status="online"
+  unreadCount={3}
+/>
+```
+
+The `status` prop accepts `online`, `away`, `offline`, and `thinking`. Unread counts above 99 display as `99+`. Presence and unread counts include accessible labels.

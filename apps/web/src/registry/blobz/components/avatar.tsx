@@ -6,7 +6,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "cn";
 
 const blobAvatarVariants = cva(
-	"relative inline-flex shrink-0 overflow-hidden align-middle",
+	"relative inline-flex shrink-0 overflow-hidden align-middle ring-1 ring-foreground/5",
 	{
 		defaultVariants: {
 			frame: "rounded",
@@ -27,7 +27,7 @@ const blobAvatarVariants = cva(
 			},
 			variant: {
 				default: "bg-muted",
-				elevated: "bg-muted shadow-sm ring-1 ring-border/70",
+				elevated: "bg-muted shadow-md ring-1 ring-border/80",
 				outline: "bg-background ring-1 ring-border",
 			},
 		},

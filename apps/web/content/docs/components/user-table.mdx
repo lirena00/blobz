@@ -1,0 +1,36 @@
+---
+title: User Table
+description: A people table with generated avatars, roles, statuses, and activity.
+---
+
+import { UserTableExample } from "@/components/docs/examples/user-table-example";
+
+<ComponentPreview name="user-table">
+  <UserTableExample />
+</ComponentPreview>
+
+## Installation
+
+```bash
+npx shadcn@latest add lirena00/blobz/user-table
+```
+
+The base avatar is installed automatically.
+
+## Usage
+
+```tsx
+import { UserTable } from "@/components/blobz/user-table";
+
+<UserTable users={[{
+  id: "janaki",
+  name: "Janaki Ammal",
+  email: "janaki@example.com",
+  role: "Owner",
+  status: "active",
+  lastSeen: "2m ago",
+  avatar: { name: "Janaki" },
+}]} />
+```
+
+Status accepts `active`, `invited`, and `suspended`. On narrow screens, the table scrolls horizontally so every column remains readable.

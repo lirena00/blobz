@@ -24,7 +24,10 @@ export function AvatarBadge({
 }: AvatarBadgeProps) {
 	return (
 		<div
-			className={cn("inline-flex min-w-0 items-center gap-3", className)}
+			className={cn(
+				"inline-flex min-w-0 items-center gap-3 rounded-2xl border border-border bg-card px-3 py-2.5 shadow-sm",
+				className
+			)}
 			data-slot="avatar-badge"
 			{...props}
 		>

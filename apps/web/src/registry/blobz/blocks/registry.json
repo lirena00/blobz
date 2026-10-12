@@ -49,6 +49,36 @@
           "target": "@components/blobz/avatar-select.tsx"
         }
       ]
+    },
+    {
+      "name": "group-chat",
+      "type": "registry:block",
+      "title": "Group Chat",
+      "description": "A conversation panel with Blobz avatars for messages, participants, and typing presence.",
+      "dependencies": ["cn"],
+      "registryDependencies": ["lirena00/blobz/avatar", "lirena00/blobz/avatar-group"],
+      "files": [
+        {
+          "path": "group-chat.tsx",
+          "type": "registry:component",
+          "target": "@components/blobz/group-chat.tsx"
+        }
+      ]
+    },
+    {
+      "name": "user-table",
+      "type": "registry:block",
+      "title": "User Table",
+      "description": "A responsive people table with generated avatars, roles, statuses, and last-seen details.",
+      "dependencies": ["cn"],
+      "registryDependencies": ["lirena00/blobz/avatar"],
+      "files": [
+        {
+          "path": "user-table.tsx",
+          "type": "registry:component",
+          "target": "@components/blobz/user-table.tsx"
+        }
+      ]
     }
   ]
 }

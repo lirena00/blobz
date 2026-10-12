@@ -90,7 +90,7 @@ export function AvatarSelect({
 			<SelectTrigger
 				aria-label={triggerLabel}
 				className={cn(
-					"w-full min-w-72 px-4 data-[size=default]:h-16",
+					"w-full min-w-72 rounded-xl border-border bg-card px-4 shadow-sm data-[size=default]:h-16",
 					className
 				)}
 			>
