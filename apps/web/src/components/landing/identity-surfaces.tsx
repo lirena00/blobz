@@ -1,6 +1,7 @@
 "use client";
 
 import { Avatar } from "@blobz/react";
+import { Input } from "@blobz/ui/components/input";
 import { AtSign, Heart, MessageCircle, Send, Sparkles } from "lucide-react";
 import {
 	type ChangeEvent,
@@ -10,6 +11,7 @@ import {
 } from "react";
 
 import styles from "@/app/landing.module.css";
+import { useLandingName } from "@/components/landing/landing-name";
 
 const SURFACE_CARD_CLASS =
 	"relative min-w-0 border border-[rgb(201_230_245_/_92%)] bg-white/92 shadow-[0_24px_70px_rgb(14_87_120_/_15%)] backdrop-blur-2xl";
@@ -50,7 +52,7 @@ const SECONDARY_ACTIVITY = [
 const WHITESPACE_PATTERN = /\s+/;
 
 export function IdentitySurfaces() {
-	const [name, setName] = useState("Saksham Kushwaha");
+	const { name, setName } = useLandingName();
 	const [paletteIndex, setPaletteIndex] = useState<number | null>(0);
 	const [customPalette, setCustomPalette] = useState<readonly [string, string]>(
 		["#e8f7ff", "#38bdf8"]
@@ -59,13 +61,13 @@ export function IdentitySurfaces() {
 		paletteIndex === null
 			? customPalette
 			: (PALETTES[paletteIndex] ?? PALETTES[0]);
-	const avatarName = name.trim() || "blobz";
+	const avatarName = name.trim() || "Alex";
 	const firstName = avatarName.split(WHITESPACE_PATTERN)[0] ?? "Blobz";
 	const handleNameChange = useCallback(
 		(event: ChangeEvent<HTMLInputElement>) => {
 			setName(event.target.value);
 		},
-		[]
+		[setName]
 	);
 	const handlePaletteChange = useCallback(
 		(event: React.MouseEvent<HTMLButtonElement>) => {
@@ -110,11 +112,12 @@ export function IdentitySurfaces() {
 					htmlFor="surface-name"
 				>
 					<span className="whitespace-nowrap pl-1">Name or seed</span>
-					<input
+					<Input
 						className="h-11 min-w-0 rounded-[0.8rem] border border-[#bfe1f2] bg-[#f8fcff] px-3.5 font-bold text-[#0b1830] text-sm shadow-[inset_0_1px_2px_rgb(11_24_48_/_3%)] outline-none focus:border-[#38bdf8] focus:bg-white focus:shadow-[0_0_0_4px_rgb(56_189_248_/_13%)]"
 						id="surface-name"
 						maxLength={42}
 						onChange={handleNameChange}
+						placeholder="Your name"
 						value={name}
 					/>
 				</label>
@@ -220,7 +223,7 @@ export function IdentitySurfaces() {
 						</div>
 					</div>
 					<div className="relative flex items-center justify-between font-mono text-[#7aa2b9] text-[0.58rem]">
-						<span>blobz.lirena.in/{firstName.toLowerCase()}</span>
+						<span>Same name. Same face.</span>
 						<span>1200 × 630</span>
 					</div>
 				</article>

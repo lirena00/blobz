@@ -1,41 +1,31 @@
+import { AVATAR_COMBINATION_COUNT } from "@blobz/avatar-core";
 import { Avatar } from "@blobz/react";
-import { Badge } from "@blobz/ui/components/badge";
-import {
-	Card,
-	CardAction,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "@blobz/ui/components/card";
 import {
 	ArrowRight,
 	Box,
 	Braces,
-	Check,
-	Cloud,
 	Fingerprint,
 	MoveRight,
-	Package,
 	Palette,
-	Sparkles,
 	Zap,
 } from "lucide-react";
 import Link from "next/link";
 
-import { AvatarSwarmHero } from "@/components/landing/avatar-swarm-hero";
 import { IdentitySurfaces } from "@/components/landing/identity-surfaces";
+import { LandingNameProvider } from "@/components/landing/landing-name";
+import { PersonalizedHero } from "@/components/landing/personalized-hero";
+import { Pricing } from "@/components/landing/pricing";
 
 const EYEBROW_CLASS =
 	"mb-4 text-[0.72rem] font-[850] uppercase tracking-[0.17em] text-sky-600";
 const DISPLAY_FONT_CLASS = "font-[family-name:var(--font-bricolage)]";
 const SECTION_HEADING_CLASS = `${DISPLAY_FONT_CLASS} text-[clamp(3rem,6vw,6rem)] font-[780] leading-[0.93] tracking-[-0.055em] max-[640px]:text-[3.2rem]`;
 const SURFACE_COPY_CLASS = "leading-[1.75] text-[#60708a]";
+const COMBINATION_LABEL = `${(AVATAR_COMBINATION_COUNT / 1_000_000_000).toFixed(1)}B+`;
 
 const PRINCIPLES = [
 	{
-		copy: "Use a username, email, or internal ID. Blobz deterministically maps that stable seed to one avatar from more than a billion combinations.",
+		copy: "Use a username, email, or internal ID. Blobz deterministically maps that stable seed to one avatar from nearly five billion combinations.",
 		icon: Fingerprint,
 		index: "01",
 		title: "One stable input becomes one identity.",
@@ -60,55 +50,6 @@ const FOOTER_BLOBZ = [
 	["sol", ["#f0fdf4", "#4ade80"]],
 	["lumi", ["#faf5ff", "#c084fc"]],
 	["rio", ["#fff1f2", "#fb7185"]],
-] as const;
-
-const PRODUCT_OPTIONS = [
-	{
-		badge: "Free",
-		cta: "Read the React docs",
-		description:
-			"Generate SVG avatars inside your React app with no hosted service.",
-		features: [
-			"Unlimited client-side generations",
-			"Typed and SSR-ready",
-			"No account or image request",
-		],
-		href: "/#docs",
-		icon: Package,
-		name: "React package",
-		price: "$0",
-		priceNote: "free to install",
-	},
-	{
-		badge: "Hosted API",
-		cta: "Choose Plus",
-		description: "Use an image URL anywhere without shipping the generator.",
-		features: [
-			"5 million requests each month",
-			"Up to 5 approved origins",
-			"No overage charges",
-		],
-		href: "/dashboard",
-		icon: Cloud,
-		name: "Plus",
-		price: "$4.99",
-		priceNote: "/month · $49.90/year",
-	},
-	{
-		badge: "More volume",
-		cta: "Choose Pro",
-		description: "Double the monthly capacity for products with more traffic.",
-		features: [
-			"10 million requests each month",
-			"Up to 5 approved origins",
-			"No overage charges",
-		],
-		href: "/dashboard",
-		icon: Sparkles,
-		name: "Pro",
-		price: "$9.99",
-		priceNote: "/month · $99.90/year",
-	},
 ] as const;
 
 function ProfileCodeExample() {
@@ -151,67 +92,69 @@ function ProfileCodeExample() {
 export default function Home() {
 	return (
 		<main className="overflow-clip bg-[#f9fdff] text-[#0b1830] [--ease-in-out:cubic-bezier(0.77,0,0.175,1)] [--ease-out:cubic-bezier(0.23,1,0.32,1)] [--ink:#0b1830] [--line:#d8eef9] [--muted:#60708a] [--sky-soft:#e8f7ff] [--sky:#38bdf8]">
-			<AvatarSwarmHero />
+			<LandingNameProvider>
+				<PersonalizedHero />
 
-			<section
-				aria-label="Blobz at a glance"
-				className="relative z-8 mx-auto -mt-18 grid min-h-32 max-w-[78rem] grid-cols-[1fr_auto_1fr_auto_1fr] items-center rounded-[2rem] border border-[#d7eefb] bg-white/88 px-6 py-[1.15rem] shadow-[0_30px_90px_rgb(14_165_233_/_13%)] backdrop-blur-[20px] max-[820px]:mx-4 max-[640px]:-mt-11 max-[640px]:grid-cols-1 max-[640px]:gap-4 max-[640px]:rounded-[1.4rem] max-[640px]:p-6"
-			>
-				<div className="flex items-baseline justify-center gap-[0.65rem] text-center max-[640px]:justify-between max-[640px]:text-left">
-					<strong className="font-[950] text-[clamp(1.35rem,2.6vw,2.15rem)] tracking-[-0.06em]">
-						1.13B+
-					</strong>
-					<span className="max-w-32 font-[650] text-[#60708a] text-[0.72rem] leading-[1.4] max-[640px]:text-right">
-						possible combinations
-					</span>
-				</div>
-				<div
-					aria-hidden="true"
-					className="h-[2.7rem] w-px bg-[#d9edf8] max-[640px]:h-px max-[640px]:w-full"
-				/>
-				<div className="flex items-baseline justify-center gap-[0.65rem] text-center max-[640px]:justify-between max-[640px]:text-left">
-					<strong className="font-[950] text-[clamp(1.35rem,2.6vw,2.15rem)] tracking-[-0.06em]">
-						1 seed
-					</strong>
-					<span className="max-w-32 font-[650] text-[#60708a] text-[0.72rem] leading-[1.4] max-[640px]:text-right">
-						the same face, every time
-					</span>
-				</div>
-				<div
-					aria-hidden="true"
-					className="h-[2.7rem] w-px bg-[#d9edf8] max-[640px]:h-px max-[640px]:w-full"
-				/>
-				<div className="flex items-baseline justify-center gap-[0.65rem] text-center max-[640px]:justify-between max-[640px]:text-left">
-					<strong className="font-[950] text-[clamp(1.35rem,2.6vw,2.15rem)] tracking-[-0.06em]">
-						0 files
-					</strong>
-					<span className="max-w-32 font-[650] text-[#60708a] text-[0.72rem] leading-[1.4] max-[640px]:text-right">
-						to upload or store
-					</span>
-				</div>
-			</section>
-
-			<section
-				className="mx-auto max-w-[82rem] scroll-mt-20 px-6 pt-32 pb-36 max-[640px]:px-4 max-[640px]:py-24"
-				id="surfaces"
-			>
-				<div className="mb-13 grid grid-cols-[minmax(0,1fr)_minmax(18rem,0.42fr)] items-end gap-20 max-[640px]:mb-10 max-[820px]:grid-cols-1 max-[820px]:gap-6">
-					<div>
-						<p className={EYEBROW_CLASS}>Built for onboarding</p>
-						<h2 className={SECTION_HEADING_CLASS}>
-							Give every new user
-							<br />a face worth keeping.
-						</h2>
+				<section
+					aria-label="Blobz at a glance"
+					className="relative z-8 mx-auto -mt-8 grid min-h-32 max-w-[78rem] grid-cols-[1fr_auto_1fr_auto_1fr] items-center rounded-[2rem] border border-[#d7eefb] bg-white/88 px-6 py-[1.15rem] shadow-[0_30px_90px_rgb(14_165_233_/_13%)] backdrop-blur-[20px] max-[820px]:mx-4 max-[640px]:-mt-6 max-[640px]:grid-cols-1 max-[820px]:grid-cols-3 max-[820px]:gap-4 max-[640px]:rounded-[1.4rem] max-[640px]:p-6"
+				>
+					<div className="flex items-baseline justify-center gap-[0.65rem] text-center max-[820px]:flex-col max-[820px]:items-start max-[820px]:gap-1 max-[820px]:text-left">
+						<strong className="whitespace-nowrap font-[950] text-[clamp(1.35rem,2.6vw,2.15rem)] tracking-normal">
+							{COMBINATION_LABEL}
+						</strong>
+						<span className="max-w-32 font-[650] text-[#60708a] text-[0.72rem] leading-[1.4]">
+							possible combinations
+						</span>
 					</div>
-					<p className={`max-w-[30rem] text-[1.02rem] ${SURFACE_COPY_CLASS}`}>
-						Instead of assigning a generic silhouette or pulling from a tiny
-						image pool, Blobz gives every seed its own playful avatar. Change
-						the name below and watch that exact identity follow the user
-						everywhere.
-					</p>
-				</div>
-				<IdentitySurfaces />
-			</section>
+					<div
+						aria-hidden="true"
+						className="h-[2.7rem] w-px bg-[#d9edf8] max-[820px]:hidden"
+					/>
+					<div className="flex items-baseline justify-center gap-[0.65rem] text-center max-[820px]:flex-col max-[820px]:items-start max-[820px]:gap-1 max-[820px]:text-left">
+						<strong className="whitespace-nowrap font-[950] text-[clamp(1.35rem,2.6vw,2.15rem)] tracking-normal">
+							1 seed
+						</strong>
+						<span className="max-w-32 font-[650] text-[#60708a] text-[0.72rem] leading-[1.4]">
+							the same face, every time
+						</span>
+					</div>
+					<div
+						aria-hidden="true"
+						className="h-[2.7rem] w-px bg-[#d9edf8] max-[820px]:hidden"
+					/>
+					<div className="flex items-baseline justify-center gap-[0.65rem] text-center max-[820px]:flex-col max-[820px]:items-start max-[820px]:gap-1 max-[820px]:text-left">
+						<strong className="whitespace-nowrap font-[950] text-[clamp(1.35rem,2.6vw,2.15rem)] tracking-normal">
+							0 files
+						</strong>
+						<span className="max-w-32 font-[650] text-[#60708a] text-[0.72rem] leading-[1.4]">
+							to upload or store
+						</span>
+					</div>
+				</section>
+
+				<section
+					className="mx-auto max-w-[82rem] scroll-mt-20 px-6 pt-32 pb-36 max-[640px]:px-4 max-[640px]:py-24"
+					id="surfaces"
+				>
+					<div className="mb-13 grid grid-cols-[minmax(0,1fr)_minmax(18rem,0.42fr)] items-end gap-20 max-[640px]:mb-10 max-[820px]:grid-cols-1 max-[820px]:gap-6">
+						<div>
+							<p className={EYEBROW_CLASS}>Built for onboarding</p>
+							<h2 className={SECTION_HEADING_CLASS}>
+								Give every new user
+								<br />a face worth keeping.
+							</h2>
+						</div>
+						<p className={`max-w-[30rem] text-[1.02rem] ${SURFACE_COPY_CLASS}`}>
+							Instead of assigning a generic silhouette or pulling from a tiny
+							image pool, Blobz gives every seed its own playful avatar. Change
+							the name below and watch that exact identity follow the user
+							everywhere.
+						</p>
+					</div>
+					<IdentitySurfaces />
+				</section>
+			</LandingNameProvider>
 
 			<section
 				className="mx-auto grid max-w-[82rem] scroll-mt-24 grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] gap-[5.5rem] px-6 pt-[8.5rem] pb-[9.5rem] max-[820px]:grid-cols-1 max-[1050px]:gap-16 max-[820px]:gap-16 max-[640px]:px-4 max-[640px]:py-24"
@@ -336,11 +279,14 @@ export default function Home() {
 							</div>
 							<div>
 								<span className="block font-bold text-[#6f8ca4] text-[0.62rem] uppercase tracking-[0.13em]">
-									Coming soon
+									Ready to install
 								</span>
-								<strong className="mt-1 block text-[#d9effb] text-sm">
+								<Link
+									className="mt-1 block font-bold text-[#d9effb] text-sm underline-offset-4 hover:underline"
+									href="/docs/components"
+								>
 									shadcn components
-								</strong>
+								</Link>
 							</div>
 						</div>
 					</div>
@@ -370,101 +316,7 @@ export default function Home() {
 				</div>
 			</section>
 
-			<section
-				aria-labelledby="api-pricing-title"
-				className="scroll-mt-20 bg-[#f7fcff] px-6 py-32 max-[640px]:px-4 max-[640px]:py-24"
-				id="api"
-			>
-				<div className="mx-auto max-w-[82rem]">
-					<div className="grid grid-cols-[minmax(0,1fr)_minmax(18rem,0.45fr)] items-end gap-16 max-[820px]:grid-cols-1 max-[820px]:gap-6">
-						<div>
-							<p className={EYEBROW_CLASS}>Free package or hosted API</p>
-							<h2 className={SECTION_HEADING_CLASS} id="api-pricing-title">
-								Use the code.
-								<br />
-								Or use the URL.
-							</h2>
-						</div>
-						<p className={`max-w-[31rem] text-[1.02rem] ${SURFACE_COPY_CLASS}`}>
-							The React package is free and runs in your app. The hosted API is
-							paid because Blobz serves the images and tracks usage for you. You
-							only need an account for the API.
-						</p>
-					</div>
-
-					<div className="mt-14 grid items-stretch gap-5 lg:grid-cols-3">
-						{PRODUCT_OPTIONS.map(
-							({
-								badge,
-								cta,
-								description,
-								features,
-								href,
-								icon: Icon,
-								name,
-								price,
-								priceNote,
-							}) => (
-								<Card className="h-full" key={name}>
-									<CardHeader>
-										<div className="mb-2 grid size-11 place-items-center rounded-2xl bg-sky-100 text-sky-700">
-											<Icon aria-hidden="true" className="size-5" />
-										</div>
-										<CardTitle>
-											<h3 className="font-[760] text-xl tracking-[-0.025em]">
-												{name}
-											</h3>
-										</CardTitle>
-										<CardDescription>{description}</CardDescription>
-										<CardAction>
-											<Badge
-												variant={name === "Plus" ? "default" : "secondary"}
-											>
-												{badge}
-											</Badge>
-										</CardAction>
-									</CardHeader>
-									<CardContent className="flex flex-1 flex-col gap-6">
-										<p className="flex flex-wrap items-baseline gap-x-2 font-[family-name:var(--font-bricolage)] tabular-nums">
-											<strong className="font-[780] text-4xl tracking-[-0.045em]">
-												{price}
-											</strong>
-											<span className="text-muted-foreground text-sm">
-												{priceNote}
-											</span>
-										</p>
-										<ul className="flex flex-col gap-3 text-sm">
-											{features.map((feature) => (
-												<li className="flex items-start gap-2.5" key={feature}>
-													<Check
-														aria-hidden="true"
-														className="mt-0.5 size-4 shrink-0 text-sky-600"
-													/>
-													<span>{feature}</span>
-												</li>
-											))}
-										</ul>
-									</CardContent>
-									<CardFooter>
-										<Link
-											className="inline-flex h-10 items-center justify-center gap-2 rounded-full bg-primary px-4 font-medium text-primary-foreground text-sm transition-[background-color,transform] duration-150 hover:bg-primary/80 focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2 active:scale-[0.97]"
-											href={href}
-										>
-											{cta}
-											<ArrowRight aria-hidden="true" className="size-4" />
-										</Link>
-									</CardFooter>
-								</Card>
-							)
-						)}
-					</div>
-
-					<p className="mt-7 text-center text-[#71839a] text-sm">
-						Yearly API plans include the same monthly allowance and save the
-						equivalent of 2 months. shadcn components are coming soon.
-					</p>
-				</div>
-			</section>
+			<Pricing />
 
 			<section className="relative min-h-[50rem] overflow-hidden bg-[radial-gradient(circle_at_50%_30%,white_0_14rem,transparent_34rem),linear-gradient(180deg,#f7fcff,#e8f7ff)] px-8 pt-44 pb-32 text-center max-[640px]:min-h-[44rem] max-[640px]:px-4 max-[640px]:pt-32 max-[640px]:pb-24">
 				<div

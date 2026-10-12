@@ -9,6 +9,7 @@ import UserMenu from "./user-menu";
 
 const NAV_ITEMS = [
 	{ href: { pathname: "/docs/react" }, label: "React" },
+	{ href: { pathname: "/docs/components" }, label: "Components" },
 	{ href: { pathname: "/docs/api" }, label: "Hosted API" },
 ] as const;
 
