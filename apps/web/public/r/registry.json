@@ -122,7 +122,7 @@
     {
       "name": "presence-avatar",
       "title": "Presence Avatar",
-      "description": "A Blobz avatar with online, away, offline, thinking, and unread states.",
+      "description": "A Blobz avatar with online, away, offline, and unread states.",
       "dependencies": ["cn"],
       "registryDependencies": ["@blobz/avatar"],
       "files": [

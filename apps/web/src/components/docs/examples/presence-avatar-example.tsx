@@ -17,11 +17,6 @@ const PEOPLE = [
 		unreadCount: 3,
 	},
 	{
-		name: DEMO_PEOPLE.kalpanaChawla,
-		palette: ["#e1ffe8", "#91e36c"],
-		status: "thinking",
-	},
-	{
 		name: DEMO_PEOPLE.srinivasaRamanujan,
 		palette: ["#fff1df", "#f48a61"],
 		status: "away",
@@ -41,7 +36,7 @@ const PEOPLE = [
 
 export function PresenceAvatarExample() {
 	return (
-		<div className="grid w-full max-w-2xl grid-cols-2 justify-items-center gap-9 sm:grid-cols-5">
+		<div className="grid w-full max-w-xl grid-cols-2 justify-items-center gap-9 sm:grid-cols-4">
 			{PEOPLE.map((person) => (
 				<div
 					className="flex flex-col items-center gap-5 text-center"

@@ -9,7 +9,6 @@ const PRESENCE_LABELS = {
 	away: "Away",
 	offline: "Offline",
 	online: "Online",
-	thinking: "Thinking",
 } as const;
 
 export type PresenceStatus = keyof typeof PRESENCE_LABELS;
@@ -37,28 +36,23 @@ export function PresenceAvatar({
 
 	return (
 		<span
-			className={cn(
-				"relative inline-flex shrink-0 flex-col items-center",
-				className
-			)}
+			className={cn("relative inline-flex shrink-0", className)}
 			data-slot="presence-avatar"
 			{...props}
 		>
 			<span className="relative inline-flex">
 				<BlobAvatar {...avatar} size={size} />
-				{status !== "thinking" && (
-					<span
-						aria-label={label}
-						className={cn(
-							"absolute -end-0.5 -top-0.5 size-3.5 rounded-full ring-[3px] ring-background motion-safe:animate-pulse",
-							status === "online" && "bg-emerald-500",
-							status === "away" && "bg-amber-500",
-							status === "offline" && "bg-zinc-500"
-						)}
-						data-slot="presence-avatar-indicator"
-						role="status"
-					/>
-				)}
+				<span
+					aria-label={label}
+					className={cn(
+						"absolute -end-0.5 -top-0.5 size-3.5 rounded-full ring-[3px] ring-background",
+						status === "online" && "bg-emerald-500",
+						status === "away" && "bg-amber-500",
+						status === "offline" && "bg-zinc-500"
+					)}
+					data-slot="presence-avatar-indicator"
+					role="status"
+				/>
 				{hasUnread && (
 					<span
 						aria-label={`${unreadCount} unread messages`}
@@ -70,18 +64,6 @@ export function PresenceAvatar({
 					</span>
 				)}
 			</span>
-			{status === "thinking" && (
-				<span
-					aria-label={label}
-					className="absolute -bottom-4 flex items-center gap-0.5"
-					data-slot="presence-avatar-thinking"
-					role="status"
-				>
-					<span className="size-1 rounded-full bg-muted-foreground motion-safe:animate-pulse" />
-					<span className="size-1 rounded-full bg-muted-foreground [animation-delay:150ms] motion-safe:animate-pulse" />
-					<span className="size-1 rounded-full bg-muted-foreground [animation-delay:300ms] motion-safe:animate-pulse" />
-				</span>
-			)}
 		</span>
 	);
 }
