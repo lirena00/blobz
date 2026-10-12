@@ -21,6 +21,7 @@ import {
 	FileCode2,
 	FileImage,
 } from "lucide-react";
+import NextImage from "next/image";
 import Link from "next/link";
 import { type ChangeEvent, useCallback, useState } from "react";
 
@@ -187,6 +188,39 @@ export function PersonalizedHero() {
 							Explore components
 							<ArrowRight aria-hidden="true" />
 						</Link>
+					</div>
+					<div className={styles.launchBadges}>
+						<p className={styles.launchLabel}>Find Blobz on</p>
+						<div className={styles.badgeLinks}>
+							<a
+								className={styles.badgeLink}
+								href="https://www.producthunt.com/products/blobz-2?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-blobz-2"
+								rel="noopener noreferrer"
+								target="_blank"
+							>
+								<NextImage
+									alt="Blobz on Product Hunt"
+									height={54}
+									src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1278323&theme=light&t=1791843105193"
+									unoptimized
+									width={250}
+								/>
+							</a>
+							<a
+								className={styles.badgeLink}
+								href="https://peerlist.io/lirena00/project/blobz-deterministic-avatars-worth-keeping"
+								rel="noopener noreferrer"
+								target="_blank"
+							>
+								<NextImage
+									alt="Blobz on Peerlist"
+									height={72}
+									src="https://peerlist.io/api/v1/projects/embed/PRJHR8D7BKJ7RQKOP3DAKBRONMBBN8?showUpvote=true&theme=light"
+									unoptimized
+									width={296}
+								/>
+							</a>
+						</div>
 					</div>
 				</div>
 

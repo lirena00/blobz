@@ -140,6 +140,50 @@
 	outline-offset: 4px;
 }
 
+.launchBadges {
+	padding-top: 1.5rem;
+	margin-top: 2.25rem;
+	border-top: 1px solid #cdeaff;
+}
+
+.launchLabel {
+	margin-bottom: 0.8rem;
+	font-size: 0.72rem;
+	font-weight: 800;
+	color: #60708a;
+	text-transform: uppercase;
+	letter-spacing: 0.12em;
+}
+
+.badgeLinks {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem;
+	align-items: center;
+}
+
+.badgeLink {
+	display: inline-block;
+	max-width: 100%;
+	border-radius: 1rem;
+	transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.badgeLink:hover {
+	transform: translateY(-2px);
+}
+
+.badgeLink:focus-visible {
+	outline: 2px solid #0284c7;
+	outline-offset: 4px;
+}
+
+.badgeLink img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+
 .preview {
 	position: relative;
 	min-width: 0;
@@ -256,7 +300,12 @@
 
 @media (prefers-reduced-motion: reduce) {
 	.inputGroup,
-	.primaryLink {
+	.primaryLink,
+	.badgeLink {
 		transition: none;
+	}
+
+	.badgeLink:hover {
+		transform: none;
 	}
 }
