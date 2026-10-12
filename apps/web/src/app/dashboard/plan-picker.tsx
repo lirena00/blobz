@@ -102,7 +102,7 @@ export default function PlanPicker({
 					month.
 				</p>
 			</div>
-			<Tabs defaultValue="monthly">
+			<Tabs defaultValue="yearly">
 				<TabsList aria-label="Billing frequency" className="w-fit">
 					<TabsTrigger value="monthly">Monthly</TabsTrigger>
 					<TabsTrigger value="yearly">Yearly</TabsTrigger>
