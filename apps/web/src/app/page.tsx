@@ -143,15 +143,15 @@ export default function Home() {
 					>
 						<Avatar
 							alt=""
-							name="identity-before"
+							name="something-bad"
 							palette={["#eef9ff", "#38bdf8"]}
 							size={92}
 						/>
 						<MoveRight className="size-6" />
 						<Avatar
 							alt=""
-							name="identity-after"
-							palette={["#fff7ed", "#fb923c"]}
+							name="something-awesome"
+							palette={["#f0fdf4", "#4ade80"]}
 							size={92}
 						/>
 					</div>
