@@ -161,7 +161,7 @@ export async function ComponentPreview({
 		lang: "tsx",
 		themes: {
 			dark: "github-dark",
-			light: "github-dark",
+			light: "github-light",
 		},
 	});
 

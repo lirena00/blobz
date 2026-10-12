@@ -14,7 +14,6 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-	colorScheme: "dark",
 	themeColor: "#111111",
 };
 
@@ -25,7 +24,7 @@ export default function DocumentationLayout({
 		<DocsLayout
 			{...docsLayoutOptions()}
 			containerProps={{
-				className: "dark bg-fd-background text-fd-foreground",
+				className: "bg-fd-background text-fd-foreground",
 			}}
 			tree={source.getPageTree()}
 		>

@@ -10,6 +10,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { ComponentProps } from "react";
 import { OpenAPIPage } from "@/components/api-page";
+import { DocsThemeSwitch } from "@/components/docs/docs-theme-switch";
 import { getMDXComponents } from "@/components/mdx";
 import {
 	getPageImageUrl,
@@ -84,7 +85,12 @@ export default async function DocumentationPage({
 	});
 
 	return (
-		<DocsPage full={page.data.full} toc={page.data.toc}>
+		<DocsPage
+			full={page.data.full}
+			tableOfContent={{ header: <DocsThemeSwitch /> }}
+			tableOfContentPopover={{ header: <DocsThemeSwitch /> }}
+			toc={page.data.toc}
+		>
 			<DocsTitle>{page.data.title}</DocsTitle>
 			<DocsDescription>{page.data.description}</DocsDescription>
 			<div className="not-prose flex items-center gap-2 border-border border-b pt-2 pb-6">
