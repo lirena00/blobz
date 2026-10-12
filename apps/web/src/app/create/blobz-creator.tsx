@@ -253,9 +253,9 @@ export function BlobzCreator() {
 						Make the face that fits.
 					</h1>
 					<p className="max-w-2xl text-pretty text-base text-muted-foreground leading-7">
-						Start with any string for a stable, repeatable identity—or switch to
-						Build my own and choose every feature yourself. Everything updates
-						live and stays ready to export.
+						Start with any string for a stable, repeatable identity, or switch
+						to Build my own and choose every feature yourself. Everything
+						updates live and stays ready to export.
 					</p>
 				</header>
 

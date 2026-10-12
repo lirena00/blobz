@@ -70,7 +70,7 @@ const CHECKOUTABLE_STATUSES = new Set([
 ]);
 
 const formatDate = (value: string | null): string =>
-	value ? date.format(new Date(value)) : "—";
+	value ? date.format(new Date(value)) : "Not available";
 
 const monthlyLimit = (plan: string): number => {
 	if (plan === "plus") {
@@ -277,7 +277,7 @@ function InactiveWorkspace({
 					<CardContent>
 						<p className="text-muted-foreground text-sm">
 							You can approve website origins now. Once your subscription is
-							active, your image URL and embed builder appear here—no keys or
+							active, your image URL and embed builder appear here. No keys or
 							manual setup required.
 						</p>
 					</CardContent>
