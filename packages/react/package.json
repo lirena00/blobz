@@ -1,6 +1,6 @@
 {
   "name": "@blobz/react",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "React components for generated and custom Blobz avatars.",
   "keywords": [
     "avatar",
@@ -17,6 +17,7 @@
     "url": "git+https://github.com/lirena00/blobz.git",
     "directory": "packages/react"
   },
+  "license": "MIT",
   "sideEffects": false,
   "type": "module",
   "exports": {
@@ -33,7 +34,8 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsup src/avatar.tsx src/custom-avatar.tsx --format esm --dts --clean --sourcemap --external react --external @blobz/avatar-core",
@@ -42,7 +44,7 @@
     "test": "bun test"
   },
   "dependencies": {
-    "@blobz/avatar-core": "workspace:^"
+    "@blobz/avatar-core": "^0.1.1"
   },
   "devDependencies": {
     "@blobz/config": "workspace:*",

@@ -1,6 +1,6 @@
 {
   "name": "@blobz/avatar-core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Deterministic, framework-free SVG blob avatars.",
   "keywords": [
     "avatar",
@@ -17,6 +17,7 @@
     "url": "git+https://github.com/lirena00/blobz.git",
     "directory": "packages/avatar-core"
   },
+  "license": "MIT",
   "sideEffects": false,
   "type": "module",
   "exports": {
@@ -28,7 +29,8 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsup src/avatar.ts --format esm --dts --clean --sourcemap",

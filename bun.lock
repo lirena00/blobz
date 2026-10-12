@@ -88,7 +88,7 @@
     },
     "packages/avatar-core": {
       "name": "@blobz/avatar-core",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "devDependencies": {
         "@blobz/config": "workspace:*",
         "@types/node": "catalog:",
@@ -116,9 +116,9 @@
     },
     "packages/react": {
       "name": "@blobz/react",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "dependencies": {
-        "@blobz/avatar-core": "workspace:*",
+        "@blobz/avatar-core": "^0.1.1",
       },
       "devDependencies": {
         "@blobz/config": "workspace:*",
