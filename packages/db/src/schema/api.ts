@@ -1,5 +1,6 @@
 import { sql } from "drizzle-orm";
 import {
+	boolean,
 	index,
 	integer,
 	pgTable,
@@ -13,6 +14,7 @@ import { user } from "./auth";
 
 export const apiEntitlement = pgTable("api_entitlement", {
 	cadence: text("cadence").default("monthly").notNull(),
+	cancelAtPeriodEnd: boolean("cancel_at_period_end").default(false).notNull(),
 	lastEventAt: timestamp("last_event_at", { withTimezone: true }),
 	periodEnd: timestamp("period_end", { withTimezone: true }),
 	periodStart: timestamp("period_start", { withTimezone: true }),

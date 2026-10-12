@@ -167,6 +167,7 @@ export async function handleDodoWebhook(
 	const productId = data.product_id;
 	const customerId = customer.customer_id;
 	const { status } = data;
+	const cancellationScheduled = data.cancel_at_next_billing_date;
 	if (
 		status === "active" &&
 		(!(periodStart && periodEnd) || periodStart >= periodEnd)
@@ -271,6 +272,13 @@ export async function handleDodoWebhook(
 		const effectiveStatus = isStale
 			? (current?.status ?? "unsupported_product")
 			: status;
+		const cancelAtPeriodEnd =
+			isStale ||
+			(current?.subscriptionId === subscriptionId &&
+				status === "active" &&
+				typeof cancellationScheduled !== "boolean")
+				? (current?.cancelAtPeriodEnd ?? false)
+				: status === "active" && cancellationScheduled === true;
 		let resolvedStatus = effectiveStatus;
 		if (!(isStale || plan)) {
 			resolvedStatus = "unsupported_product";
@@ -355,6 +363,7 @@ export async function handleDodoWebhook(
 				.update(apiEntitlement)
 				.set({
 					cadence: nextCadence ?? "monthly",
+					cancelAtPeriodEnd,
 					lastEventAt: isStale ? current.lastEventAt : eventAt,
 					periodEnd: nextPeriodEnd,
 					periodStart: nextPeriodStart,
@@ -369,6 +378,7 @@ export async function handleDodoWebhook(
 		} else {
 			await tx.insert(apiEntitlement).values({
 				cadence: plan?.cadence ?? "monthly",
+				cancelAtPeriodEnd,
 				lastEventAt: eventAt,
 				periodEnd,
 				periodStart,

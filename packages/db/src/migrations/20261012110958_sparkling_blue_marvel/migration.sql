@@ -1,0 +1,1 @@
+ALTER TABLE "api_entitlement" ADD COLUMN "cancel_at_period_end" boolean DEFAULT false NOT NULL;
