@@ -24,23 +24,23 @@ html:has(#nd-docs-layout) {
 }
 
 html.dark:has(#nd-docs-layout) {
-	--color-fd-background: #071426;
-	--color-fd-foreground: #eef9ff;
-	--color-fd-muted: #10253c;
-	--color-fd-muted-foreground: #9fb4ca;
-	--color-fd-popover: #0b1b32;
-	--color-fd-popover-foreground: #eef9ff;
-	--color-fd-card: #0b1b32;
-	--color-fd-card-foreground: #eef9ff;
-	--color-fd-border: #234158;
+	--color-fd-background: #0e121a;
+	--color-fd-foreground: #f1f4f7;
+	--color-fd-muted: #1c222b;
+	--color-fd-muted-foreground: #aab3bf;
+	--color-fd-popover: #171d26;
+	--color-fd-popover-foreground: #f1f4f7;
+	--color-fd-card: #171d26;
+	--color-fd-card-foreground: #f1f4f7;
+	--color-fd-border: #303845;
 	--color-fd-primary: #7dd3fc;
-	--color-fd-primary-foreground: #06101e;
-	--color-fd-secondary: #10283f;
-	--color-fd-secondary-foreground: #d9effc;
-	--color-fd-accent: #163750;
-	--color-fd-accent-foreground: #b9e8ff;
+	--color-fd-primary-foreground: #0e121a;
+	--color-fd-secondary: #202833;
+	--color-fd-secondary-foreground: #dce5ee;
+	--color-fd-accent: #213142;
+	--color-fd-accent-foreground: #bee5fa;
 	--color-fd-ring: #38bdf8;
-	--color-fd-overlay: #02081799;
+	--color-fd-overlay: #03060acc;
 }
 
 #nd-docs-layout {
@@ -64,29 +64,29 @@ html.dark:has(#nd-docs-layout) {
 }
 
 html.dark #nd-docs-layout {
-	--background: #071426;
-	--foreground: #eef9ff;
-	--card: #0b1b32;
-	--card-foreground: #eef9ff;
-	--popover: #0b1b32;
-	--popover-foreground: #eef9ff;
+	--background: #0e121a;
+	--foreground: #f1f4f7;
+	--card: #171d26;
+	--card-foreground: #f1f4f7;
+	--popover: #171d26;
+	--popover-foreground: #f1f4f7;
 	--primary: #7dd3fc;
-	--primary-foreground: #06101e;
-	--secondary: #10283f;
-	--secondary-foreground: #d9effc;
-	--muted: #10253c;
-	--muted-foreground: #9fb4ca;
-	--accent: #163750;
-	--accent-foreground: #b9e8ff;
-	--border: #234158;
-	--input: #234158;
+	--primary-foreground: #0e121a;
+	--secondary: #202833;
+	--secondary-foreground: #dce5ee;
+	--muted: #1c222b;
+	--muted-foreground: #aab3bf;
+	--accent: #213142;
+	--accent-foreground: #bee5fa;
+	--border: #303845;
+	--input: #303845;
 	--ring: #38bdf8;
 }
 
 html.dark #nd-sidebar {
-	--color-fd-muted: #10253c;
-	--color-fd-muted-foreground: #9fb4ca;
-	--color-fd-secondary: #10283f;
+	--color-fd-muted: #1c222b;
+	--color-fd-muted-foreground: #aab3bf;
+	--color-fd-secondary: #202833;
 }
 
 html {
