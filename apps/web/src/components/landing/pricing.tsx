@@ -17,6 +17,8 @@ import {
 } from "@blobz/ui/components/tabs";
 import { ArrowRight, Code2, Component, Globe2 } from "lucide-react";
 import Link from "next/link";
+import { useCallback, useState } from "react";
+import styles from "./pricing.module.css";
 
 const PLANS = [
 	{
@@ -132,7 +134,9 @@ function PaidCard({
 				</div>
 			</CardHeader>
 			<CardContent className="flex flex-1 flex-col gap-5">
-				<p className="font-[family-name:var(--font-bricolage)] tabular-nums">
+				<p
+					className={`${styles.price} font-[family-name:var(--font-bricolage)] tabular-nums`}
+				>
 					<strong className="font-[780] text-[clamp(2.7rem,4vw,3.5rem)] leading-none tracking-[-0.06em]">
 						{price}
 					</strong>
@@ -167,6 +171,15 @@ function PaidCard({
 }
 
 export function Pricing() {
+	const [billing, setBilling] = useState<Cadence>("yearly");
+	const [hasSwitched, setHasSwitched] = useState(false);
+	const handleBillingChange = useCallback((value: string) => {
+		if (value === "monthly" || value === "yearly") {
+			setBilling(value);
+			setHasSwitched(true);
+		}
+	}, []);
+
 	return (
 		<section
 			aria-labelledby="api-pricing-title"
@@ -174,48 +187,51 @@ export function Pricing() {
 			id="api"
 		>
 			<div className="mx-auto max-w-[78rem]">
-				<div className="text-center">
-					<p className="mb-4 font-[850] text-[0.72rem] text-sky-600 uppercase tracking-[0.17em]">
-						Pricing
-					</p>
-					<h2
-						className="font-[780] font-[family-name:var(--font-bricolage)] text-[clamp(3rem,6vw,6rem)] leading-[0.93] tracking-[-0.055em] max-[640px]:text-[3.2rem]"
-						id="api-pricing-title"
-					>
-						Free to create. Scale with a URL.
-					</h2>
-				</div>
-				<Tabs className="mt-10" defaultValue="yearly">
-					<TabsList
-						aria-label="Billing period"
-						className="mx-auto h-auto rounded-full border border-sky-100 bg-white p-1 shadow-sm"
-					>
-						<TabsTrigger
-							className="h-11 rounded-full px-5 data-active:bg-[#0b1830] data-active:text-white"
-							value="monthly"
+				<Tabs
+					className={styles.tabs}
+					data-has-switched={hasSwitched}
+					onValueChange={handleBillingChange}
+					value={billing}
+				>
+					<div className="flex flex-wrap items-end justify-between gap-8">
+						<div>
+							<p className="mb-4 font-[850] text-[0.72rem] text-sky-600 uppercase tracking-[0.17em]">
+								Pricing
+							</p>
+							<h2
+								className="max-w-[48rem] font-[780] font-[family-name:var(--font-bricolage)] text-[clamp(3rem,6vw,6rem)] leading-[0.93] tracking-[-0.055em] max-[640px]:text-[3.2rem]"
+								id="api-pricing-title"
+							>
+								Pay for the URL,
+								<br />
+								not the avatar.
+							</h2>
+						</div>
+						<TabsList
+							aria-label="Billing period"
+							className={styles.billingList}
+							data-billing={billing}
 						>
-							Monthly
-						</TabsTrigger>
-						<TabsTrigger
-							className="h-11 rounded-full px-5 data-active:bg-[#0b1830] data-active:text-white"
-							value="yearly"
-						>
-							Yearly{" "}
-							<span className="rounded-full bg-sky-100 px-2 py-0.5 font-bold text-[0.68rem] text-sky-800">
-								2 months free
-							</span>
-						</TabsTrigger>
-					</TabsList>
+							<span aria-hidden="true" className={styles.indicator} />
+							<TabsTrigger value="monthly">Monthly</TabsTrigger>
+							<TabsTrigger value="yearly">
+								Yearly{" "}
+								<span className="rounded-full bg-sky-100 px-2 py-0.5 font-bold text-[0.68rem] text-sky-800">
+									2 months free
+								</span>
+							</TabsTrigger>
+						</TabsList>
+					</div>
 					{CADENCES.map((cadence) => (
 						<TabsContent
-							className="mt-10 grid gap-5 min-[821px]:grid-cols-3"
+							className={`${styles.panel} mt-10 gap-5 min-[1100px]:grid-cols-3 min-[640px]:grid-cols-2`}
 							key={cadence}
 							value={cadence}
 						>
-							<FreeCard />
 							{PLANS.map((plan) => (
 								<PaidCard cadence={cadence} key={plan.name} plan={plan} />
 							))}
+							<FreeCard />
 						</TabsContent>
 					))}
 				</Tabs>

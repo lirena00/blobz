@@ -16,7 +16,7 @@
 
 	.item:hover .card {
 		box-shadow: 0 26px 56px rgb(14 165 233 / 23%);
-		transform: scale(1.045);
+		transform: translateY(-0.65rem) scale(1.04);
 	}
 }
 
