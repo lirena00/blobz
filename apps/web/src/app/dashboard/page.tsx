@@ -25,15 +25,15 @@ export const metadata: Metadata = {
 export default async function DashboardPage({
 	searchParams,
 }: {
-	searchParams: Promise<{ checkout?: string }>;
+	searchParams: Promise<{ billing?: string; checkout?: string }>;
 }) {
-	const { checkout } = await searchParams;
+	const { billing, checkout } = await searchParams;
 	const session = await auth.api.getSession({
 		headers: await headers(),
 	});
 
 	if (!session?.user) {
-		redirect("/login");
+		redirect(billing === "monthly" ? "/login?billing=monthly" : "/login");
 	}
 
 	const state = await getDashboardState(db, session.user.id);
@@ -70,6 +70,7 @@ export default async function DashboardPage({
 						}
 					: null
 			}
+			initialBillingCadence={billing === "monthly" ? "monthly" : "yearly"}
 			origins={state.origins}
 			recentDays={state.recentDays}
 			usage={state.usage}

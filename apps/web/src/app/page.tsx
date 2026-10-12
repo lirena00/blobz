@@ -2,12 +2,10 @@ import { AVATAR_COMBINATION_COUNT } from "@blobz/avatar-core";
 import { Avatar } from "@blobz/react";
 import {
 	ArrowRight,
-	Box,
 	Braces,
 	Fingerprint,
 	MoveRight,
 	Palette,
-	Zap,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -15,6 +13,8 @@ import { IdentitySurfaces } from "@/components/landing/identity-surfaces";
 import { LandingNameProvider } from "@/components/landing/landing-name";
 import { PersonalizedHero } from "@/components/landing/personalized-hero";
 import { Pricing } from "@/components/landing/pricing";
+import { WaysToUse } from "@/components/landing/ways-to-use";
+import footerAvatarStyles from "./footer-avatars.module.css";
 
 const EYEBROW_CLASS =
 	"mb-4 text-[0.72rem] font-[850] uppercase tracking-[0.17em] text-sky-600";
@@ -51,43 +51,6 @@ const FOOTER_BLOBZ = [
 	["lumi", ["#faf5ff", "#c084fc"]],
 	["rio", ["#fff1f2", "#fb7185"]],
 ] as const;
-
-function ProfileCodeExample() {
-	return (
-		<pre className="overflow-x-auto bg-[linear-gradient(180deg,rgb(3_105_161_/_4%),transparent)] p-8 font-mono text-[#bee6fb] text-[clamp(0.7rem,1.2vw,0.82rem)] leading-[1.9] max-[640px]:p-5">
-			<code>
-				<span className="text-[#c084fc]">import</span>
-				{" { "}
-				<span className="text-[#67e8f9]">Avatar</span>
-				{" } "}
-				<span className="text-[#c084fc]">from</span>{" "}
-				<span className="text-[#fbbf24]">&quot;@blobz/react&quot;</span>
-				{";"}
-				{"\n\n"}
-				<span className="text-[#c084fc]">export function</span>{" "}
-				<span className="text-[#34d399]">Profile</span>
-				{"({ user }) {\n  "}
-				<span className="text-[#c084fc]">return</span>
-				{" (\n    <"}
-				<span className="text-[#67e8f9]">Avatar</span>
-				{"\n      "}
-				<span className="text-[#7dd3fc]">name</span>={"{"}user.id{"}"}
-				{"\n      "}
-				<span className="text-[#7dd3fc]">palette</span>={"{"}
-				<span className="text-[#fbbf24]">{`["#e8f7ff", "#38bdf8"]`}</span>
-				{"}"}
-				{"\n      "}
-				<span className="text-[#7dd3fc]">frame</span>=
-				<span className="text-[#fbbf24]">&quot;rounded&quot;</span>
-				{"\n      "}
-				<span className="text-[#7dd3fc]">size</span>={"{"}
-				<span className="text-[#fb7185]">64</span>
-				{"}"}
-				{"\n    />\n  );\n}"}
-			</code>
-		</pre>
-	);
-}
 
 export default function Home() {
 	return (
@@ -223,98 +186,7 @@ export default function Home() {
 				</ol>
 			</section>
 
-			<section
-				className="relative scroll-mt-[4.5rem] overflow-hidden bg-[#071426] text-white"
-				id="docs"
-			>
-				<div
-					aria-hidden="true"
-					className="absolute -top-[22rem] -left-48 size-[55rem] rounded-full bg-[radial-gradient(circle,rgb(14_165_233_/_24%),transparent_65%)]"
-				/>
-				<div className="relative mx-auto grid max-w-[82rem] grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] items-center gap-24 px-6 py-36 max-[820px]:grid-cols-1 max-[1050px]:gap-16 max-[640px]:px-4 max-[640px]:py-24 max-[820px]:py-28">
-					<div>
-						<div className="inline-flex items-center gap-[0.45rem] rounded-full border border-white/10 bg-white/[0.06] px-[0.85rem] py-[0.55rem] font-extrabold text-[#9cddff] text-[0.7rem] uppercase tracking-[0.15em] backdrop-blur-xl">
-							<Box aria-hidden="true" className="size-4" />
-							Available now · @blobz/react
-						</div>
-						<h2
-							className={`${DISPLAY_FONT_CLASS} mt-6 font-[780] text-[clamp(3rem,5.5vw,5.5rem)] leading-[0.93] tracking-[-0.055em] max-[640px]:text-[3.2rem]`}
-						>
-							Like Lucide,
-							<br />
-							but for avatars.
-						</h2>
-						<p className="mt-[1.6rem] max-w-[34rem] text-[#9fb4ca] text-[1.05rem] leading-[1.75]">
-							Install the React package, pass any stable string, and render a
-							typed, SSR-ready SVG. The framework-free core keeps the result
-							identical from server to browser.
-						</p>
-						<div className="mt-8 flex flex-wrap gap-[0.65rem] max-[640px]:gap-[0.45rem] [&>span]:inline-flex [&>span]:items-center [&>span]:gap-[0.45rem] [&>span]:rounded-[0.7rem] [&>span]:border [&>span]:border-white/[0.09] [&>span]:bg-white/[0.05] [&>span]:px-3 [&>span]:py-[0.55rem] [&>span]:font-[750] [&>span]:text-[#b7d3e5] [&>span]:text-[0.7rem]">
-							<span>
-								<Zap className="size-4" /> No image request
-							</span>
-							<span>
-								<Braces className="size-4" /> TypeScript
-							</span>
-							<span>
-								<Fingerprint className="size-4" /> Deterministic
-							</span>
-						</div>
-						<div className="mt-5 grid max-w-[34rem] grid-cols-3 overflow-hidden rounded-xl border border-white/10 bg-white/[0.04] max-[560px]:grid-cols-1 [&>div+div]:border-white/10 [&>div+div]:border-l max-[560px]:[&>div+div]:border-t max-[560px]:[&>div+div]:border-l-0 [&>div]:px-4 [&>div]:py-3.5">
-							<div>
-								<span className="block font-bold text-[#6f8ca4] text-[0.62rem] uppercase tracking-[0.13em]">
-									Free · available
-								</span>
-								<strong className="mt-1 block text-[#d9effb] text-sm">
-									React package
-								</strong>
-							</div>
-							<div>
-								<span className="block font-bold text-[#6f8ca4] text-[0.62rem] uppercase tracking-[0.13em]">
-									Paid · available
-								</span>
-								<strong className="mt-1 block text-[#d9effb] text-sm">
-									Hosted API
-								</strong>
-							</div>
-							<div>
-								<span className="block font-bold text-[#6f8ca4] text-[0.62rem] uppercase tracking-[0.13em]">
-									Ready to install
-								</span>
-								<Link
-									className="mt-1 block font-bold text-[#d9effb] text-sm underline-offset-4 hover:underline"
-									href="/docs/components"
-								>
-									shadcn components
-								</Link>
-							</div>
-						</div>
-					</div>
-
-					<div className="overflow-hidden rounded-[1.6rem] border border-sky-200/12 bg-[#0b1b30] shadow-[0_35px_100px_rgb(0_0_0_/_32%)]">
-						<div className="flex h-[3.4rem] items-center justify-between border-white/8 border-b bg-white/[0.03] px-[1.15rem]">
-							<div aria-hidden="true" className="flex gap-[0.42rem]">
-								<span className="size-[0.55rem] rounded-full bg-[#fb7185]" />
-								<span className="size-[0.55rem] rounded-full bg-[#fbbf24]" />
-								<span className="size-[0.55rem] rounded-full bg-[#34d399]" />
-							</div>
-							<code className="text-[#658099] text-[0.7rem]">profile.tsx</code>
-						</div>
-						<ProfileCodeExample />
-						<div className="flex items-center gap-[0.85rem] border-white/8 border-t bg-[#f8fcff] px-5 py-[1.1rem] max-[640px]:p-[0.9rem] [&_img]:rounded-2xl [&_img]:border [&_img]:border-[#d5edf9] [&_img]:bg-white [&_img]:p-1">
-							<Avatar
-								alt="Generated example Blobz for lirena00"
-								name="lirena00"
-								palette={["#e8f7ff", "#38bdf8"]}
-								size={76}
-							/>
-							<strong className="font-[850] text-[#0b1830] text-[0.85rem] tracking-[-0.02em]">
-								lirena00
-							</strong>
-						</div>
-					</div>
-				</div>
-			</section>
+			<WaysToUse />
 
 			<Pricing />
 
@@ -325,10 +197,12 @@ export default function Home() {
 				>
 					{FOOTER_BLOBZ.map(([name, palette]) => (
 						<div
-							className="relative -mx-[0.45rem] size-[6.75rem] rotate-[-7deg] even:-translate-y-4 even:rotate-6 hover:z-3 max-[640px]:-mx-[0.55rem] max-[640px]:size-[5.1rem] [&:nth-child(3)]:-translate-y-[1.7rem] [&:nth-child(3)]:rotate-[-1deg] [&:nth-child(3)]:scale-[1.08]"
+							className={`${footerAvatarStyles.item} -mx-[0.45rem] size-[6.75rem] rotate-[-7deg] even:-translate-y-4 even:rotate-6 max-[640px]:-mx-[0.55rem] max-[640px]:size-[5.1rem] [&:nth-child(3)]:-translate-y-[1.7rem] [&:nth-child(3)]:rotate-[-1deg] [&:nth-child(3)]:scale-[1.08]`}
 							key={name}
 						>
-							<div className="size-full rounded-[1.45rem] border border-[#d8eef9] bg-white p-[0.3rem] shadow-[0_20px_45px_rgb(14_165_233_/_16%)] transition-[transform,box-shadow] duration-240 ease-[cubic-bezier(0.77,0,0.175,1)] hover:-translate-y-2 hover:scale-[1.055] hover:shadow-[0_26px_56px_rgb(14_165_233_/_23%)] motion-reduce:transform-none motion-reduce:transition-none [&_img]:block">
+							<div
+								className={`${footerAvatarStyles.card} size-full rounded-[1.45rem] border border-[#d8eef9] bg-white p-[0.3rem] shadow-[0_20px_45px_rgb(14_165_233_/_16%)] [&_img]:block`}
+							>
 								<Avatar alt="" name={name} palette={palette} size="100%" />
 							</div>
 						</div>

@@ -58,7 +58,14 @@ export default function SignUpForm({
 						toast.error(error.error.message || error.error.statusText);
 					},
 					onSuccess: () => {
-						router.push("/dashboard");
+						const billing = new URLSearchParams(window.location.search).get(
+							"billing"
+						);
+						router.push(
+							billing === "monthly"
+								? "/dashboard?billing=monthly"
+								: "/dashboard"
+						);
 						toast.success("API account created.");
 					},
 				}

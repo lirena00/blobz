@@ -41,8 +41,10 @@ const BILLING_CADENCES = ["monthly", "yearly"] as const;
 
 export default function PlanPicker({
 	billingConfigured,
+	initialBillingCadence,
 }: {
 	billingConfigured: boolean;
+	initialBillingCadence: "monthly" | "yearly";
 }) {
 	const [pendingPlan, setPendingPlan] = useState<string | null>(null);
 
@@ -102,7 +104,7 @@ export default function PlanPicker({
 					month.
 				</p>
 			</div>
-			<Tabs defaultValue="yearly">
+			<Tabs defaultValue={initialBillingCadence}>
 				<TabsList aria-label="Billing frequency" className="w-fit">
 					<TabsTrigger value="monthly">Monthly</TabsTrigger>
 					<TabsTrigger value="yearly">Yearly</TabsTrigger>

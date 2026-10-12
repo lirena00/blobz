@@ -47,6 +47,7 @@ export interface DashboardProps {
 		status: string;
 		subscriptionId: string | null;
 	} | null;
+	initialBillingCadence: "monthly" | "yearly";
 	origins: string[];
 	recentDays: { day: string; requestCount: number }[];
 	usage: number;
@@ -228,8 +229,12 @@ function InactiveWorkspace({
 	awaitingPayment,
 	billingConfigured,
 	entitlement,
+	initialBillingCadence,
 	origins,
-}: Pick<DashboardProps, "billingConfigured" | "entitlement" | "origins"> & {
+}: Pick<
+	DashboardProps,
+	"billingConfigured" | "entitlement" | "initialBillingCadence" | "origins"
+> & {
 	awaitingPayment: boolean;
 }) {
 	const canCheckout =
@@ -255,7 +260,10 @@ function InactiveWorkspace({
 				</Alert>
 			) : null}
 			{canCheckout ? (
-				<PlanPicker billingConfigured={billingConfigured} />
+				<PlanPicker
+					billingConfigured={billingConfigured}
+					initialBillingCadence={initialBillingCadence}
+				/>
 			) : null}
 			<div className="grid gap-6 lg:grid-cols-[minmax(18rem,0.85fr)_minmax(0,1.4fr)]">
 				<ApprovedOrigins origins={origins} />
@@ -285,6 +293,7 @@ export default function Dashboard({
 	checkoutReturned,
 	endpoint,
 	entitlement,
+	initialBillingCadence,
 	origins,
 	recentDays,
 	usage,
@@ -369,6 +378,7 @@ export default function Dashboard({
 					awaitingPayment={awaitingPayment}
 					billingConfigured={billingConfigured}
 					entitlement={entitlement}
+					initialBillingCadence={initialBillingCadence}
 					origins={origins}
 				/>
 			)}
