@@ -12,6 +12,7 @@ const SECTIONS = [
 	{ id: "what", label: "What we use" },
 	{ id: "essential", label: "Essential cookies" },
 	{ id: "preferences", label: "Preferences" },
+	{ id: "analytics", label: "Analytics" },
 	{ id: "third-parties", label: "Third-party checkout" },
 	{ id: "controls", label: "Your controls" },
 ] as const;
@@ -19,16 +20,15 @@ const SECTIONS = [
 export default function CookiePolicyPage() {
 	return (
 		<LegalPage
-			intro="A short guide to the cookies and browser storage used by Blobz and its checkout provider."
+			intro="A short guide to the cookies and browser storage used by Blobz, Google Analytics, and its checkout provider."
 			sections={SECTIONS}
 			title="Cookie policy"
 		>
 			<LegalSection id="what" title="What we use">
 				<p>
 					Cookies are small pieces of data stored by your browser. Similar
-					browser storage can remember interface preferences. Blobz currently
-					uses these technologies for sign-in and preferences, not for its own
-					advertising or analytics cookies.
+					browser storage can remember interface preferences. Blobz uses these
+					technologies for sign-in, preferences, and website analytics.
 				</p>
 			</LegalSection>
 			<LegalSection id="essential" title="Essential cookies">
@@ -46,6 +46,15 @@ export default function CookiePolicyPage() {
 					interface and can be cleared through your browser controls.
 				</p>
 			</LegalSection>
+			<LegalSection id="analytics" title="Analytics">
+				<p>
+					We use Google Analytics to understand visits and interactions on the
+					Blobz website. Its tag can set first-party cookies named _ga and
+					_ga_&lt;container-id&gt; to distinguish visitors and sessions. Google
+					Analytics also receives page and browser information to produce usage
+					reports.
+				</p>
+			</LegalSection>
 			<LegalSection id="third-parties" title="Third-party checkout">
 				<p>
 					If you choose a paid plan, checkout takes place with Dodo Payments.
@@ -57,9 +66,9 @@ export default function CookiePolicyPage() {
 				<p>
 					You can remove or block cookies and local storage in your browser.
 					Blocking essential cookies may prevent sign-in or dashboard features
-					from working. For information about account data, read our{" "}
-					<Link href={{ pathname: "/privacy-policy" }}>privacy policy</Link>.
-					Questions? Email <a href="mailto:hi@lirena.in">hi@lirena.in</a>.
+					from working. For information about account and analytics data, read
+					our <Link href={{ pathname: "/privacy-policy" }}>privacy policy</Link>
+					. Questions? Email <a href="mailto:hi@lirena.in">hi@lirena.in</a>.
 				</p>
 			</LegalSection>
 		</LegalPage>

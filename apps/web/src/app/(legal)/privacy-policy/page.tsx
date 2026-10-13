@@ -4,7 +4,7 @@ import { LegalPage, LegalSection } from "@/components/legal/legal-page";
 export const metadata: Metadata = {
 	alternates: { canonical: "/privacy-policy" },
 	description:
-		"How Blobz handles account, billing, and hosted avatar API data.",
+		"How Blobz handles account, analytics, billing, and hosted avatar API data.",
 	title: "Privacy policy | Blobz",
 };
 
@@ -46,6 +46,11 @@ export default function PrivacyPolicyPage() {
 						counts, and related timestamps for the hosted API.
 					</li>
 					<li>
+						<strong>Website analytics:</strong> Google Analytics collects page
+						visits, interactions, approximate location, and browser and device
+						information. Its cookies can distinguish visitors and sessions.
+					</li>
+					<li>
 						<strong>Billing data:</strong> your plan, billing period,
 						subscription status, and payment provider identifiers. Checkout and
 						payment details are handled by Dodo Payments; Blobz does not store
@@ -63,18 +68,19 @@ export default function PrivacyPolicyPage() {
 				<p>
 					We use this information to create and secure accounts, provide your
 					hosted endpoint, enforce approved origins and usage limits, process
-					billing, troubleshoot issues, and prevent abuse. We may also use it to
-					respond to your requests and meet applicable legal obligations.
+					billing, understand website usage, troubleshoot issues, and prevent
+					abuse. We may also use it to respond to your requests and meet
+					applicable legal obligations.
 				</p>
 			</LegalSection>
 			<LegalSection id="sharing" title="Service providers">
 				<p>
-					Google handles account sign-in. Dodo Payments processes checkout and
-					subscriptions. Hosting and infrastructure providers may process
-					requests and logs needed to deliver the service. We share information
-					with providers only as needed for these purposes, or when required by
-					law. If you follow a link to a third-party service, its own privacy
-					terms apply.
+					Google handles account sign-in and website analytics. Dodo Payments
+					processes checkout and subscriptions. Hosting and infrastructure
+					providers may process requests and logs needed to deliver the service.
+					We share information with providers only as needed for these purposes,
+					or when required by law. If you follow a link to a third-party
+					service, its own privacy terms apply.
 				</p>
 			</LegalSection>
 			<LegalSection id="retention" title="Retention and security">

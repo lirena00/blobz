@@ -5,12 +5,15 @@ import {
 	Geist_Mono,
 	Inter,
 } from "next/font/google";
+import Script from "next/script";
 
 import "../index.css";
 import { cn } from "@blobz/ui/lib/utils";
 import Header from "@/components/header";
 import Providers from "@/components/providers";
 import { SITE_URL } from "@/lib/site";
+
+const GOOGLE_ANALYTICS_ID = "G-1K83GYYD16";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -90,6 +93,22 @@ export default function RootLayout({
 					</div>
 				</Providers>
 			</body>
+			{process.env.NODE_ENV === "production" ? (
+				<>
+					<Script id="google-analytics" strategy="afterInteractive">
+						{`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${GOOGLE_ANALYTICS_ID}');
+            `}
+					</Script>
+					<Script
+						src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`}
+						strategy="afterInteractive"
+					/>
+				</>
+			) : null}
 		</html>
 	);
 }
