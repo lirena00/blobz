@@ -46,9 +46,9 @@ export default function PrivacyPolicyPage() {
 						counts, and related timestamps for the hosted API.
 					</li>
 					<li>
-						<strong>Website analytics:</strong> Google Analytics collects page
-						visits, interactions, approximate location, and browser and device
-						information. Its cookies can distinguish visitors and sessions.
+						<strong>Website analytics:</strong> our self-hosted Umami instance
+						records page views, referrers, browser and device types, and country
+						of origin. Its tracking script does not set analytics cookies.
 					</li>
 					<li>
 						<strong>Billing data:</strong> your plan, billing period,
@@ -75,12 +75,12 @@ export default function PrivacyPolicyPage() {
 			</LegalSection>
 			<LegalSection id="sharing" title="Service providers">
 				<p>
-					Google handles account sign-in and website analytics. Dodo Payments
-					processes checkout and subscriptions. Hosting and infrastructure
-					providers may process requests and logs needed to deliver the service.
-					We share information with providers only as needed for these purposes,
-					or when required by law. If you follow a link to a third-party
-					service, its own privacy terms apply.
+					Google handles account sign-in. Dodo Payments processes checkout and
+					subscriptions. Hosting and infrastructure providers may process
+					requests and logs needed to deliver the service. We share information
+					with providers only as needed for these purposes, or when required by
+					law. If you follow a link to a third-party service, its own privacy
+					terms apply.
 				</p>
 			</LegalSection>
 			<LegalSection id="retention" title="Retention and security">

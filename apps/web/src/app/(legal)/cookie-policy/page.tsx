@@ -20,7 +20,7 @@ const SECTIONS = [
 export default function CookiePolicyPage() {
 	return (
 		<LegalPage
-			intro="A short guide to the cookies and browser storage used by Blobz, Google Analytics, and its checkout provider."
+			intro="A short guide to the cookies, browser storage, and analytics used by Blobz and its checkout provider."
 			sections={SECTIONS}
 			title="Cookie policy"
 		>
@@ -28,7 +28,8 @@ export default function CookiePolicyPage() {
 				<p>
 					Cookies are small pieces of data stored by your browser. Similar
 					browser storage can remember interface preferences. Blobz uses these
-					technologies for sign-in, preferences, and website analytics.
+					technologies for sign-in and preferences. Website analytics runs
+					without analytics cookies.
 				</p>
 			</LegalSection>
 			<LegalSection id="essential" title="Essential cookies">
@@ -48,11 +49,9 @@ export default function CookiePolicyPage() {
 			</LegalSection>
 			<LegalSection id="analytics" title="Analytics">
 				<p>
-					We use Google Analytics to understand visits and interactions on the
-					Blobz website. Its tag can set first-party cookies named _ga and
-					_ga_&lt;container-id&gt; to distinguish visitors and sessions. Google
-					Analytics also receives page and browser information to produce usage
-					reports.
+					We use self-hosted Umami analytics to understand visits and
+					interactions on the Blobz website. Its tracking script does not set
+					analytics cookies.
 				</p>
 			</LegalSection>
 			<LegalSection id="third-parties" title="Third-party checkout">
@@ -65,10 +64,11 @@ export default function CookiePolicyPage() {
 			<LegalSection id="controls" title="Your controls">
 				<p>
 					You can remove or block cookies and local storage in your browser.
-					Blocking essential cookies may prevent sign-in or dashboard features
-					from working. For information about account and analytics data, read
-					our <Link href={{ pathname: "/privacy-policy" }}>privacy policy</Link>
-					. Questions? Email <a href="mailto:hi@lirena.in">hi@lirena.in</a>.
+					Umami analytics does not depend on cookies. Blocking essential cookies
+					may prevent sign-in or dashboard features from working. For
+					information about account and analytics data, read our{" "}
+					<Link href={{ pathname: "/privacy-policy" }}>privacy policy</Link>.
+					Questions? Email <a href="mailto:hi@lirena.in">hi@lirena.in</a>.
 				</p>
 			</LegalSection>
 		</LegalPage>

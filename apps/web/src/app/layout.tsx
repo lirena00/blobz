@@ -13,8 +13,6 @@ import Header from "@/components/header";
 import Providers from "@/components/providers";
 import { SITE_URL } from "@/lib/site";
 
-const GOOGLE_ANALYTICS_ID = "G-1K83GYYD16";
-
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 const geistSans = Geist({
@@ -94,20 +92,11 @@ export default function RootLayout({
 				</Providers>
 			</body>
 			{process.env.NODE_ENV === "production" ? (
-				<>
-					<Script id="google-analytics" strategy="afterInteractive">
-						{`
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', '${GOOGLE_ANALYTICS_ID}');
-            `}
-					</Script>
-					<Script
-						src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`}
-						strategy="afterInteractive"
-					/>
-				</>
+				<Script
+					data-website-id="c3f8dafb-fa22-4c03-814a-b4f5602b1d07"
+					src="https://analytics.lirena.in/script.js"
+					strategy="afterInteractive"
+				/>
 			) : null}
 		</html>
 	);
