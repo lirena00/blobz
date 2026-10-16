@@ -1,6 +1,6 @@
 # Contributing to Blobz
 
-Blobz has two public libraries and one web app. Changes to generated faces can affect every existing avatar, so please check the output as well as the types.
+Blobz has two public npm libraries, a public shadcn registry, and one web app. Changes to generated faces can affect every existing avatar, so please check the output as well as the types.
 
 ## Get the workspace running
 
@@ -27,6 +27,8 @@ Use a direct connection for `DATABASE_MIGRATION_URL` when possible and a pooled 
 | --- | --- |
 | Generated face, hash, SVG, or custom choices | `packages/avatar-core/src/avatar.ts` |
 | React components | `packages/react/src/` |
+| Shared shadcn Avatar primitives | `packages/ui/src/components/avatar.tsx` |
+| Registry compositions, cards, and blocks | `apps/web/src/registry/blobz/` |
 | Studio, docs, dashboard, or API routes | `apps/web/src/` |
 | Shared site components and styling | `packages/ui/src/` |
 | Database schema or migrations | `packages/db/` |
@@ -45,8 +47,10 @@ cd ../react && bun test
 
 Run `bun run fix` to apply Ultracite formatting. Include a screenshot for visible UI changes. For generator changes, show before and after SVGs for a few stable names and explain whether existing names now render differently. Add or update tests for behavior changes and boundary cases. Keep credentials, database URLs, and local `.env` files out of commits.
 
+For registry changes, update the source and the relevant item definition included by the root `registry.json`. From `apps/web`, run `bun run registry:validate` and `bun run registry:build` to regenerate `public/r/`. Install the affected item in a separate shadcn project to check its dependency list, target paths, and copied imports.
+
 If you change Better Auth plugins or schema options, run `bun run auth:generate` from the root, review the resulting schema, and include the matching migration. For hosted API changes, update [the API guide](./docs/hosted-api.md) when URL behavior, origin checks, limits, or billing behavior changes.
 
 ## Package releases
 
-Only `@blobz/avatar-core` and `@blobz/react` are published to npm. The other workspace packages are private implementation details. A release should bump the affected package version, build it, inspect `npm pack --dry-run`, and publish `avatar-core` before `react` when both change. Each public tarball must contain its README, built `dist/`, and MIT license.
+Only `@blobz/avatar-core` and `@blobz/react` are published to npm. Other workspace packages are private npm packages; selected UI source files are distributed through the shadcn registry. A package release should bump the affected package version, build it, inspect `npm pack --dry-run`, and publish `avatar-core` before `react` when both change. Each public tarball must contain its README, built `dist/`, and MIT license.
