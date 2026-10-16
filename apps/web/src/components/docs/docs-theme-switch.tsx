@@ -2,7 +2,11 @@
 
 import { Monitor, Moon, Sun, SunMoon } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useCallback } from "react";
+import { useCallback, useSyncExternalStore } from "react";
+
+const subscribeToHydration = () => () => undefined;
+const getClientSnapshot = (): boolean => true;
+const getServerSnapshot = (): boolean => false;
 
 const themeOptions = [
 	{ icon: Monitor, label: "System", value: "system" },
@@ -38,6 +42,11 @@ function ThemeOption({
 
 export function DocsThemeSwitch() {
 	const { setTheme, theme } = useTheme();
+	const hydrated = useSyncExternalStore<boolean>(
+		subscribeToHydration,
+		getClientSnapshot,
+		getServerSnapshot
+	);
 
 	return (
 		<div className="mb-6 flex items-center justify-between gap-2 rounded-2xl border border-fd-border bg-fd-card px-3 py-2 text-fd-card-foreground">
@@ -56,7 +65,7 @@ export function DocsThemeSwitch() {
 					<ThemeOption
 						key={option.value}
 						option={option}
-						selectedTheme={theme}
+						selectedTheme={hydrated ? theme : undefined}
 						setTheme={setTheme}
 					/>
 				))}
