@@ -30,6 +30,36 @@
           "target": "@components/blobz/avatar-chip.tsx"
         }
       ]
+    },
+    {
+      "name": "testimonial-card",
+      "type": "registry:component",
+      "title": "Testimonial Card",
+      "description": "Editorial and compact testimonials with image or generated avatars.",
+      "dependencies": ["class-variance-authority", "cn"],
+      "registryDependencies": ["@blobz/avatar"],
+      "files": [
+        {
+          "path": "testimonial-card.tsx",
+          "type": "registry:component",
+          "target": "@components/blobz/testimonial-card.tsx"
+        }
+      ]
+    },
+    {
+      "name": "profile-card",
+      "type": "registry:component",
+      "title": "Profile Card",
+      "description": "Compact and featured profile cards with thoughtful defaults and composable actions.",
+      "dependencies": ["class-variance-authority", "cn", "lucide-react"],
+      "registryDependencies": ["card", "@blobz/avatar"],
+      "files": [
+        {
+          "path": "profile-card.tsx",
+          "type": "registry:component",
+          "target": "@components/blobz/profile-card.tsx"
+        }
+      ]
     }
   ]
 }

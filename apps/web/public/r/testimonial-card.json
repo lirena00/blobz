@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "testimonial-card",
+  "title": "Testimonial Card",
+  "description": "Editorial and compact testimonials with image or generated avatars.",
+  "dependencies": ["class-variance-authority", "cn"],
+  "registryDependencies": ["@blobz/avatar"],
+  "files": [
+    {
+      "path": "apps/web/src/registry/blobz/components/testimonial-card.tsx",
+      "content": "import { cva, type VariantProps } from \"class-variance-authority\";\nimport { cn } from \"cn\";\nimport type { ComponentProps, ReactNode } from \"react\";\nimport {\n\tAvatar,\n\tAvatarFallback,\n\tAvatarImage,\n\ttype AvatarSource,\n} from \"@/components/ui/avatar\";\n\nconst testimonialCardVariants = cva(\n\t\"m-0 grid w-full min-w-0 max-w-2xl gap-6 bg-card text-card-foreground\",\n\t{\n\t\tdefaultVariants: { variant: \"editorial\" },\n\t\tvariants: {\n\t\t\tvariant: {\n\t\t\t\tcompact: \"max-w-sm rounded-2xl border border-border/80 p-6 shadow-xs\",\n\t\t\t\teditorial:\n\t\t\t\t\t\"border-border border-y py-6 sm:grid-cols-[10rem_minmax(0,1fr)] sm:gap-8 sm:py-0\",\n\t\t\t},\n\t\t},\n\t}\n);\n\nexport interface TestimonialCardProps\n\textends Omit<ComponentProps<\"figure\">, \"children\">,\n\t\tVariantProps<typeof testimonialCardVariants> {\n\treadonly attribution?: string;\n\treadonly avatar: AvatarSource;\n\treadonly name: string;\n\treadonly quote: ReactNode;\n}\n\nexport function TestimonialCard({\n\tavatar,\n\tclassName,\n\tname,\n\tquote,\n\tattribution,\n\tvariant = \"editorial\",\n\t...props\n}: TestimonialCardProps) {\n\treturn (\n\t\t<figure\n\t\t\tclassName={cn(testimonialCardVariants({ variant }), className)}\n\t\t\tdata-slot=\"testimonial-card\"\n\t\t\tdata-variant={variant}\n\t\t\t{...props}\n\t\t>\n\t\t\t<div\n\t\t\t\tclassName={cn(\n\t\t\t\t\t\"flex items-start\",\n\t\t\t\t\tvariant === \"editorial\" &&\n\t\t\t\t\t\t\"sm:items-center sm:border-border sm:border-e\"\n\t\t\t\t)}\n\t\t\t>\n\t\t\t\t<Avatar\n\t\t\t\t\tclassName={cn(\n\t\t\t\t\t\tvariant === \"editorial\" ? \"size-20 sm:size-40\" : \"size-12\"\n\t\t\t\t\t)}\n\t\t\t\t\tframe={\n\t\t\t\t\t\tavatar.frame ?? (variant === \"editorial\" ? \"square\" : \"rounded\")\n\t\t\t\t\t}\n\t\t\t\t>\n\t\t\t\t\t<AvatarImage alt=\"\" src={avatar.src} />\n\t\t\t\t\t<AvatarFallback\n\t\t\t\t\t\talt=\"\"\n\t\t\t\t\t\tchoices={avatar.choices}\n\t\t\t\t\t\tname={avatar.name}\n\t\t\t\t\t\tpalette={avatar.palette}\n\t\t\t\t\t/>\n\t\t\t\t</Avatar>\n\t\t\t</div>\n\t\t\t<div\n\t\t\t\tclassName={cn(\n\t\t\t\t\t\"flex min-w-0 flex-col justify-center gap-5\",\n\t\t\t\t\tvariant === \"editorial\" && \"sm:py-5 sm:pe-6\"\n\t\t\t\t)}\n\t\t\t>\n\t\t\t\t<blockquote className=\"m-0 text-pretty font-medium text-xl leading-snug tracking-tight [overflow-wrap:anywhere] sm:text-[22px]\">\n\t\t\t\t\t{quote}\n\t\t\t\t</blockquote>\n\t\t\t\t<figcaption className=\"flex min-w-0 flex-col gap-1 text-sm\">\n\t\t\t\t\t<span className=\"font-medium [overflow-wrap:anywhere]\">{name}</span>\n\t\t\t\t\t{attribution ? (\n\t\t\t\t\t\t<span className=\"text-muted-foreground text-xs leading-relaxed [overflow-wrap:anywhere]\">\n\t\t\t\t\t\t\t{attribution}\n\t\t\t\t\t\t</span>\n\t\t\t\t\t) : null}\n\t\t\t\t</figcaption>\n\t\t\t</div>\n\t\t</figure>\n\t);\n}\n",
+      "type": "registry:component",
+      "target": "@components/blobz/testimonial-card.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

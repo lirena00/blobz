@@ -63,6 +63,36 @@
       "type": "registry:component"
     },
     {
+      "name": "testimonial-card",
+      "title": "Testimonial Card",
+      "description": "Editorial and compact testimonials with image or generated avatars.",
+      "dependencies": ["class-variance-authority", "cn"],
+      "registryDependencies": ["@blobz/avatar"],
+      "files": [
+        {
+          "path": "apps/web/src/registry/blobz/components/testimonial-card.tsx",
+          "type": "registry:component",
+          "target": "@components/blobz/testimonial-card.tsx"
+        }
+      ],
+      "type": "registry:component"
+    },
+    {
+      "name": "profile-card",
+      "title": "Profile Card",
+      "description": "Compact and featured profile cards with thoughtful defaults and composable actions.",
+      "dependencies": ["class-variance-authority", "cn", "lucide-react"],
+      "registryDependencies": ["card", "@blobz/avatar"],
+      "files": [
+        {
+          "path": "apps/web/src/registry/blobz/components/profile-card.tsx",
+          "type": "registry:component",
+          "target": "@components/blobz/profile-card.tsx"
+        }
+      ],
+      "type": "registry:component"
+    },
+    {
       "name": "avatar-account-menu",
       "title": "Avatar Account Menu",
       "description": "A ready-to-ship account menu with a Blobz avatar trigger, identity summary, and typed actions.",

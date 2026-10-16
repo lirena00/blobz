@@ -4,6 +4,14 @@ import { cn } from "@blobz/ui/lib/utils";
 import { ServerCodeBlock } from "fumadocs-ui/components/codeblock.rsc";
 import { Code2Icon } from "lucide-react";
 import { cache, type ReactNode } from "react";
+import { DEMO_PEOPLE } from "@/lib/demo-people";
+
+const DEMO_PEOPLE_IMPORT_PATTERN =
+	/^import \{ DEMO_PEOPLE \} from "@\/lib\/demo-people";\r?\n/m;
+const DEMO_PERSON_PATTERN = /DEMO_PEOPLE\.(\w+)/g;
+const DEMO_PERSON_NAMES: ReadonlyMap<string, string> = new Map(
+	Object.entries(DEMO_PEOPLE)
+);
 
 const EXAMPLE_FILENAMES = {
 	avatar: "avatar-example.tsx",
@@ -24,6 +32,10 @@ const EXAMPLE_FILENAMES = {
 	"avatar-team-list": "avatar-team-list-example.tsx",
 	"avatar-unread": "avatar-unread-example.tsx",
 	"group-chat": "group-chat-example.tsx",
+	"profile-card": "profile-card-example.tsx",
+	"profile-card-featured": "profile-card-featured-example.tsx",
+	"testimonial-card": "testimonial-card-example.tsx",
+	"testimonial-card-compact": "testimonial-card-compact-example.tsx",
 	"user-table": "user-table-example.tsx",
 } as const;
 
@@ -41,6 +53,14 @@ const readExampleSource = cache(async (filename: string): Promise<string> => {
 		"utf8"
 	);
 	return source
+		.replace(DEMO_PEOPLE_IMPORT_PATTERN, "")
+		.replace(DEMO_PERSON_PATTERN, (_expression: string, key: string) => {
+			const name = DEMO_PERSON_NAMES.get(key);
+			if (name === undefined) {
+				throw new Error(`Unknown demo person in ${filename}: ${key}`);
+			}
+			return JSON.stringify(name);
+		})
 		.replaceAll("@/registry/blobz/components/", "@/components/blobz/")
 		.replaceAll("@/registry/blobz/blocks/", "@/components/blobz/")
 		.replaceAll("@blobz/ui/components/", "@/components/ui/")

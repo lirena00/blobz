@@ -11,6 +11,8 @@ import {
 } from "@/components/ui/avatar";
 import { AvatarSelect } from "@/registry/blobz/blocks/avatar-select";
 import { AvatarTeamList } from "@/registry/blobz/blocks/avatar-team-list";
+import { ProfileCard } from "@/registry/blobz/components/profile-card";
+import { TestimonialCard } from "@/registry/blobz/components/testimonial-card";
 
 describe("avatar composition", () => {
 	test("renders a generated fallback with the inherited frame and an accessible description", () => {
@@ -120,5 +122,48 @@ describe("avatar composition", () => {
 		expect(markup).toContain('aria-label="Select a person"');
 		expect(markup).toContain("Product designer");
 		expect(markup).toContain('data-slot="avatar-profile"');
+	});
+});
+
+describe("profile and testimonial cards", () => {
+	test("preserves quotation and attribution semantics for long content", () => {
+		const quote = "A thoughtful detail. ".repeat(30);
+		const markup = renderToStaticMarkup(
+			<TestimonialCard
+				attribution="Design team"
+				avatar={{ name: "Example" }}
+				name="Example customer"
+				quote={quote}
+			/>
+		);
+		expect(markup).toContain("<figure");
+		expect(markup).toContain("<blockquote");
+		expect(markup).toContain(quote);
+		expect(markup).toContain("<figcaption");
+		expect(markup).toContain("Design team");
+		expect(markup).not.toContain('role="Design team"');
+	});
+
+	test("omits empty profile sections and composes supplied actions", () => {
+		const minimal = renderToStaticMarkup(
+			<ProfileCard avatar={{ name: "Janaki" }} name="Janaki Ammal" />
+		);
+		expect(minimal).toContain("<h3");
+		expect(minimal).not.toContain('data-slot="card-content"');
+		expect(minimal).not.toContain('data-slot="card-footer"');
+		const complete = renderToStaticMarkup(
+			<ProfileCard
+				actions={<a href="https://www.lirena.in">Visit website</a>}
+				avatar={{ name: "Lirena" }}
+				bio="A short introduction."
+				description="Design & development"
+				name="Lirena"
+				variant="featured"
+			/>
+		);
+		expect(complete).toContain("A short introduction.");
+		expect(complete).toContain('href="https://www.lirena.in"');
+		expect(complete).toContain('data-slot="card-footer"');
+		expect(complete).not.toContain('role="Design &amp; development"');
 	});
 });

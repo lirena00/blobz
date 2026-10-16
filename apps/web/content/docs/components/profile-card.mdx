@@ -1,0 +1,61 @@
+---
+title: Profile Card
+description: Compact and featured profiles with image fallbacks, biographies, and composable actions.
+---
+
+import { ProfileCardExample } from "@/components/docs/examples/profile-card-example";
+import { ProfileCardFeaturedExample } from "@/components/docs/examples/profile-card-featured-example";
+
+## Compact
+
+A compact profile with a larger avatar beside the name, a short introduction, and a shared footer for supporting details and an action. The footer stacks on narrow cards.
+
+<ComponentPreview name="profile-card"><ProfileCardExample /></ComponentPreview>
+
+## Installation
+
+<ComponentInstallation dependencies={["button", "badge"]} name="profile-card" />
+
+The shared Avatar and shadcn Card components are installed automatically. This command also includes the Button and Badge components used in the previews.
+
+## Usage
+
+```tsx
+import { ProfileCard } from "@/components/blobz/profile-card";
+
+<ProfileCard
+  avatar={{ name: "Kalpana Chawla", palette: ["#dff4ff", "#38bdf8"] }}
+  name="Kalpana Chawla"
+  description="Astronaut & aerospace engineer"
+  bio="Exploring the skies through aerospace research and two Space Shuttle missions."
+/>
+```
+
+The image is optional. Without it, or if it fails to load, the avatar uses the generated fallback.
+
+## Featured
+
+Use `variant="featured"` for a larger portrait and a subtle patterned header. Both variants use the same content and action slots.
+
+<ComponentPreview name="profile-card-featured"><ProfileCardFeaturedExample /></ComponentPreview>
+
+## Composition
+
+Use `badge` for a role or membership badge, `metadata` for supporting details, and `actions` for your application's buttons or links. In the compact layout, the badge sits beside the name and the metadata shares the footer with the actions. Empty sections are omitted automatically.
+
+For compact identity rows, see [Avatar Profile](/docs/components/avatar-profile).
+
+## API
+
+Accepts div props, including `className`, plus:
+
+<TypeTable type={{
+  avatar: { type: "AvatarSource", required: true, description: "A required name, with optional src, frame, palette, and choices." },
+  name: { type: "string", required: true, description: "Person's name displayed as the card heading." },
+  description: { type: "string", description: "Short supporting text below the name, such as a role, company, or specialty. Omitted when empty." },
+  bio: { type: "string", description: "Longer introduction displayed in the card body. Wraps naturally and is omitted when empty." },
+  badge: { type: "ReactNode", description: "Role or membership badge displayed beside the name in compact cards, or beside the avatar in featured cards." },
+  metadata: { type: "ReactNode", description: "Supporting details such as location or availability. Compact cards place these in the footer; featured cards place them below the biography." },
+  actions: { type: "ReactNode", description: "Buttons or links rendered in the card footer. Compact cards share the footer with metadata. The footer is omitted when it has no content." },
+  variant: { type: '"compact" | "featured"', default: '"compact"', description: "Card layout: compact pairs a larger avatar with a horizontal identity header; featured adds a patterned cover and an overlapping avatar." },
+}} />

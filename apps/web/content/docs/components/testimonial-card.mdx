@@ -1,0 +1,54 @@
+---
+title: Testimonial Card
+description: Editorial quotes with a generous image, and compact cards for a testimonial grid.
+---
+
+import { TestimonialCardExample } from "@/components/docs/examples/testimonial-card-example";
+import { TestimonialCardCompactExample } from "@/components/docs/examples/testimonial-card-compact-example";
+
+## Editorial
+
+A square portrait, thin rules, and a clear typographic hierarchy. The layout stacks on narrow screens and sits side by side when space allows.
+
+<ComponentPreview name="testimonial-card"><TestimonialCardExample /></ComponentPreview>
+
+The quotes and customer details on this page are illustrative sample content.
+
+## Installation
+
+<ComponentInstallation name="testimonial-card" />
+
+The shared Avatar component is installed automatically.
+
+## Usage
+
+```tsx
+import { TestimonialCard } from "@/components/blobz/testimonial-card";
+
+<TestimonialCard
+  avatar={{ name: "Avery" }}
+  name="Example customer"
+  quote="“Thoughtful defaults make the small details feel effortless.”"
+  attribution="Design team · Example company"
+/>
+```
+
+Omit `avatar.src` to use a generated face. A failed image automatically falls back to the same generated avatar.
+
+## Compact
+
+Use `variant="compact"` for a standalone card or a grid. Quotes wrap naturally without a fixed height.
+
+<ComponentPreview name="testimonial-card-compact"><TestimonialCardCompactExample /></ComponentPreview>
+
+## API
+
+Accepts figure props, including `className`, plus:
+
+<TypeTable type={{
+  avatar: { type: "AvatarSource", required: true, description: "A required name, with optional src, frame, palette, and choices." },
+  name: { type: "string", required: true, description: "Name of the person quoted." },
+  quote: { type: "ReactNode", required: true, description: "Testimonial content rendered inside a blockquote. Accepts plain text or inline formatting; include any quotation marks you want displayed." },
+  attribution: { type: "string", description: "Supporting role or company." },
+  variant: { type: '"editorial" | "compact"', default: '"editorial"', description: "Editorial pairs a large portrait with the quote and stacks on narrow screens. Compact uses a bordered card with the avatar above the quote." },
+}} />
