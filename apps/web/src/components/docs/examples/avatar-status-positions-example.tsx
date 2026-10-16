@@ -1,4 +1,4 @@
-import { BlobAvatarStatus } from "@/registry/blobz/components/avatar-status";
+import { Avatar, AvatarBadge, AvatarFallback } from "@/components/ui/avatar";
 
 const BLUE_PALETTE = ["#dff4ff", "#38bdf8"] as const;
 const POSITIONS = [
@@ -13,14 +13,14 @@ export function AvatarStatusPositionsExample() {
 		<div className="grid grid-cols-2 gap-x-10 gap-y-8 sm:grid-cols-4">
 			{POSITIONS.map(({ label, position }) => (
 				<div className="flex flex-col items-center gap-3" key={position}>
-					<BlobAvatarStatus
-						alt={`${label} status position`}
-						name={position}
-						palette={BLUE_PALETTE}
-						position={position}
-						size="xl"
-						status="online"
-					/>
+					<Avatar size="xl">
+						<AvatarFallback
+							alt={`${label} status position`}
+							name={position}
+							palette={BLUE_PALETTE}
+						/>
+						<AvatarBadge position={position} status="online" />
+					</Avatar>
 					<span className="text-muted-foreground text-xs">{label}</span>
 				</div>
 			))}

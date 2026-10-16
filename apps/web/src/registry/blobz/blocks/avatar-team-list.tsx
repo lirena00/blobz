@@ -1,23 +1,30 @@
 import { cn } from "cn";
 import type { ComponentProps, ReactNode } from "react";
+import {
+	Avatar,
+	AvatarBadge,
+	AvatarFallback,
+	AvatarImage,
+	type AvatarSource,
+	type AvatarStatus,
+} from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import {
-	BlobAvatar,
-	type BlobAvatarProps,
-} from "@/registry/blobz/components/avatar";
-import {
-	BlobAvatarStatus,
-	type BlobAvatarStatusProps,
-} from "@/registry/blobz/components/avatar-status";
+	AvatarProfile,
+	AvatarProfileAction,
+	AvatarProfileContent,
+	AvatarProfileDescription,
+	AvatarProfileName,
+} from "@/registry/blobz/components/avatar-profile";
 
 export interface AvatarTeamMember {
 	readonly action?: ReactNode;
-	readonly avatar: Omit<BlobAvatarProps, "alt">;
+	readonly avatar: AvatarSource;
 	readonly description?: string;
 	readonly id: string;
 	readonly name: string;
 	readonly role?: string;
-	readonly status?: NonNullable<BlobAvatarStatusProps["status"]>;
+	readonly status?: AvatarStatus;
 }
 
 export interface AvatarTeamListProps
@@ -33,45 +40,42 @@ export function AvatarTeamList({
 	return (
 		<ul
 			className={cn(
-				"flex w-full flex-col divide-y divide-border/80 overflow-hidden rounded-2xl border border-border bg-card shadow-sm",
+				"flex w-full flex-col divide-y divide-border/60 overflow-hidden rounded-2xl border border-border bg-card p-1 shadow-xs",
 				className
 			)}
 			data-slot="avatar-team-list"
 			{...props}
 		>
 			{members.map((member) => (
-				<li
-					className="flex min-w-0 items-center gap-3 px-4 py-3.5 transition-colors hover:bg-muted/35"
-					data-slot="avatar-team-list-item"
-					key={member.id}
-				>
-					{member.status ? (
-						<BlobAvatarStatus
-							{...member.avatar}
-							alt=""
-							status={member.status}
-						/>
-					) : (
-						<BlobAvatar {...member.avatar} alt="" />
-					)}
-					<span className="min-w-0 flex-1">
-						<span className="flex min-w-0 flex-wrap items-center gap-2">
-							<span className="truncate font-medium text-foreground text-sm">
-								{member.name}
-							</span>
-							{member.role ? (
-								<Badge variant="secondary">{member.role}</Badge>
+				<li data-slot="avatar-team-list-item" key={member.id}>
+					<AvatarProfile density="spacious">
+						<Avatar frame={member.avatar.frame}>
+							<AvatarImage alt="" src={member.avatar.src} />
+							<AvatarFallback
+								alt=""
+								choices={member.avatar.choices}
+								name={member.avatar.name}
+								palette={member.avatar.palette}
+							/>
+							{member.status ? <AvatarBadge status={member.status} /> : null}
+						</Avatar>
+						<AvatarProfileContent>
+							<div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
+								<AvatarProfileName>{member.name}</AvatarProfileName>
+								{member.role ? (
+									<Badge variant="secondary">{member.role}</Badge>
+								) : null}
+							</div>
+							{member.description ? (
+								<AvatarProfileDescription>
+									{member.description}
+								</AvatarProfileDescription>
 							) : null}
-						</span>
-						{member.description ? (
-							<span className="block truncate text-muted-foreground text-xs">
-								{member.description}
-							</span>
+						</AvatarProfileContent>
+						{member.action ? (
+							<AvatarProfileAction>{member.action}</AvatarProfileAction>
 						) : null}
-					</span>
-					{member.action ? (
-						<span className="ms-auto shrink-0">{member.action}</span>
-					) : null}
+					</AvatarProfile>
 				</li>
 			))}
 		</ul>

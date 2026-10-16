@@ -1,0 +1,34 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "items": [
+    {
+      "name": "avatar",
+      "type": "registry:ui",
+      "title": "Avatar",
+      "description": "Shadcn avatar primitives with deterministic Blobz fallbacks, images, status, and groups.",
+      "dependencies": [
+        "@base-ui/react",
+        "@blobz/react@^0.1.0",
+        "class-variance-authority",
+        "cn"
+      ],
+      "cssVars": {
+        "light": {
+          "avatar-status-online": "oklch(0.627 0.194 149.214)",
+          "avatar-status-away": "oklch(0.666 0.179 58.318)"
+        },
+        "dark": {
+          "avatar-status-online": "oklch(0.723 0.219 149.579)",
+          "avatar-status-away": "oklch(0.828 0.189 84.429)"
+        }
+      },
+      "files": [
+        {
+          "path": "avatar.tsx",
+          "type": "registry:ui",
+          "target": "@ui/avatar.tsx"
+        }
+      ]
+    }
+  ]
+}

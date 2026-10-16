@@ -1,8 +1,13 @@
 "use client";
 
-import { cva } from "class-variance-authority";
 import { cn } from "cn";
 import type { ReactNode } from "react";
+import {
+	Avatar,
+	AvatarFallback,
+	AvatarImage,
+	type AvatarSource,
+} from "@/components/ui/avatar";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -13,25 +18,11 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-	BlobAvatar,
-	type BlobAvatarProps,
-} from "@/registry/blobz/components/avatar";
-
-const avatarAccountMenuTriggerVariants = cva(
-	"inline-flex rounded-xl border border-border bg-card p-1 shadow-sm outline-none transition-colors hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring/50",
-	{
-		defaultVariants: {
-			frame: "rounded",
-		},
-		variants: {
-			frame: {
-				circle: "rounded-full",
-				rounded: "rounded-lg",
-				square: "rounded-none",
-			},
-		},
-	}
-);
+	AvatarProfile,
+	AvatarProfileContent,
+	AvatarProfileDescription,
+	AvatarProfileName,
+} from "@/registry/blobz/components/avatar-profile";
 
 export interface AvatarAccountMenuAction {
 	readonly disabled?: boolean;
@@ -44,7 +35,7 @@ export interface AvatarAccountMenuAction {
 
 export interface AvatarAccountMenuProps {
 	readonly actions: readonly AvatarAccountMenuAction[];
-	readonly avatar: Omit<BlobAvatarProps, "alt">;
+	readonly avatar: AvatarSource;
 	readonly className?: string;
 	readonly contentClassName?: string;
 	readonly email?: string;
@@ -68,14 +59,20 @@ export function AvatarAccountMenu({
 			<DropdownMenuTrigger
 				aria-label={triggerLabel}
 				className={cn(
-					avatarAccountMenuTriggerVariants({
-						frame: avatar.frame ?? "rounded",
-					}),
+					"inline-flex rounded-xl border border-border/70 bg-card p-1 outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring data-[frame=circle]:rounded-full data-[frame=square]:rounded-none motion-reduce:transition-none",
 					className
 				)}
 				data-frame={avatar.frame ?? "rounded"}
 			>
-				<BlobAvatar {...avatar} alt="" variant="outline" />
+				<Avatar frame={avatar.frame} variant="outline">
+					<AvatarImage alt="" src={avatar.src} />
+					<AvatarFallback
+						alt=""
+						choices={avatar.choices}
+						name={avatar.name}
+						palette={avatar.palette}
+					/>
+				</Avatar>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent
 				align="end"
@@ -83,18 +80,24 @@ export function AvatarAccountMenu({
 				sideOffset={8}
 			>
 				<DropdownMenuGroup>
-					<DropdownMenuLabel className="flex items-center gap-3">
-						<BlobAvatar {...avatar} alt="" size="lg" variant="outline" />
-						<span className="min-w-0">
-							<span className="block truncate font-medium text-foreground text-sm">
-								{name}
-							</span>
-							{email ? (
-								<span className="block truncate text-muted-foreground text-xs">
-									{email}
-								</span>
-							) : null}
-						</span>
+					<DropdownMenuLabel>
+						<AvatarProfile density="compact">
+							<Avatar frame={avatar.frame} size="lg">
+								<AvatarImage alt="" src={avatar.src} />
+								<AvatarFallback
+									alt=""
+									choices={avatar.choices}
+									name={avatar.name}
+									palette={avatar.palette}
+								/>
+							</Avatar>
+							<AvatarProfileContent>
+								<AvatarProfileName>{name}</AvatarProfileName>
+								{email ? (
+									<AvatarProfileDescription>{email}</AvatarProfileDescription>
+								) : null}
+							</AvatarProfileContent>
+						</AvatarProfile>
 					</DropdownMenuLabel>
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
@@ -130,5 +133,3 @@ export function AvatarAccountMenu({
 		</DropdownMenu>
 	);
 }
-
-export { avatarAccountMenuTriggerVariants };

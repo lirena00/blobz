@@ -1,81 +1,42 @@
 ---
 title: Avatar Group
-description: Compose overlapping Blobz avatars and a matching overflow count.
+description: Overlapping avatars, overflow counts, and social proof using the shared avatar primitives.
 ---
 
 import { AvatarGroupExample } from "@/components/docs/examples/avatar-group-example";
+import { AvatarSocialProofExample } from "@/components/docs/examples/avatar-social-proof-example";
 
-<ComponentPreview name="avatar-group">
-  <AvatarGroupExample />
-</ComponentPreview>
+<ComponentPreview name="avatar-group"><AvatarGroupExample /></ComponentPreview>
 
 ## Installation
 
-Register the [Blobz registry](/docs/components#register-the-blobz-registry) once in your project, then install:
+Groups are included in the Avatar component.
 
-<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
-  <Tab>
-    ```bash
-    npx shadcn@latest add @blobz/avatar-group
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    pnpm dlx shadcn@latest add @blobz/avatar-group
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    yarn dlx shadcn@latest add @blobz/avatar-group
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    bunx --bun shadcn@latest add @blobz/avatar-group
-    ```
-  </Tab>
-</Tabs>
+<ComponentInstallation name="avatar" />
 
 ## Usage
 
 ```tsx
-import { BlobAvatar } from "@/components/blobz/avatar";
-import {
-  BlobAvatarGroup,
-  BlobAvatarGroupCount,
-  BlobAvatarGroupItem,
-} from "@/components/blobz/avatar-group";
+import { Avatar, AvatarFallback, AvatarGroup, AvatarGroupCount } from "@/components/ui/avatar";
 
-<BlobAvatarGroup aria-label="Project team">
-  <BlobAvatarGroupItem>
-    <BlobAvatar alt="" name="Janaki" />
-  </BlobAvatarGroupItem>
-  <BlobAvatarGroupItem>
-    <BlobAvatar alt="" name="Vikram" />
-  </BlobAvatarGroupItem>
-  <BlobAvatarGroupCount count={3} />
-</BlobAvatarGroup>
+<AvatarGroup aria-label="Project team">
+  <Avatar><AvatarFallback name="Janaki" palette={["#dff4ff", "#38bdf8"]} /></Avatar>
+  <Avatar><AvatarFallback name="Vikram" palette={["#fff0e2", "#fa9769"]} /></Avatar>
+  <Avatar><AvatarFallback name="Kalpana" palette={["#e7fbe8", "#9ce786"]} /></Avatar>
+  <AvatarGroupCount count={4} />
+</AvatarGroup>
 ```
 
-Give the group a useful accessible label. Individual avatars can remain decorative when the surrounding interface provides the member names.
+Each avatar has its own palette and accepts an optional `AvatarImage`. Match `frame` and `size` on the count to the avatars around it. Overlap follows the document direction.
 
-## Count API
+## Social proof
 
-<TypeTable
-  type={{
-    count: {
-      description: "Number of additional people not rendered in the group.",
-      type: "number",
-      required: true,
-    },
-    size: {
-      type: '"sm" | "default" | "lg" | "xl"',
-      default: '"default"',
-    },
-    frame: {
-      description: "Matches the overflow count and item ring to the avatar crop.",
-      type: '"circle" | "rounded" | "square"',
-      default: '"rounded"',
-    },
-  }}
-/>
+Compose a group with supporting copy. The avatars and text stay separate, so either can be adapted to your layout.
+
+<ComponentPreview name="avatar-social-proof"><AvatarSocialProofExample /></ComponentPreview>
+
+## API
+
+`AvatarGroup` accepts div props. Give it an accessible label describing the people represented.
+
+`AvatarGroupCount` accepts span props, `frame`, `size`, and an optional numeric `count`. It labels a positive count as “N more people”; zero, negative, and non-finite counts are hidden. Supply `children` and an `aria-label` for a custom icon or action label.

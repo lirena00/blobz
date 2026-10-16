@@ -11,30 +11,7 @@ import { UserTableExample } from "@/components/docs/examples/user-table-example"
 
 ## Installation
 
-Register the [Blobz registry](/docs/components#register-the-blobz-registry) once in your project, then install:
-
-<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
-  <Tab>
-    ```bash
-    npx shadcn@latest add @blobz/user-table
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    pnpm dlx shadcn@latest add @blobz/user-table
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    yarn dlx shadcn@latest add @blobz/user-table
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    bunx --bun shadcn@latest add @blobz/user-table
-    ```
-  </Tab>
-</Tabs>
+<ComponentInstallation name="user-table" />
 
 The base avatar is installed automatically.
 
@@ -55,3 +32,5 @@ import { UserTable } from "@/components/blobz/user-table";
 ```
 
 Status accepts `active`, `invited`, and `suspended`. On narrow screens, the table scrolls horizontally so every column remains readable.
+
+The `avatar` source accepts a stable `name` and optional `src`, `frame`, `palette`, and `choices`. Images automatically fall back to the generated face.

@@ -1,74 +1,53 @@
 ---
 title: Avatar Profile
-description: Compound primitives for identity rows with metadata and actions.
+description: Composable identity rows with supporting text, badges, and actions.
 ---
 
 import { AvatarProfileExample } from "@/components/docs/examples/avatar-profile-example";
+import { AvatarBadgeExample } from "@/components/docs/examples/avatar-badge-example";
 
-<ComponentPreview name="avatar-profile">
-  <AvatarProfileExample />
-</ComponentPreview>
+<ComponentPreview name="avatar-profile"><AvatarProfileExample /></ComponentPreview>
 
 ## Installation
 
-Register the [Blobz registry](/docs/components#register-the-blobz-registry) once in your project, then install:
+<ComponentInstallation dependencies={["button", "badge"]} name="avatar-profile" />
 
-<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
-  <Tab>
-    ```bash
-    npx shadcn@latest add @blobz/avatar-profile
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    pnpm dlx shadcn@latest add @blobz/avatar-profile
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    yarn dlx shadcn@latest add @blobz/avatar-profile
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    bunx --bun shadcn@latest add @blobz/avatar-profile
-    ```
-  </Tab>
-</Tabs>
+The shared Avatar component is installed automatically.
 
 ## Usage
 
 ```tsx
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   AvatarProfile,
-  AvatarProfileAvatar,
   AvatarProfileContent,
   AvatarProfileDescription,
   AvatarProfileName,
 } from "@/components/blobz/avatar-profile";
 
 <AvatarProfile variant="outline">
-  <AvatarProfileAvatar alt="" name={user.id} size="lg" />
+  <Avatar>
+    <AvatarFallback alt="" name="Lirena" />
+  </Avatar>
   <AvatarProfileContent>
-    <AvatarProfileName>{user.name}</AvatarProfileName>
-    <AvatarProfileDescription>{user.email}</AvatarProfileDescription>
+    <AvatarProfileName>Lirena</AvatarProfileName>
+    <AvatarProfileDescription>Design & development</AvatarProfileDescription>
   </AvatarProfileContent>
 </AvatarProfile>
 ```
 
+Use `AvatarProfileAction` for trailing controls. Its contents remain yours to wire to your application.
+
+## Badges
+
+Compose a shadcn `Badge` beside the name to show a role or membership. The installation command above includes the Button and Badge components used in the previews.
+
+<ComponentPreview name="avatar-badge"><AvatarBadgeExample /></ComponentPreview>
+
+For a standalone card with a biography and actions, see [Profile Card](/docs/components/profile-card).
+
 ## API
 
-<TypeTable
-  type={{
-    density: {
-      type: '"compact" | "default" | "spacious"',
-      default: '"default"',
-    },
-    variant: {
-      type: '"default" | "muted" | "outline"',
-      default: '"default"',
-    },
-  }}
-/>
+`AvatarProfile` accepts div props, `density` (`compact`, `default`, `spacious`), and `variant` (`default`, `muted`, `outline`). The defaults are `default` for both.
 
-`AvatarProfileAvatar` accepts every `BlobAvatar` prop, including `frame="circle" | "rounded" | "square"`.
+`AvatarProfileContent` and `AvatarProfileAction` accept div props. `AvatarProfileName` and `AvatarProfileDescription` accept paragraph props. Place the shared `Avatar` directly inside the profile row.

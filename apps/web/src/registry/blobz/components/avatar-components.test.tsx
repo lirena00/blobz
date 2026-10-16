@@ -1,110 +1,93 @@
 import { describe, expect, test } from "bun:test";
 import { renderToStaticMarkup } from "react-dom/server";
+import {
+	Avatar,
+	AvatarBadge,
+	AvatarCount,
+	AvatarFallback,
+	AvatarGroup,
+	AvatarGroupCount,
+	AvatarImage,
+} from "@/components/ui/avatar";
 import { AvatarSelect } from "@/registry/blobz/blocks/avatar-select";
 import { AvatarTeamList } from "@/registry/blobz/blocks/avatar-team-list";
-import { BlobAvatar } from "@/registry/blobz/components/avatar";
-import { AvatarBadge } from "@/registry/blobz/components/avatar-badge";
-import {
-	AvatarChip,
-	AvatarChipAvatar,
-	AvatarChipLabel,
-	AvatarChipRemove,
-} from "@/registry/blobz/components/avatar-chip";
-import {
-	BlobAvatarGroup,
-	BlobAvatarGroupCount,
-	BlobAvatarGroupItem,
-} from "@/registry/blobz/components/avatar-group";
-import {
-	AvatarProfile,
-	AvatarProfileAvatar,
-	AvatarProfileContent,
-	AvatarProfileDescription,
-	AvatarProfileName,
-} from "@/registry/blobz/components/avatar-profile";
-import { AvatarSocialProof } from "@/registry/blobz/components/avatar-social-proof";
-import { BlobAvatarStatus } from "@/registry/blobz/components/avatar-status";
 
-describe("avatar registry components", () => {
-	test("renders the avatar package inside the requested variants", () => {
+describe("avatar composition", () => {
+	test("renders a generated fallback with the inherited frame and an accessible description", () => {
 		const markup = renderToStaticMarkup(
-			<BlobAvatar
-				alt="Janaki avatar"
-				frame="rounded"
-				name="Janaki"
-				size="lg"
-				variant="outline"
-			/>
+			<Avatar frame="square" size="lg">
+				<AvatarFallback alt="Janaki avatar" name="Janaki" />
+			</Avatar>
 		);
-
-		expect(markup).toContain('data-slot="blob-avatar"');
-		expect(markup).toContain('data-frame="rounded"');
-		expect(markup).toContain('data-size="lg"');
-		expect(markup).toContain('data-variant="outline"');
+		expect(markup).toContain('data-frame="square"');
+		expect(markup).toContain('data-blobz-source="generated"');
 		expect(markup).toContain('alt="Janaki avatar"');
+		expect(markup).toContain('data-slot="avatar-fallback"');
 	});
 
-	test("uses the larger rounded avatar as the default", () => {
-		const markup = renderToStaticMarkup(
-			<BlobAvatar alt="Vikram avatar" name="Vikram" />
+	test("keeps custom fallback children and supports numeric seeds", () => {
+		const text = renderToStaticMarkup(
+			<Avatar>
+				<AvatarFallback name="Lirena">LR</AvatarFallback>
+			</Avatar>
 		);
-
-		expect(markup).toContain('data-frame="rounded"');
-		expect(markup).toContain('data-size="default"');
-		expect(markup).toContain("size-10");
+		expect(text).toContain(">LR</span>");
+		expect(text).not.toContain("data-blobz-source");
+		const generated = renderToStaticMarkup(
+			<Avatar>
+				<AvatarFallback name={0} />
+			</Avatar>
+		);
+		expect(generated).toContain('data-blobz-source="generated"');
 	});
 
-	test("exposes an accessible presence label", () => {
+	test("renders the generated face in server HTML while an image is unavailable", () => {
 		const markup = renderToStaticMarkup(
-			<BlobAvatarStatus alt="" name="Vikram" status="away" />
+			<Avatar>
+				<AvatarImage alt="Lirena" src="https://example.com/avatar.jpg" />
+				<AvatarFallback name="Lirena" />
+			</Avatar>
 		);
+		expect(markup).toContain('data-slot="avatar-fallback"');
+		expect(markup).toContain('data-blobz-source="generated"');
+	});
 
-		expect(markup).toContain('role="status"');
+	test("announces status and the full unread count while capping its visible value", () => {
+		const markup = renderToStaticMarkup(
+			<Avatar>
+				<AvatarFallback alt="" name="Vikram" />
+				<AvatarBadge status="away" />
+				<AvatarCount count={128} />
+			</Avatar>
+		);
 		expect(markup).toContain('aria-label="Away"');
-		expect(markup).toContain("bg-[var(--blob-avatar-status-away)]");
+		expect(markup).toContain('aria-label="128 unread messages"');
+		expect(markup).toContain(">99+</span>");
+		expect(renderToStaticMarkup(<AvatarCount count={0} />)).toBe("");
+		expect(renderToStaticMarkup(<AvatarCount count={Number.NaN} />)).toBe("");
 	});
 
-	test("composes groups, profiles, and removable chips", () => {
-		const groupMarkup = renderToStaticMarkup(
-			<BlobAvatarGroup aria-label="Project team">
-				<BlobAvatarGroupItem frame="rounded">
-					<BlobAvatar alt="" frame="rounded" name="Kalpana" />
-				</BlobAvatarGroupItem>
-				<BlobAvatarGroupCount count={3} frame="rounded" />
-			</BlobAvatarGroup>
+	test("gives group counts a useful accessible name and hides invalid counts", () => {
+		const markup = renderToStaticMarkup(
+			<AvatarGroup aria-label="Project team">
+				<Avatar>
+					<AvatarFallback alt="" name="Kalpana" />
+				</Avatar>
+				<AvatarGroupCount count={4} />
+			</AvatarGroup>
 		);
-		const profileMarkup = renderToStaticMarkup(
-			<AvatarProfile variant="outline">
-				<AvatarProfileAvatar alt="" name="Srinivasa" />
-				<AvatarProfileContent>
-					<AvatarProfileName>Srinivasa</AvatarProfileName>
-					<AvatarProfileDescription>Mathematician</AvatarProfileDescription>
-				</AvatarProfileContent>
-			</AvatarProfile>
-		);
-		const chipMarkup = renderToStaticMarkup(
-			<AvatarChip>
-				<AvatarChipAvatar alt="" name="Tessy" />
-				<AvatarChipLabel>Tessy</AvatarChipLabel>
-				<AvatarChipRemove aria-label="Remove Tessy" />
-			</AvatarChip>
-		);
-
-		expect(groupMarkup).toContain("Project team");
-		expect(groupMarkup).toContain("3 more people");
-		expect(groupMarkup).toContain('data-frame="rounded"');
-		expect(profileMarkup).toContain("Srinivasa");
-		expect(profileMarkup).toContain("Mathematician");
-		expect(chipMarkup).toContain('aria-label="Remove Tessy"');
+		expect(markup).toContain('aria-label="Project team"');
+		expect(markup).toContain('aria-label="4 more people"');
+		expect(renderToStaticMarkup(<AvatarGroupCount count={-1} />)).toBe("");
 	});
 
-	test("renders a team roster with identity, role, and status", () => {
+	test("renders team identities, roles, and status through the shared primitives", () => {
 		const markup = renderToStaticMarkup(
 			<AvatarTeamList
 				aria-label="Engineering team"
 				members={[
 					{
-						avatar: { name: "Ritu" },
+						avatar: { name: "Ritu", src: "https://example.com/avatar.jpg" },
 						description: "ritu@example.com",
 						id: "ritu",
 						name: "Ritu",
@@ -114,42 +97,13 @@ describe("avatar registry components", () => {
 				]}
 			/>
 		);
-
-		expect(markup).toContain('aria-label="Engineering team"');
-		expect(markup).toContain("Ritu");
 		expect(markup).toContain("ritu@example.com");
 		expect(markup).toContain("Lead");
 		expect(markup).toContain('aria-label="Online"');
+		expect(markup).toContain('data-slot="avatar-profile"');
 	});
 
-	test("renders identity badges and social proof", () => {
-		const badgeMarkup = renderToStaticMarkup(
-			<AvatarBadge
-				avatar={{ name: "Gagandeep" }}
-				badge="Pro"
-				description="Founder & CEO"
-				name="Gagandeep"
-			/>
-		);
-		const socialProofMarkup = renderToStaticMarkup(
-			<AvatarSocialProof
-				avatars={[
-					{ id: "janaki", name: "Janaki" },
-					{ id: "vikram", name: "Vikram" },
-				]}
-			>
-				Joined by <strong>500+</strong> developers.
-			</AvatarSocialProof>
-		);
-
-		expect(badgeMarkup).toContain("Gagandeep");
-		expect(badgeMarkup).toContain("Founder &amp; CEO");
-		expect(badgeMarkup).toContain("Pro");
-		expect(socialProofMarkup).toContain("Community members");
-		expect(socialProofMarkup).toContain("500+");
-	});
-
-	test("renders an avatar select with a labelled initial value", () => {
+	test("renders a labelled person selector with its initial identity", () => {
 		const markup = renderToStaticMarkup(
 			<AvatarSelect
 				defaultValue="raj"
@@ -163,12 +117,8 @@ describe("avatar registry components", () => {
 				]}
 			/>
 		);
-
 		expect(markup).toContain('aria-label="Select a person"');
-		expect(markup).toContain("data-[size=default]:h-16");
-		expect(markup).toContain('data-size="default"');
-		expect(markup).toContain("size-10");
-		expect(markup).toContain("Raj");
 		expect(markup).toContain("Product designer");
+		expect(markup).toContain('data-slot="avatar-profile"');
 	});
 });

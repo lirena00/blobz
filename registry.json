@@ -3,6 +3,7 @@
   "name": "blobz",
   "homepage": "https://github.com/lirena00/blobz",
   "include": [
+    "packages/ui/src/components/registry.json",
     "apps/web/src/registry/blobz/components/registry.json",
     "apps/web/src/registry/blobz/blocks/registry.json"
   ]

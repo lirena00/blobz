@@ -11,30 +11,7 @@ import { AvatarAccountMenuExample } from "@/components/docs/examples/avatar-acco
 
 ## Installation
 
-Register the [Blobz registry](/docs/components#register-the-blobz-registry) once in your project, then install:
-
-<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
-  <Tab>
-    ```bash
-    npx shadcn@latest add @blobz/avatar-account-menu
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    pnpm dlx shadcn@latest add @blobz/avatar-account-menu
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    yarn dlx shadcn@latest add @blobz/avatar-account-menu
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    bunx --bun shadcn@latest add @blobz/avatar-account-menu
-    ```
-  </Tab>
-</Tabs>
+<ComponentInstallation name="avatar-account-menu" />
 
 The CLI also installs the official shadcn Dropdown Menu and the Blobz Avatar component.
 
@@ -50,7 +27,7 @@ import { AvatarAccountMenu } from "@/components/blobz/avatar-account-menu";
     { id: "profile", label: "View profile", onSelect: openProfile },
     { id: "settings", label: "Settings", onSelect: openSettings },
   ]}
-  avatar={{ name: user.id, size: "lg" }}
+  avatar={{ name: user.id, src: user.image }}
   email={user.email}
   name={user.name}
   signOutAction={{ id: "sign-out", label: "Sign out", onSelect: signOut }}
@@ -69,31 +46,24 @@ This block is a Client Component because its action callbacks cross the menu int
       required: true,
     },
     avatar: {
-      description: "BlobAvatar props, including frame. The rendered image is decorative because the name is visible.",
-      type: 'Omit<BlobAvatarProps, "alt">',
+      description: "Avatar source with name and optional src, frame, palette, and choices. The rendered image is decorative because the name is visible.",
+      type: 'AvatarSource',
       required: true,
     },
-    name: { type: "string", required: true },
-    email: { type: "string" },
+    name: { type: "string", required: true, description: "Account name displayed in the menu header and used in the default trigger label." },
+    email: { type: "string", description: "Email address shown below the account name in the menu header. Omitted when empty." },
+    className: {
+      description: "Additional CSS classes for the avatar button that opens the menu.",
+      type: "string",
+    },
     contentClassName: {
       description: "Class name applied to the portalled menu content.",
       type: "string",
     },
-    signOutAction: { type: "AvatarAccountMenuAction" },
-    triggerLabel: { type: "string" },
+    signOutAction: { type: "AvatarAccountMenuAction", description: "Optional final action separated from the main menu items. Uses the destructive variant unless the action specifies another variant." },
+    triggerLabel: { type: "string", description: "Accessible label for the avatar button. Override it to match your application's account-menu wording.", default: "Open account menu for ${name}" },
   }}
 />
 
-## Installed files
 
-<Files>
-  <Folder name="components" defaultOpen>
-    <Folder name="blobz" defaultOpen>
-      <File name="avatar.tsx" />
-      <File name="avatar-account-menu.tsx" />
-    </Folder>
-    <Folder name="ui">
-      <File name="dropdown-menu.tsx" />
-    </Folder>
-  </Folder>
-</Files>
+The `avatar` source accepts a stable `name` and optional `src`, `frame`, `palette`, and `choices`. Images automatically fall back to the generated face.

@@ -1,109 +1,133 @@
 ---
 title: Avatar
-description: A server-renderable Blobz avatar with semantic shadcn size, frame, and surface variants.
+description: Familiar shadcn avatar primitives, with a generated face whenever an image is unavailable.
 ---
 
 import { AvatarExample } from "@/components/docs/examples/avatar-example";
 import { AvatarCircleExample } from "@/components/docs/examples/avatar-circle-example";
 import { AvatarSquareExample } from "@/components/docs/examples/avatar-square-example";
+import { AvatarImageExample } from "@/components/docs/examples/avatar-image-example";
+import { AvatarSizesExample } from "@/components/docs/examples/avatar-sizes-example";
+import { AvatarSurfacesExample } from "@/components/docs/examples/avatar-surfaces-example";
+import { AvatarStatusExample } from "@/components/docs/examples/avatar-status-example";
+import { AvatarStatusPositionsExample } from "@/components/docs/examples/avatar-status-positions-example";
+import { AvatarUnreadExample } from "@/components/docs/examples/avatar-unread-example";
 
 ## Rounded
 
-Rounded is the default frame and does not require a `frame` prop.
+Rounded is the default. Compose `Avatar` with an `AvatarFallback` to give every profile a deterministic face.
 
-<ComponentPreview name="avatar">
-  <AvatarExample />
-</ComponentPreview>
+<ComponentPreview name="avatar"><AvatarExample /></ComponentPreview>
 
 ## Installation
 
-Register the [Blobz registry](/docs/components#register-the-blobz-registry) once in your project, then install:
+<ComponentInstallation name="avatar" />
 
-<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
-  <Tab>
-    ```bash
-    npx shadcn@latest add @blobz/avatar
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    pnpm dlx shadcn@latest add @blobz/avatar
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    yarn dlx shadcn@latest add @blobz/avatar
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    bunx --bun shadcn@latest add @blobz/avatar
-    ```
-  </Tab>
-</Tabs>
-
-This installs `@blobz/react`, `class-variance-authority`, and `cn` when they are not already present.
+This installs the avatar at your configured shadcn UI path, along with its dependencies. If you already have a shadcn avatar, review the CLI diff and replace it with this implementation to enable generated fallbacks.
 
 ## Usage
 
 ```tsx
-import { BlobAvatar } from "@/components/blobz/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-<BlobAvatar
-  alt="Janaki avatar"
-  name="Janaki"
-  size="lg"
-  variant="outline"
-/>
+<Avatar>
+  <AvatarImage alt="Lirena" src="https://www.lirena.in/favicon.jpg" />
+  <AvatarFallback name="Lirena" />
+</Avatar>
 ```
 
-Use `alt=""` when a visible name beside the avatar already identifies the person.
+`AvatarImage` displays the supplied image. `AvatarFallback` renders a Blobz face while the image loads, when it fails, or when no image is supplied. The same `name` always generates the same face. Existing text fallbacks, such as `<AvatarFallback>LR</AvatarFallback>`, work too.
+
+Use `alt=""` on both the image and fallback when a visible name beside the avatar already identifies the person.
+
+## Images and fallbacks
+
+The first avatar uses the Lirena image. The second has no image, and the third demonstrates a failed image. All three use the same fallback name.
+
+<ComponentPreview name="avatar-image"><AvatarImageExample /></ComponentPreview>
 
 ## Circle
 
-Use `frame="circle"` for profile photos, presence lists, and familiar account surfaces.
+Use `frame="circle"` for a circular crop. The image and generated fallback inherit the same frame.
 
-<ComponentPreview name="avatar-circle">
-  <AvatarCircleExample />
-</ComponentPreview>
+<ComponentPreview name="avatar-circle"><AvatarCircleExample /></ComponentPreview>
 
 ## Square
 
-Use `frame="square"` when the avatar needs to align tightly with square media or dense data grids.
+Use `frame="square"` for an edge-to-edge square crop.
 
-<ComponentPreview name="avatar-square">
-  <AvatarSquareExample />
-</ComponentPreview>
+<ComponentPreview name="avatar-square"><AvatarSquareExample /></ComponentPreview>
+
+## Sizes
+
+Choose `sm`, `default`, `lg`, or `xl`. Use `className` when your layout needs a custom size.
+
+<ComponentPreview name="avatar-sizes"><AvatarSizesExample /></ComponentPreview>
+
+## Surfaces
+
+Default displays the avatar without a border. Outline adds a contrasting ring with a small gap. Elevated places the image inside a padded card frame with a shadow. Every frame follows the same proportional crop as the generated image, including at custom sizes.
+
+<ComponentPreview name="avatar-surfaces"><AvatarSurfacesExample /></ComponentPreview>
+
+## Status
+
+Add an `AvatarBadge` inside the avatar. Online, away, busy, and offline include accessible status labels. Override `aria-label` for your product's terminology.
+
+<ComponentPreview name="avatar-status"><AvatarStatusExample /></ComponentPreview>
+
+```tsx
+<Avatar>
+  <AvatarFallback name="Janaki" />
+  <AvatarBadge status="online" />
+</Avatar>
+```
+
+Import `AvatarBadge` from the same `@/components/ui/avatar` module.
+
+### Indicator positions
+
+The `position` prop accepts four logical corners and follows the document direction.
+
+<ComponentPreview name="avatar-status-positions"><AvatarStatusPositionsExample /></ComponentPreview>
+
+### Unread counts
+
+Use `AvatarCount` for unread messages, on its own or alongside a status badge. Counts above 99 display as `99+`, while the accessible label announces the full count. Zero, negative, and non-finite counts are hidden.
+
+<ComponentPreview name="avatar-unread"><AvatarUnreadExample /></ComponentPreview>
+
+For overlapping avatars and social proof, see [Avatar Group](/docs/components/avatar-group).
 
 ## API
 
-<TypeTable
-  type={{
-    name: {
-      description: "Stable string or number used to generate the avatar.",
-      type: "string | number",
-      required: true,
-    },
-    alt: {
-      description: "Accessible image description. Use an empty string when decorative.",
-      type: "string",
-    },
-    frame: {
-      description: "Outer crop used by both the generated SVG and every surrounding component surface.",
-      type: '"circle" | "rounded" | "square"',
-      default: '"rounded"',
-    },
-    size: {
-      type: '"sm" | "default" | "lg" | "xl"',
-      default: '"default"',
-    },
-    variant: {
-      type: '"default" | "outline" | "elevated"',
-      default: '"default"',
-    },
-    palette: {
-      description: "Background and body colours forwarded to @blobz/react.",
-      type: "readonly [string, string]",
-    },
-  }}
-/>
+### Avatar
+
+Accepts Base UI Avatar Root props, including `ref`, `render`, and `className`, plus:
+
+<TypeTable type={{
+  frame: { type: '"rounded" | "circle" | "square"', default: '"rounded"', description: "Crop shape shared by the image and generated fallback. Rounded corners scale with the avatar size." },
+  size: { type: '"sm" | "default" | "lg" | "xl"', default: '"default"', description: "Avatar dimensions: sm is 32px, default is 40px, lg is 48px, and xl is 64px. Use className for a custom size." },
+  variant: { type: '"default" | "outline" | "elevated"', default: '"default"', description: "Surface treatment: default shows the avatar alone, outline adds a separated ring, and elevated adds a padded card frame and shadow." },
+}} />
+
+### AvatarImage
+
+Accepts Base UI Avatar Image props, including `src`, `alt`, `keepMounted`, `loading`, and `onLoadingStatusChange`. Image loading and error recovery are handled by Base UI, including when `src` changes.
+
+### AvatarFallback
+
+Accepts Base UI Avatar Fallback props, including `delay`, `ref`, `render`, and `children`, plus:
+
+<TypeTable type={{
+  name: { description: "String or number used to generate a face. Omit when providing text or custom children.", type: "string | number" },
+  alt: { description: "Generated image description. Pass an empty string when decorative.", type: "string" },
+  palette: { description: "Background and body colors.", type: "readonly [string, string]" },
+  choices: { description: "Optional feature selections from @blobz/react.", type: "AvatarChoiceOverrides" },
+}} />
+
+### AvatarBadge and AvatarCount
+
+`AvatarBadge` accepts span props, optional `status` (`online`, `away`, `busy`, `offline`), and `position` (`top-start`, `top-end`, `bottom-start`, `bottom-end`). The default position is `bottom-end`. Omit `status` to provide your own badge contents.
+
+`AvatarCount` accepts span props and a required numeric `count`. It sits at the top end of the avatar; use `aria-label` to customize the announcement.

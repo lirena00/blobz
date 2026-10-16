@@ -1,12 +1,21 @@
 import { cn } from "cn";
 import type { ComponentProps } from "react";
-import {
-	BlobAvatar,
-	type BlobAvatarProps,
-} from "@/registry/blobz/components/avatar";
 
+import {
+	Avatar,
+	AvatarFallback,
+	AvatarImage,
+	type AvatarSource,
+} from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import {
+	AvatarProfile,
+	AvatarProfileContent,
+	AvatarProfileDescription,
+	AvatarProfileName,
+} from "@/registry/blobz/components/avatar-profile";
 export interface UserTableRow {
-	readonly avatar: Omit<BlobAvatarProps, "alt" | "size">;
+	readonly avatar: AvatarSource;
 	readonly email: string;
 	readonly id: string;
 	readonly lastSeen: string;
@@ -24,7 +33,7 @@ export function UserTable({ className, users, ...props }: UserTableProps) {
 	return (
 		<div
 			className={cn(
-				"w-full overflow-x-auto rounded-2xl border border-border bg-card shadow-sm",
+				"w-full overflow-x-auto rounded-2xl border border-border bg-card shadow-xs",
 				className
 			)}
 			data-slot="user-table"
@@ -49,32 +58,37 @@ export function UserTable({ className, users, ...props }: UserTableProps) {
 				</thead>
 				<tbody className="divide-y divide-border">
 					{users.map((user) => (
-						<tr className="transition-colors hover:bg-muted/30" key={user.id}>
+						<tr
+							className="transition-colors hover:bg-muted/30 motion-reduce:transition-none"
+							key={user.id}
+						>
 							<td className="px-5 py-3">
-								<div className="flex min-w-0 items-center gap-3">
-									<BlobAvatar {...user.avatar} alt="" size="default" />
-									<span className="min-w-0">
-										<span className="block truncate font-medium text-foreground">
-											{user.name}
-										</span>
-										<span className="block truncate text-muted-foreground text-xs">
+								<AvatarProfile className="p-0">
+									<Avatar frame={user.avatar.frame}>
+										<AvatarImage alt="" src={user.avatar.src} />
+										<AvatarFallback
+											alt=""
+											choices={user.avatar.choices}
+											name={user.avatar.name}
+											palette={user.avatar.palette}
+										/>
+									</Avatar>
+									<AvatarProfileContent>
+										<AvatarProfileName>{user.name}</AvatarProfileName>
+										<AvatarProfileDescription>
 											{user.email}
-										</span>
-									</span>
-								</div>
+										</AvatarProfileDescription>
+									</AvatarProfileContent>
+								</AvatarProfile>
 							</td>
 							<td className="px-4 py-3 text-muted-foreground">{user.role}</td>
 							<td className="px-4 py-3">
-								<span
-									className={cn(
-										"inline-flex rounded-full border px-2.5 py-0.5 text-xs capitalize",
-										user.status === "active"
-											? "border-emerald-500/20 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400"
-											: "border-border bg-muted/50 text-muted-foreground"
-									)}
+								<Badge
+									className="capitalize"
+									variant={user.status === "active" ? "secondary" : "outline"}
 								>
 									{user.status}
-								</span>
+								</Badge>
 							</td>
 							<td className="whitespace-nowrap px-5 py-3 text-right text-muted-foreground text-xs">
 								{user.lastSeen}

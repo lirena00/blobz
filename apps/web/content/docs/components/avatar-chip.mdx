@@ -11,43 +11,20 @@ import { AvatarChipExample } from "@/components/docs/examples/avatar-chip-exampl
 
 ## Installation
 
-Register the [Blobz registry](/docs/components#register-the-blobz-registry) once in your project, then install:
-
-<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
-  <Tab>
-    ```bash
-    npx shadcn@latest add @blobz/avatar-chip
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    pnpm dlx shadcn@latest add @blobz/avatar-chip
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    yarn dlx shadcn@latest add @blobz/avatar-chip
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    bunx --bun shadcn@latest add @blobz/avatar-chip
-    ```
-  </Tab>
-</Tabs>
+<ComponentInstallation dependencies={["button"]} name="avatar-chip" />
 
 ## Usage
 
 ```tsx
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   AvatarChip,
-  AvatarChipAvatar,
   AvatarChipLabel,
   AvatarChipRemove,
 } from "@/components/blobz/avatar-chip";
 
 <AvatarChip>
-  <AvatarChipAvatar alt="" name={user.id} />
+  <Avatar size="sm"><AvatarFallback alt="" name={user.id} /></Avatar>
   <AvatarChipLabel>{user.name}</AvatarChipLabel>
   <AvatarChipRemove aria-label={`Remove ${user.name}`} />
 </AvatarChip>
@@ -55,15 +32,20 @@ import {
 
 Always give the remove action a label that identifies what will be removed.
 
+## Frames
+
+The chip follows its nested avatar automatically: a circular avatar gives it a pill shape, a rounded avatar gives it rounded corners, and a square avatar gives it square corners. Set `frame` on the `Avatar`; no additional chip prop is needed. Use `size="sm"` to keep the avatar inset and chip corners aligned. The preview above demonstrates all three, each with its own palette.
+
 ## API
 
 <TypeTable
   type={{
     variant: {
+      description: "Chip surface: secondary uses a subdued fill and border, outline uses a card background and border, and soft uses a muted fill without a visible border.",
       type: '"secondary" | "outline" | "soft"',
       default: '"secondary"',
     },
   }}
 />
 
-`AvatarChipAvatar` accepts every `BlobAvatar` prop, including the `frame` variant.
+Place the shared `Avatar` directly inside the chip. Wire `AvatarChipRemove` to your selection state using `onClick`.

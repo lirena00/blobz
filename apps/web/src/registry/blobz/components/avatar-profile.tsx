@@ -1,13 +1,9 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "cn";
 import type { ComponentProps } from "react";
-import {
-	BlobAvatar,
-	type BlobAvatarProps,
-} from "@/registry/blobz/components/avatar";
 
 const avatarProfileVariants = cva(
-	"flex min-w-0 items-center gap-3 rounded-2xl text-sm",
+	"flex min-w-0 items-center gap-3 rounded-xl text-sm",
 	{
 		defaultVariants: {
 			density: "default",
@@ -47,10 +43,6 @@ export function AvatarProfile({
 	);
 }
 
-export function AvatarProfileAvatar(props: BlobAvatarProps) {
-	return <BlobAvatar {...props} />;
-}
-
 export function AvatarProfileContent({
 	className,
 	...props
@@ -70,7 +62,10 @@ export function AvatarProfileName({
 }: ComponentProps<"p">) {
 	return (
 		<p
-			className={cn("truncate font-medium text-foreground", className)}
+			className={cn(
+				"truncate font-medium text-foreground tracking-tight",
+				className
+			)}
 			data-slot="avatar-profile-name"
 			{...props}
 		/>

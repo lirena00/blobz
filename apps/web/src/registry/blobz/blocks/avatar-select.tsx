@@ -3,6 +3,12 @@
 import { cn } from "cn";
 import { useMemo } from "react";
 import {
+	Avatar,
+	AvatarFallback,
+	AvatarImage,
+	type AvatarSource,
+} from "@/components/ui/avatar";
+import {
 	Select,
 	SelectContent,
 	SelectGroup,
@@ -11,12 +17,13 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import {
-	BlobAvatar,
-	type BlobAvatarProps,
-} from "@/registry/blobz/components/avatar";
-
+	AvatarProfile,
+	AvatarProfileContent,
+	AvatarProfileDescription,
+	AvatarProfileName,
+} from "@/registry/blobz/components/avatar-profile";
 export interface AvatarSelectOption {
-	readonly avatar: Omit<BlobAvatarProps, "alt" | "size">;
+	readonly avatar: AvatarSource;
 	readonly description?: string;
 	readonly id: string;
 	readonly name: string;
@@ -41,19 +48,25 @@ function AvatarSelectIdentity({
 	readonly option: AvatarSelectOption;
 }) {
 	return (
-		<span className="flex min-w-0 items-center gap-3">
-			<BlobAvatar {...option.avatar} alt="" size="default" />
-			<span className="flex min-w-0 flex-col gap-0.5 text-start">
-				<span className="block truncate font-medium text-foreground text-sm">
-					{option.name}
-				</span>
+		<AvatarProfile className="p-0" density="compact">
+			<Avatar frame={option.avatar.frame}>
+				<AvatarImage alt="" src={option.avatar.src} />
+				<AvatarFallback
+					alt=""
+					choices={option.avatar.choices}
+					name={option.avatar.name}
+					palette={option.avatar.palette}
+				/>
+			</Avatar>
+			<AvatarProfileContent>
+				<AvatarProfileName>{option.name}</AvatarProfileName>
 				{option.description ? (
-					<span className="block truncate text-muted-foreground text-xs">
+					<AvatarProfileDescription>
 						{option.description}
-					</span>
+					</AvatarProfileDescription>
 				) : null}
-			</span>
-		</span>
+			</AvatarProfileContent>
+		</AvatarProfile>
 	);
 }
 
@@ -90,7 +103,7 @@ export function AvatarSelect({
 			<SelectTrigger
 				aria-label={triggerLabel}
 				className={cn(
-					"w-full min-w-72 rounded-xl border-border bg-card px-4 shadow-sm data-[size=default]:h-16",
+					"w-full min-w-0 rounded-xl border-border bg-card px-3 shadow-xs data-[size=default]:h-16",
 					className
 				)}
 			>

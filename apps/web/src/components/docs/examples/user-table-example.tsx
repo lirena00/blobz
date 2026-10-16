@@ -1,4 +1,3 @@
-import { DEMO_PEOPLE, getFirstName } from "@/lib/demo-people";
 import {
 	UserTable,
 	type UserTableRow,
@@ -7,61 +6,61 @@ import {
 const USERS: readonly UserTableRow[] = [
 	{
 		avatar: {
-			name: getFirstName(DEMO_PEOPLE.janakiAmmal),
+			name: "Janaki",
 			palette: ["#e7efff", "#91bafa"],
 		},
 		email: "janaki@example.com",
 		id: "janaki",
 		lastSeen: "2m ago",
-		name: DEMO_PEOPLE.janakiAmmal,
+		name: "Janaki Ammal",
 		role: "Owner",
 		status: "active",
 	},
 	{
 		avatar: {
-			name: getFirstName(DEMO_PEOPLE.vikramSarabhai),
+			name: "Vikram",
 			palette: ["#e3fff4", "#46c888"],
 		},
 		email: "vikram@example.com",
 		id: "vikram",
 		lastSeen: "1h ago",
-		name: DEMO_PEOPLE.vikramSarabhai,
+		name: "Vikram Sarabhai",
 		role: "Admin",
 		status: "active",
 	},
 	{
 		avatar: {
-			name: getFirstName(DEMO_PEOPLE.kalpanaChawla),
+			name: "Kalpana",
 			palette: ["#e1fff9", "#4bd3b5"],
 		},
 		email: "kalpana@example.com",
 		id: "kalpana",
 		lastSeen: "yesterday",
-		name: DEMO_PEOPLE.kalpanaChawla,
+		name: "Kalpana Chawla",
 		role: "Developer",
 		status: "active",
 	},
 	{
 		avatar: {
-			name: getFirstName(DEMO_PEOPLE.srinivasaRamanujan),
+			name: "Srinivasa",
 			palette: ["#e5f9ff", "#32c4d6"],
 		},
 		email: "srinivasa@example.com",
 		id: "srinivasa",
 		lastSeen: "never",
-		name: DEMO_PEOPLE.srinivasaRamanujan,
+		name: "Srinivasa Ramanujan",
 		role: "Developer",
 		status: "invited",
 	},
 	{
 		avatar: {
-			name: getFirstName(DEMO_PEOPLE.gagandeepKang),
+			name: "Gagandeep",
 			palette: ["#fff0dc", "#e7ad55"],
 		},
 		email: "gagandeep@example.com",
 		id: "gagandeep",
 		lastSeen: "3 weeks ago",
-		name: DEMO_PEOPLE.gagandeepKang,
+		name: "Gagandeep Kang",
 		role: "Billing",
 		status: "suspended",
 	},

@@ -11,30 +11,7 @@ import { GroupChatExample } from "@/components/docs/examples/group-chat-example"
 
 ## Installation
 
-Register the [Blobz registry](/docs/components#register-the-blobz-registry) once in your project, then install:
-
-<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
-  <Tab>
-    ```bash
-    npx shadcn@latest add @blobz/group-chat
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    pnpm dlx shadcn@latest add @blobz/group-chat
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    yarn dlx shadcn@latest add @blobz/group-chat
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    bunx --bun shadcn@latest add @blobz/group-chat
-    ```
-  </Tab>
-</Tabs>
+<ComponentInstallation name="group-chat" />
 
 The avatar and avatar group components are installed automatically.
 
@@ -51,3 +28,5 @@ import { GroupChat } from "@/components/blobz/group-chat";
 ```
 
 Pass a `typing` person to show the live typing row. Message text is rendered as plain text, with line breaks preserved.
+
+The `avatar` source accepts a stable `name` and optional `src`, `frame`, `palette`, and `choices`. Images automatically fall back to the generated face.

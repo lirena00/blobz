@@ -1,39 +1,42 @@
-import { DEMO_PEOPLE, getFirstName } from "@/lib/demo-people";
-import { BlobAvatarStatus } from "@/registry/blobz/components/avatar-status";
+import { Avatar, AvatarBadge, AvatarFallback } from "@/components/ui/avatar";
 
 const BLUE_PALETTE = ["#dff4ff", "#38bdf8"] as const;
 
 export function AvatarStatusExample() {
 	return (
 		<div className="flex items-center gap-6">
-			<BlobAvatarStatus
-				alt={`${DEMO_PEOPLE.janakiAmmal} avatar`}
-				name={getFirstName(DEMO_PEOPLE.janakiAmmal)}
-				palette={BLUE_PALETTE}
-				size="xl"
-				status="online"
-			/>
-			<BlobAvatarStatus
-				alt={`${DEMO_PEOPLE.vikramSarabhai} avatar`}
-				name={getFirstName(DEMO_PEOPLE.vikramSarabhai)}
-				palette={BLUE_PALETTE}
-				size="xl"
-				status="away"
-			/>
-			<BlobAvatarStatus
-				alt={`${DEMO_PEOPLE.kalpanaChawla} avatar`}
-				name={getFirstName(DEMO_PEOPLE.kalpanaChawla)}
-				palette={BLUE_PALETTE}
-				size="xl"
-				status="busy"
-			/>
-			<BlobAvatarStatus
-				alt={`${DEMO_PEOPLE.srinivasaRamanujan} avatar`}
-				name={getFirstName(DEMO_PEOPLE.srinivasaRamanujan)}
-				palette={BLUE_PALETTE}
-				size="xl"
-				status="offline"
-			/>
+			<Avatar size="xl">
+				<AvatarFallback
+					alt={`${"Janaki Ammal"} avatar`}
+					name={"Janaki"}
+					palette={BLUE_PALETTE}
+				/>
+				<AvatarBadge status="online" />
+			</Avatar>
+			<Avatar size="xl">
+				<AvatarFallback
+					alt={`${"Vikram Sarabhai"} avatar`}
+					name={"Vikram"}
+					palette={BLUE_PALETTE}
+				/>
+				<AvatarBadge status="away" />
+			</Avatar>
+			<Avatar size="xl">
+				<AvatarFallback
+					alt={`${"Kalpana Chawla"} avatar`}
+					name={"Kalpana"}
+					palette={BLUE_PALETTE}
+				/>
+				<AvatarBadge status="busy" />
+			</Avatar>
+			<Avatar size="xl">
+				<AvatarFallback
+					alt={`${"Srinivasa Ramanujan"} avatar`}
+					name={"Srinivasa"}
+					palette={BLUE_PALETTE}
+				/>
+				<AvatarBadge status="offline" />
+			</Avatar>
 		</div>
 	);
 }

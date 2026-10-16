@@ -11,30 +11,7 @@ import { AvatarSelectExample } from "@/components/docs/examples/avatar-select-ex
 
 ## Installation
 
-Register the [Blobz registry](/docs/components#register-the-blobz-registry) once in your project, then install:
-
-<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
-  <Tab>
-    ```bash
-    npx shadcn@latest add @blobz/avatar-select
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    pnpm dlx shadcn@latest add @blobz/avatar-select
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    yarn dlx shadcn@latest add @blobz/avatar-select
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    bunx --bun shadcn@latest add @blobz/avatar-select
-    ```
-  </Tab>
-</Tabs>
+<ComponentInstallation name="avatar-select" />
 
 The official shadcn Select and Blobz Avatar components are installed automatically.
 
@@ -56,18 +33,66 @@ Each item requires a stable `id`, visible `name`, and Blobz avatar props. The op
 
 ## API
 
+### AvatarSelect
+
 <TypeTable
   type={{
     items: {
+      description: "People shown in the option list. Each item provides a stable ID, visible name, and avatar source. See AvatarSelectOption below for the item fields.",
       type: "readonly AvatarSelectOption[]",
       required: true,
     },
-    defaultValue: { type: "string" },
-    value: { type: "string | null" },
-    onValueChange: { type: "(value: string | null) => void" },
-    placeholder: { type: "string", default: '"Select a person"' },
-    triggerLabel: { type: "string", default: '"Select a person"' },
-    disabled: { type: "boolean" },
-    name: { type: "string" },
+    defaultValue: {
+      description: "Initial item ID for an uncontrolled select. When omitted, the first item is selected if one exists. Use value instead when managing the selection in React state.",
+      type: "string",
+      default: "items[0]?.id",
+    },
+    value: {
+      description: "Selected item ID for a controlled select. Pass null for no selection, and update this prop from onValueChange.",
+      type: "string | null",
+    },
+    onValueChange: {
+      description: "Called when the selection changes. Use it to update your controlled value or respond to an uncontrolled selection.",
+      type: "(value: string | null) => void",
+      parameters: [{ name: "value", description: "The selected item ID, or null when there is no selection." }],
+    },
+    placeholder: {
+      description: "Text displayed in the trigger when there is no matching selected item.",
+      type: "string",
+      default: '"Select a person"',
+    },
+    triggerLabel: {
+      description: "Accessible label for the select trigger. Choose a label describing the field, such as Assign reviewer.",
+      type: "string",
+      default: '"Select a person"',
+    },
+    disabled: {
+      description: "Prevents opening the select or changing its value through user interaction.",
+      type: "boolean",
+      default: "false",
+    },
+    name: {
+      description: "Form field name used when submitting the selected item ID in a native form.",
+      type: "string",
+    },
+    className: {
+      description: "Additional CSS classes for the select trigger, such as a width constraint.",
+      type: "string",
+    },
+    contentClassName: {
+      description: "Additional CSS classes for the popup containing the options.",
+      type: "string",
+    },
   }}
 />
+
+### AvatarSelectOption
+
+<TypeTable type={{
+  id: { type: "string", required: true, description: "Unique item ID used by value, defaultValue, and onValueChange. Keep it stable when the person's name changes." },
+  name: { type: "string", required: true, description: "Visible person name shown in both the option list and selected trigger." },
+  avatar: { type: "AvatarSource", required: true, description: "Generated avatar seed with optional image URL, frame, palette, and feature choices. The selected trigger uses the same avatar as its option." },
+  description: { type: "string", description: "Supporting text below the name, such as a role, team, or email address. Omitted when empty." },
+}} />
+
+The `avatar` source accepts a stable `name` and optional `src`, `frame`, `palette`, and `choices`. Images automatically fall back to the generated face.

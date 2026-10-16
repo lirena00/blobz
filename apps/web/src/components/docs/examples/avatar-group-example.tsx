@@ -1,28 +1,25 @@
-import { DEMO_PEOPLE, getFirstName } from "@/lib/demo-people";
-import { BlobAvatar } from "@/registry/blobz/components/avatar";
 import {
-	BlobAvatarGroup,
-	BlobAvatarGroupCount,
-	BlobAvatarGroupItem,
-} from "@/registry/blobz/components/avatar-group";
+	Avatar,
+	AvatarFallback,
+	AvatarGroup,
+	AvatarGroupCount,
+} from "@/components/ui/avatar";
 
 const TEAM = [
-	{ id: "janaki", name: getFirstName(DEMO_PEOPLE.janakiAmmal) },
-	{ id: "vikram", name: getFirstName(DEMO_PEOPLE.vikramSarabhai) },
-	{ id: "kalpana", name: getFirstName(DEMO_PEOPLE.kalpanaChawla) },
+	{ id: "janaki", name: "Janaki", palette: ["#dff4ff", "#38bdf8"] },
+	{ id: "vikram", name: "Vikram", palette: ["#fff0e2", "#fa9769"] },
+	{ id: "kalpana", name: "Kalpana", palette: ["#e7fbe8", "#9ce786"] },
 ] as const;
-
-const BLUE_PALETTE = ["#dff4ff", "#38bdf8"] as const;
 
 export function AvatarGroupExample() {
 	return (
-		<BlobAvatarGroup aria-label="Project team">
+		<AvatarGroup aria-label="Project team">
 			{TEAM.map((member) => (
-				<BlobAvatarGroupItem key={member.id}>
-					<BlobAvatar alt="" name={member.name} palette={BLUE_PALETTE} />
-				</BlobAvatarGroupItem>
+				<Avatar key={member.id}>
+					<AvatarFallback alt="" name={member.name} palette={member.palette} />
+				</Avatar>
 			))}
-			<BlobAvatarGroupCount count={4} />
-		</BlobAvatarGroup>
+			<AvatarGroupCount count={4} />
+		</AvatarGroup>
 	);
 }

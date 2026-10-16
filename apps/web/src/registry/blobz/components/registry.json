@@ -2,62 +2,6 @@
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "items": [
     {
-      "name": "avatar",
-      "type": "registry:component",
-      "title": "Blob Avatar",
-      "description": "A styled, server-renderable Blobz avatar with semantic size, frame, and surface variants.",
-      "dependencies": ["@blobz/react@^0.1.0", "class-variance-authority", "cn"],
-      "files": [
-        {
-          "path": "avatar.tsx",
-          "type": "registry:component",
-          "target": "@components/blobz/avatar.tsx"
-        }
-      ]
-    },
-    {
-      "name": "avatar-status",
-      "type": "registry:component",
-      "title": "Avatar Status",
-      "description": "A Blobz avatar with an accessible presence indicator and logical-position variants.",
-      "dependencies": ["class-variance-authority", "cn"],
-      "registryDependencies": ["@blobz/avatar"],
-      "cssVars": {
-        "light": {
-          "blob-avatar-status-away": "oklch(0.666 0.179 58.318)",
-          "blob-avatar-status-busy": "var(--destructive)",
-          "blob-avatar-status-offline": "var(--muted-foreground)",
-          "blob-avatar-status-online": "oklch(0.627 0.194 149.214)"
-        },
-        "dark": {
-          "blob-avatar-status-away": "oklch(0.828 0.189 84.429)",
-          "blob-avatar-status-online": "oklch(0.723 0.219 149.579)"
-        }
-      },
-      "files": [
-        {
-          "path": "avatar-status.tsx",
-          "type": "registry:component",
-          "target": "@components/blobz/avatar-status.tsx"
-        }
-      ]
-    },
-    {
-      "name": "avatar-group",
-      "type": "registry:component",
-      "title": "Avatar Group",
-      "description": "Composable overlapping Blobz avatars with a matching overflow count.",
-      "dependencies": ["class-variance-authority", "cn"],
-      "registryDependencies": ["@blobz/avatar"],
-      "files": [
-        {
-          "path": "avatar-group.tsx",
-          "type": "registry:component",
-          "target": "@components/blobz/avatar-group.tsx"
-        }
-      ]
-    },
-    {
       "name": "avatar-profile",
       "type": "registry:component",
       "title": "Avatar Profile",
@@ -77,61 +21,13 @@
       "type": "registry:component",
       "title": "Avatar Chip",
       "description": "A compact identity chip with a Blobz avatar and an optional accessible remove action.",
-      "dependencies": ["class-variance-authority", "cn"],
+      "dependencies": ["class-variance-authority", "cn", "lucide-react"],
       "registryDependencies": ["@blobz/avatar"],
       "files": [
         {
           "path": "avatar-chip.tsx",
           "type": "registry:component",
           "target": "@components/blobz/avatar-chip.tsx"
-        }
-      ]
-    },
-    {
-      "name": "avatar-badge",
-      "type": "registry:component",
-      "title": "Avatar Badge",
-      "description": "A compact identity badge with a Blobz avatar, name, supporting detail, and optional badge.",
-      "dependencies": ["cn"],
-      "registryDependencies": ["badge", "@blobz/avatar"],
-      "files": [
-        {
-          "path": "avatar-badge.tsx",
-          "type": "registry:component",
-          "target": "@components/blobz/avatar-badge.tsx"
-        }
-      ]
-    },
-    {
-      "name": "avatar-social-proof",
-      "type": "registry:component",
-      "title": "Avatar Social Proof",
-      "description": "An overlapping avatar group paired with compact social-proof copy.",
-      "dependencies": ["class-variance-authority", "cn"],
-      "registryDependencies": [
-        "@blobz/avatar",
-        "@blobz/avatar-group"
-      ],
-      "files": [
-        {
-          "path": "avatar-social-proof.tsx",
-          "type": "registry:component",
-          "target": "@components/blobz/avatar-social-proof.tsx"
-        }
-      ]
-    },
-    {
-      "name": "presence-avatar",
-      "type": "registry:component",
-      "title": "Presence Avatar",
-      "description": "A Blobz avatar with online, away, offline, and unread states.",
-      "dependencies": ["cn"],
-      "registryDependencies": ["@blobz/avatar"],
-      "files": [
-        {
-          "path": "presence-avatar.tsx",
-          "type": "registry:component",
-          "target": "@components/blobz/presence-avatar.tsx"
         }
       ]
     }

@@ -1,10 +1,8 @@
 import { Button } from "@blobz/ui/components/button";
-import { DEMO_PEOPLE, getFirstName } from "@/lib/demo-people";
-
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
 	AvatarProfile,
 	AvatarProfileAction,
-	AvatarProfileAvatar,
 	AvatarProfileContent,
 	AvatarProfileDescription,
 	AvatarProfileName,
@@ -19,14 +17,11 @@ export function AvatarProfileExample() {
 			density="spacious"
 			variant="outline"
 		>
-			<AvatarProfileAvatar
-				alt=""
-				name={getFirstName(DEMO_PEOPLE.janakiAmmal)}
-				palette={BLUE_PALETTE}
-				size="xl"
-			/>
+			<Avatar size="xl">
+				<AvatarFallback alt="" name={"Janaki"} palette={BLUE_PALETTE} />
+			</Avatar>
 			<AvatarProfileContent>
-				<AvatarProfileName>{DEMO_PEOPLE.janakiAmmal}</AvatarProfileName>
+				<AvatarProfileName>{"Janaki Ammal"}</AvatarProfileName>
 				<AvatarProfileDescription>
 					Botanist and cytogeneticist · India
 				</AvatarProfileDescription>

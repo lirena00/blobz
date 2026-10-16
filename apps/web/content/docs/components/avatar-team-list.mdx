@@ -1,6 +1,6 @@
 ---
 title: Avatar Team List
-description: A responsive roster with generated avatars, presence, roles, descriptions, and action slots.
+description: A responsive roster with generated avatars, status, roles, descriptions, and action slots.
 ---
 
 import { AvatarTeamListExample } from "@/components/docs/examples/avatar-team-list-example";
@@ -11,30 +11,7 @@ import { AvatarTeamListExample } from "@/components/docs/examples/avatar-team-li
 
 ## Installation
 
-Register the [Blobz registry](/docs/components#register-the-blobz-registry) once in your project, then install:
-
-<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
-  <Tab>
-    ```bash
-    npx shadcn@latest add @blobz/avatar-team-list
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    pnpm dlx shadcn@latest add @blobz/avatar-team-list
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    yarn dlx shadcn@latest add @blobz/avatar-team-list
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    bunx --bun shadcn@latest add @blobz/avatar-team-list
-    ```
-  </Tab>
-</Tabs>
+<ComponentInstallation name="avatar-team-list" />
 
 ## Usage
 
@@ -61,16 +38,18 @@ The list uses semantic `ul` and `li` elements. Avatars are decorative because ev
 
 <TypeTable
   type={{
-    id: { type: "string", required: true },
-    name: { type: "string", required: true },
+    id: { type: "string", required: true, description: "Unique member ID used to preserve each row's identity when the list changes." },
+    name: { type: "string", required: true, description: "Visible member name shown beside the avatar." },
     avatar: {
-      description: "BlobAvatar props, including the circle, rounded, and square frame variants.",
-      type: 'Omit<BlobAvatarProps, "alt">',
+      description: "Avatar props, including the circle, rounded, and square frame variants.",
+      type: 'AvatarSource',
       required: true,
     },
-    description: { type: "string" },
-    role: { type: "string" },
-    status: { type: '"online" | "away" | "busy" | "offline"' },
-    action: { type: "ReactNode" },
+    description: { type: "string", description: "Supporting text below the name, such as an email address or team. Omitted when empty." },
+    role: { type: "string", description: "Role or membership label displayed as a badge beside the member's name." },
+    status: { type: '"online" | "away" | "busy" | "offline"', description: "Availability indicator on the avatar, with an accessible status label. No indicator is rendered when omitted." },
+    action: { type: "ReactNode", description: "Trailing action content for the row, such as an invite button or member menu. Omitted when empty." },
   }}
 />
+
+The `avatar` source accepts a stable `name` and optional `src`, `frame`, `palette`, and `choices`. Images automatically fall back to the generated face.

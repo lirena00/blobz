@@ -1,17 +1,15 @@
 import { cn } from "cn";
 import type { ComponentProps } from "react";
 import {
-	BlobAvatar,
-	type BlobAvatarProps,
-} from "@/registry/blobz/components/avatar";
-import {
-	BlobAvatarGroup,
-	BlobAvatarGroupCount,
-	BlobAvatarGroupItem,
-} from "@/registry/blobz/components/avatar-group";
-
+	Avatar,
+	AvatarFallback,
+	AvatarGroup,
+	AvatarGroupCount,
+	AvatarImage,
+	type AvatarSource,
+} from "@/components/ui/avatar";
 export interface GroupChatPerson {
-	readonly avatar: Omit<BlobAvatarProps, "alt" | "size">;
+	readonly avatar: AvatarSource;
 	readonly id: string;
 	readonly name: string;
 }
@@ -46,7 +44,7 @@ export function GroupChat({
 		<section
 			aria-label={`${channel} group chat`}
 			className={cn(
-				"w-full overflow-hidden rounded-2xl border border-border bg-card shadow-sm",
+				"w-full overflow-hidden rounded-2xl border border-border bg-card shadow-xs",
 				className
 			)}
 			data-slot="group-chat"
@@ -60,36 +58,40 @@ export function GroupChat({
 					{channel}
 				</span>
 				{participants.length > 0 && (
-					<BlobAvatarGroup aria-label={`${participants.length} participants`}>
+					<AvatarGroup aria-label={`${participants.length} participants`}>
 						{visibleParticipants.map((person) => (
-							<BlobAvatarGroupItem frame="circle" key={person.id}>
-								<BlobAvatar
-									{...person.avatar}
+							<Avatar frame="circle" key={person.id} size="sm">
+								<AvatarImage alt="" src={person.avatar.src} />
+								<AvatarFallback
 									alt=""
-									frame="circle"
-									size="sm"
+									choices={person.avatar.choices}
+									name={person.avatar.name}
+									palette={person.avatar.palette}
 								/>
-							</BlobAvatarGroupItem>
+							</Avatar>
 						))}
 						{remainingCount > 0 && (
-							<BlobAvatarGroupCount
+							<AvatarGroupCount
 								count={remainingCount}
 								frame="circle"
 								size="sm"
 							/>
 						)}
-					</BlobAvatarGroup>
+					</AvatarGroup>
 				)}
 			</header>
-			<ol className="space-y-5 px-5 py-6">
+			<ol className="flex flex-col gap-5 px-5 py-6">
 				{messages.map((message) => (
 					<li className="flex items-start gap-3" key={message.id}>
-						<BlobAvatar
-							{...message.author.avatar}
-							alt=""
-							frame="circle"
-							size="sm"
-						/>
+						<Avatar frame="circle" size="sm">
+							<AvatarImage alt="" src={message.author.avatar.src} />
+							<AvatarFallback
+								alt=""
+								choices={message.author.avatar.choices}
+								name={message.author.avatar.name}
+								palette={message.author.avatar.palette}
+							/>
+						</Avatar>
 						<div className="min-w-0 flex-1">
 							<div className="flex items-baseline gap-2">
 								<span className="truncate font-semibold text-foreground text-sm">
@@ -99,7 +101,7 @@ export function GroupChat({
 									{message.time}
 								</time>
 							</div>
-							<p className="mt-0.5 whitespace-pre-wrap text-muted-foreground text-sm leading-relaxed">
+							<p className="mt-0.5 whitespace-pre-wrap text-muted-foreground text-sm leading-relaxed [overflow-wrap:anywhere]">
 								{message.text}
 							</p>
 						</div>
@@ -107,7 +109,15 @@ export function GroupChat({
 				))}
 				{typing ? (
 					<li className="flex items-center gap-3 text-muted-foreground text-xs">
-						<BlobAvatar {...typing.avatar} alt="" frame="circle" size="sm" />
+						<Avatar frame="circle" size="sm">
+							<AvatarImage alt="" src={typing.avatar.src} />
+							<AvatarFallback
+								alt=""
+								choices={typing.avatar.choices}
+								name={typing.avatar.name}
+								palette={typing.avatar.palette}
+							/>
+						</Avatar>
 						<span role="status">
 							{typing.name} is typing<span aria-hidden="true">…</span>
 						</span>

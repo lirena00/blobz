@@ -1,112 +1,9 @@
-import { readFileSync } from "node:fs";
+import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { cn } from "@blobz/ui/lib/utils";
 import { ServerCodeBlock } from "fumadocs-ui/components/codeblock.rsc";
 import { Code2Icon } from "lucide-react";
-import type { ReactNode } from "react";
-
-const EXAMPLE_SOURCES = {
-	avatar: readFileSync(
-		join(process.cwd(), "src/components/docs/examples/avatar-example.tsx"),
-		"utf8"
-	),
-	"avatar-account-menu": readFileSync(
-		join(
-			process.cwd(),
-			"src/components/docs/examples/avatar-account-menu-example.tsx"
-		),
-		"utf8"
-	),
-	"avatar-badge": readFileSync(
-		join(
-			process.cwd(),
-			"src/components/docs/examples/avatar-badge-example.tsx"
-		),
-		"utf8"
-	),
-	"avatar-chip": readFileSync(
-		join(process.cwd(), "src/components/docs/examples/avatar-chip-example.tsx"),
-		"utf8"
-	),
-	"avatar-circle": readFileSync(
-		join(
-			process.cwd(),
-			"src/components/docs/examples/avatar-circle-example.tsx"
-		),
-		"utf8"
-	),
-	"avatar-group": readFileSync(
-		join(
-			process.cwd(),
-			"src/components/docs/examples/avatar-group-example.tsx"
-		),
-		"utf8"
-	),
-	"avatar-profile": readFileSync(
-		join(
-			process.cwd(),
-			"src/components/docs/examples/avatar-profile-example.tsx"
-		),
-		"utf8"
-	),
-	"avatar-select": readFileSync(
-		join(
-			process.cwd(),
-			"src/components/docs/examples/avatar-select-example.tsx"
-		),
-		"utf8"
-	),
-	"avatar-social-proof": readFileSync(
-		join(
-			process.cwd(),
-			"src/components/docs/examples/avatar-social-proof-example.tsx"
-		),
-		"utf8"
-	),
-	"avatar-square": readFileSync(
-		join(
-			process.cwd(),
-			"src/components/docs/examples/avatar-square-example.tsx"
-		),
-		"utf8"
-	),
-	"avatar-status": readFileSync(
-		join(
-			process.cwd(),
-			"src/components/docs/examples/avatar-status-example.tsx"
-		),
-		"utf8"
-	),
-	"avatar-status-positions": readFileSync(
-		join(
-			process.cwd(),
-			"src/components/docs/examples/avatar-status-positions-example.tsx"
-		),
-		"utf8"
-	),
-	"avatar-team-list": readFileSync(
-		join(
-			process.cwd(),
-			"src/components/docs/examples/avatar-team-list-example.tsx"
-		),
-		"utf8"
-	),
-	"group-chat": readFileSync(
-		join(process.cwd(), "src/components/docs/examples/group-chat-example.tsx"),
-		"utf8"
-	),
-	"presence-avatar": readFileSync(
-		join(
-			process.cwd(),
-			"src/components/docs/examples/presence-avatar-example.tsx"
-		),
-		"utf8"
-	),
-	"user-table": readFileSync(
-		join(process.cwd(), "src/components/docs/examples/user-table-example.tsx"),
-		"utf8"
-	),
-} as const;
+import { cache, type ReactNode } from "react";
 
 const EXAMPLE_FILENAMES = {
 	avatar: "avatar-example.tsx",
@@ -115,19 +12,22 @@ const EXAMPLE_FILENAMES = {
 	"avatar-chip": "avatar-chip-example.tsx",
 	"avatar-circle": "avatar-circle-example.tsx",
 	"avatar-group": "avatar-group-example.tsx",
+	"avatar-image": "avatar-image-example.tsx",
 	"avatar-profile": "avatar-profile-example.tsx",
 	"avatar-select": "avatar-select-example.tsx",
+	"avatar-sizes": "avatar-sizes-example.tsx",
 	"avatar-social-proof": "avatar-social-proof-example.tsx",
 	"avatar-square": "avatar-square-example.tsx",
 	"avatar-status": "avatar-status-example.tsx",
 	"avatar-status-positions": "avatar-status-positions-example.tsx",
+	"avatar-surfaces": "avatar-surfaces-example.tsx",
 	"avatar-team-list": "avatar-team-list-example.tsx",
+	"avatar-unread": "avatar-unread-example.tsx",
 	"group-chat": "group-chat-example.tsx",
-	"presence-avatar": "presence-avatar-example.tsx",
 	"user-table": "user-table-example.tsx",
 } as const;
 
-export type ComponentPreviewName = keyof typeof EXAMPLE_SOURCES;
+export type ComponentPreviewName = keyof typeof EXAMPLE_FILENAMES;
 
 interface ComponentPreviewProps {
 	readonly children: ReactNode;
@@ -135,58 +35,58 @@ interface ComponentPreviewProps {
 	readonly name: ComponentPreviewName;
 }
 
-const prepareConsumerSource = (source: string): string =>
-	source
+const readExampleSource = cache(async (filename: string): Promise<string> => {
+	const source = await readFile(
+		join(process.cwd(), "src/components/docs/examples", filename),
+		"utf8"
+	);
+	return source
 		.replaceAll("@/registry/blobz/components/", "@/components/blobz/")
 		.replaceAll("@/registry/blobz/blocks/", "@/components/blobz/")
 		.replaceAll("@blobz/ui/components/", "@/components/ui/")
 		.trim();
+});
 
 export async function ComponentPreview({
 	children,
 	className,
 	name,
 }: ComponentPreviewProps) {
-	const code = prepareConsumerSource(EXAMPLE_SOURCES[name]);
+	const filename = EXAMPLE_FILENAMES[name];
+	const code = await readExampleSource(filename);
 	const highlightedCode = await ServerCodeBlock({
 		code,
 		codeblock: {
 			allowCopy: true,
 			className: "m-0 rounded-none border-0",
-			title: EXAMPLE_FILENAMES[name],
-			viewportProps: {
-				className: "max-h-[32rem]",
-			},
+			title: filename,
+			viewportProps: { className: "max-h-[32rem]" },
 		},
 		lang: "tsx",
-		themes: {
-			dark: "github-dark",
-			light: "github-light",
-		},
+		themes: { dark: "github-dark", light: "github-light" },
 	});
-
 	return (
 		<section
 			className={cn(
-				"not-prose my-7 overflow-hidden rounded-3xl border border-border/80 bg-card shadow-sm",
+				"not-prose my-6 min-w-0 rounded-xl border border-border bg-background",
 				className
 			)}
 			data-slot="component-preview"
 		>
-			<div className="flex min-h-80 items-center justify-center overflow-hidden bg-gradient-to-br from-background via-background to-muted/30 px-5 py-12 sm:px-10">
-				<div className="flex w-full items-center justify-center">
+			<div className="flex min-h-64 min-w-0 items-center justify-center px-5 py-10 sm:px-8 sm:py-12">
+				<div className="flex w-full min-w-0 items-center justify-center">
 					{children}
 				</div>
 			</div>
-			<details className="group border-border border-t bg-card">
-				<summary className="relative -mt-5 flex cursor-pointer list-none justify-center pb-3 [&::-webkit-details-marker]:hidden">
-					<span className="inline-flex h-10 items-center gap-2 rounded-full border border-border bg-background px-4 font-medium text-foreground text-sm shadow-lg transition-transform duration-150 active:scale-[0.97] motion-reduce:transition-none">
-						<Code2Icon aria-hidden="true" />
-						<span className="group-open:hidden">View code</span>
-						<span className="hidden group-open:inline">Hide code</span>
-					</span>
+			<details className="group min-w-0 border-border border-t">
+				<summary className="flex cursor-pointer list-none items-center justify-end gap-2 rounded-b-xl px-4 py-3 font-medium text-muted-foreground text-xs outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none [&::-webkit-details-marker]:hidden">
+					<Code2Icon aria-hidden="true" className="size-3.5" />
+					<span className="group-open:hidden">View code</span>
+					<span className="hidden group-open:inline">Hide code</span>
 				</summary>
-				<div className="border-border border-t">{highlightedCode}</div>
+				<div className="min-w-0 overflow-hidden rounded-b-xl border-border border-t">
+					{highlightedCode}
+				</div>
 			</details>
 		</section>
 	);

@@ -8,6 +8,30 @@ const withMDX = createMDX();
 const nextConfig: NextConfig = {
 	allowedDevOrigins: ["equation-straw-bamboo.ngrok-free.dev"],
 	reactCompiler: true,
+	async redirects() {
+		return [
+			{
+				destination: "/docs/components/avatar#status",
+				permanent: true,
+				source: "/docs/components/avatar-status",
+			},
+			{
+				destination: "/docs/components/avatar#status",
+				permanent: true,
+				source: "/docs/components/presence-avatar",
+			},
+			{
+				destination: "/docs/components/avatar-profile#badges",
+				permanent: true,
+				source: "/docs/components/avatar-badge",
+			},
+			{
+				destination: "/docs/components/avatar-group#social-proof",
+				permanent: true,
+				source: "/docs/components/avatar-social-proof",
+			},
+		];
+	},
 	async rewrites() {
 		return [
 			{

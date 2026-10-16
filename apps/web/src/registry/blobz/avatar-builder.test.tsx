@@ -1,14 +1,11 @@
 // biome-ignore-all lint/performance/noJsxPropsBind: Test callbacks are scoped to a single render and collect emitted values.
+import "@/test/dom";
 import { afterEach, describe, expect, test } from "bun:test";
 import type { AvatarDefinition } from "@blobz/avatar-core";
-import { GlobalRegistrator } from "@happy-dom/global-registrator";
 import { act } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { AvatarBuilder } from "./avatar-builder";
 import { AvatarPalettePicker } from "./avatar-palette-picker";
-
-GlobalRegistrator.register();
-Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
 
 const mountedRoots: Root[] = [];
 

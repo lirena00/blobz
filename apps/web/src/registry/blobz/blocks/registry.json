@@ -6,8 +6,12 @@
       "type": "registry:block",
       "title": "Avatar Account Menu",
       "description": "A ready-to-ship account menu with a Blobz avatar trigger, identity summary, and typed actions.",
-      "dependencies": ["class-variance-authority", "cn"],
-      "registryDependencies": ["dropdown-menu", "@blobz/avatar"],
+      "dependencies": ["class-variance-authority", "cn", "lucide-react"],
+      "registryDependencies": [
+        "dropdown-menu",
+        "@blobz/avatar",
+        "@blobz/avatar-profile"
+      ],
       "files": [
         {
           "path": "avatar-account-menu.tsx",
@@ -20,12 +24,12 @@
       "name": "avatar-team-list",
       "type": "registry:block",
       "title": "Avatar Team List",
-      "description": "A responsive team roster with Blobz avatars, presence, roles, descriptions, and action slots.",
+      "description": "A responsive team roster with Blobz avatars, status, roles, descriptions, and action slots.",
       "dependencies": ["cn"],
       "registryDependencies": [
         "badge",
         "@blobz/avatar",
-        "@blobz/avatar-status"
+        "@blobz/avatar-profile"
       ],
       "files": [
         {
@@ -40,8 +44,12 @@
       "type": "registry:block",
       "title": "Avatar Select",
       "description": "A ready-to-ship person selector with Blobz avatars in the trigger and option list.",
-      "dependencies": ["cn"],
-      "registryDependencies": ["select", "@blobz/avatar"],
+      "dependencies": ["cn", "lucide-react"],
+      "registryDependencies": [
+        "select",
+        "@blobz/avatar",
+        "@blobz/avatar-profile"
+      ],
       "files": [
         {
           "path": "avatar-select.tsx",
@@ -56,7 +64,7 @@
       "title": "Group Chat",
       "description": "A conversation panel with Blobz avatars for messages, participants, and typing presence.",
       "dependencies": ["cn"],
-      "registryDependencies": ["@blobz/avatar", "@blobz/avatar-group"],
+      "registryDependencies": ["@blobz/avatar"],
       "files": [
         {
           "path": "group-chat.tsx",
@@ -71,7 +79,11 @@
       "title": "User Table",
       "description": "A responsive people table with generated avatars, roles, statuses, and last-seen details.",
       "dependencies": ["cn"],
-      "registryDependencies": ["@blobz/avatar"],
+      "registryDependencies": [
+        "@blobz/avatar",
+        "@blobz/avatar-profile",
+        "badge"
+      ],
       "files": [
         {
           "path": "user-table.tsx",

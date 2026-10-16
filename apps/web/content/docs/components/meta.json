@@ -4,16 +4,12 @@
   "icon": "components",
   "pages": [
     "avatar",
-    "avatar-status",
     "avatar-group",
     "avatar-profile",
-    "avatar-badge",
     "avatar-chip",
-    "avatar-social-proof",
     "avatar-select",
     "avatar-account-menu",
     "avatar-team-list",
-    "presence-avatar",
     "group-chat",
     "user-table"
   ]

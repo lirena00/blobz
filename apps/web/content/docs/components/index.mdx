@@ -1,24 +1,26 @@
 ---
 title: Components
-description: Ready-to-ship avatar components and blocks powered by @blobz/react and installed through the shadcn CLI.
+description: Thoughtful avatar primitives and blocks installed through the shadcn CLI.
 ---
 
-Blobz components are copied into your application, so their source remains yours to adjust. Each item uses `@blobz/react` for deterministic avatar rendering and semantic shadcn tokens for the surrounding interface.
+Blobz is available in shadcn's public registry. Install a component directly with its `@blobz` name. The source is copied into your project, ready to adapt.
 
-Every preview includes the complete code used to render it. Open **View code** to inspect or copy the example. The [Avatar](/docs/components/avatar) page documents rounded, circle, and square frames as separate examples, with rounded as the default.
+## Installation
+
+<ComponentInstallation name="avatar" />
+
+The Avatar component uses shadcn's familiar `Avatar`, `AvatarImage`, and `AvatarFallback` API at your configured UI path. Add a `name` to the fallback to generate a deterministic Blobz face. Other components are installed into `components/blobz` and compose those same primitives.
+
+Every preview includes the complete example. Open **View code** to inspect or copy it. Rounded, Circle, and Square remain separate examples, and Avatar Group has its own page.
 
 ## Components
 
 | Component | Use it for |
 | --- | --- |
-| [Avatar](/docs/components/avatar) | A styled generated avatar with size, frame, and surface variants |
-| [Avatar Status](/docs/components/avatar-status) | Presence indicators such as online, away, busy, and offline |
-| [Avatar Group](/docs/components/avatar-group) | Overlapping teams with an overflow count |
-| [Avatar Profile](/docs/components/avatar-profile) | Identity rows with supporting text and actions |
-| [Avatar Badge](/docs/components/avatar-badge) | Compact identity, supporting details, and a role badge |
+| [Avatar](/docs/components/avatar) | Images and generated fallbacks, shapes, sizes, status, and unread counts |
+| [Avatar Group](/docs/components/avatar-group) | Overlapping teams, overflow counts, and social proof |
+| [Avatar Profile](/docs/components/avatar-profile) | Identity rows with supporting text, badges, and actions |
 | [Avatar Chip](/docs/components/avatar-chip) | Compact selected users, assignees, and recipients |
-| [Avatar Social Proof](/docs/components/avatar-social-proof) | Avatar stacks paired with community or trust copy |
-| [Presence Avatar](/docs/components/presence-avatar) | Online, away, offline, and unread states |
 
 ## Blocks
 
@@ -26,60 +28,6 @@ Every preview includes the complete code used to render it. Open **View code** t
 | --- | --- |
 | [Avatar Account Menu](/docs/components/avatar-account-menu) | Account navigation behind an avatar trigger |
 | [Avatar Select](/docs/components/avatar-select) | A person selector with avatars in the trigger and options |
-| [Avatar Team List](/docs/components/avatar-team-list) | Responsive rosters with roles, statuses, and actions |
+| [Avatar Team List](/docs/components/avatar-team-list) | Responsive rosters with roles, status, and actions |
 | [Group Chat](/docs/components/group-chat) | Conversation threads with participant avatars and typing presence |
 | [User Table](/docs/components/user-table) | People tables with roles, statuses, and activity |
-
-## Register the Blobz registry
-
-Until `@blobz` is listed in shadcn's registry index, run this once in each project that uses Blobz components. The command saves the registry URL in your project's `components.json`.
-
-<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
-  <Tab>
-    ```bash
-    npx shadcn@latest registry add @blobz=https://blobz.lirena.in/r/{name}.json
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    pnpm dlx shadcn@latest registry add @blobz=https://blobz.lirena.in/r/{name}.json
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    yarn dlx shadcn@latest registry add @blobz=https://blobz.lirena.in/r/{name}.json
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    bunx --bun shadcn@latest registry add @blobz=https://blobz.lirena.in/r/{name}.json
-    ```
-  </Tab>
-</Tabs>
-
-Then install any component by its `@blobz` name. For example:
-
-<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
-  <Tab>
-    ```bash
-    npx shadcn@latest add @blobz/avatar
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    pnpm dlx shadcn@latest add @blobz/avatar
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    yarn dlx shadcn@latest add @blobz/avatar
-    ```
-  </Tab>
-  <Tab>
-    ```bash
-    bunx --bun shadcn@latest add @blobz/avatar
-    ```
-  </Tab>
-</Tabs>
-
-The registry setup is per project. You only need to run it once before installing your first Blobz component.
