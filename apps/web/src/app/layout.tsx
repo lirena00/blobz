@@ -35,6 +35,18 @@ export const metadata: Metadata = {
 	applicationName: "Blobz",
 	description:
 		"Playful, deterministic SVG avatars for default profile pictures. Generate the same unique avatar from any username, email, or ID.",
+	icons: {
+		apple: {
+			sizes: "180x180",
+			type: "image/png",
+			url: "/apple-touch-icon.png",
+		},
+		icon: [
+			{ sizes: "any", type: "image/svg+xml", url: "/icon.svg" },
+			{ sizes: "96x96", type: "image/png", url: "/favicon.png" },
+		],
+		shortcut: "/favicon.ico",
+	},
 	metadataBase: SITE_URL,
 	openGraph: {
 		description:
