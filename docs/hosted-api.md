@@ -32,7 +32,7 @@ For a local `.env` in the web app, Bun can load it with `bun --env-file=../../ap
 The browser endpoint is `GET /api/v1/avatars/ENDPOINT_ID`. It needs no Authorization header. Paste the dashboard's generated image tag into a page served from one of the account's approved origins:
 
 ```html
-<img src="https://YOUR_BLOBZ_HOST/api/v1/avatars/ENDPOINT_ID?name=Janaki&amp;frame=rounded&amp;palette=%23f2f1f4%2C%237c6cf2&amp;size=80" crossorigin="anonymous" width="80" height="80" alt="Janaki avatar" />
+<img src="https://blobz.lirena.in/api/v1/avatars/ENDPOINT_ID?name=Janaki&amp;frame=rounded&amp;palette=%23f2f1f4%2C%237c6cf2&amp;size=80" crossorigin="anonymous" width="80" height="80" alt="Janaki avatar" />
 ```
 
 The query uses Blobz's own hash-based avatar inputs: required `name` (1–256 characters); optional `frame` (`circle`, `rounded`, or `square`); optional `palette` (two comma-separated six-digit hex colors, background then body); and optional `size` (16–1024 pixels). Defaults match the React package: rounded frame, `#f2f1f4,#7c6cf2`, and 80 pixels. The `crossorigin` attribute is required so a cross-origin browser image request sends its `Origin` header. The configured Blobz deployment is trusted automatically for its same-origin API playground; every other browser origin must be approved before counting or rendering. Successful responses return SVG with an exact `Access-Control-Allow-Origin` response header. The endpoint ID is public, stable, and not a secret.

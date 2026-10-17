@@ -7,7 +7,7 @@ description: Approve a website and embed a deterministic SVG avatar in three ste
 
 Subscribe to Plus or Pro. Blobz creates one active endpoint for the account after Dodo confirms the first successful payment. Checkout redirects alone do not grant access.
 
-Copy the endpoint URL from the dashboard. Customers do not create API keys and do not need an Authorization header.
+Copy the endpoint URL from the [dashboard](/dashboard). Customers do not create API keys and do not need an Authorization header.
 
 ## 2. Approve the website origin
 
@@ -23,7 +23,7 @@ An origin is only the scheme, hostname, and optional port. Do not include a path
 
 ```html
 <img
-  src="https://YOUR_BLOBZ_HOST/api/v1/avatars/ENDPOINT_ID?name=Janaki&amp;frame=rounded&amp;palette=%23f2f1f4%2C%237c6cf2&amp;size=80"
+  src="https://blobz.lirena.in/api/v1/avatars/ENDPOINT_ID?name=Janaki&amp;frame=rounded&amp;palette=%23f2f1f4%2C%237c6cf2&amp;size=80"
   crossorigin="anonymous"
   width="80"
   height="80"
@@ -51,7 +51,7 @@ Use `URL` and `URLSearchParams` instead of string concatenation:
 ```ts
 const imageUrl = new URL(
   "/api/v1/avatars/ENDPOINT_ID",
-  "https://YOUR_BLOBZ_HOST",
+  "https://blobz.lirena.in",
 );
 
 imageUrl.searchParams.set("name", user.id);
