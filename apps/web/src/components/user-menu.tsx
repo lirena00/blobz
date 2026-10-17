@@ -11,20 +11,15 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@blobz/ui/components/dropdown-menu";
-import { Skeleton } from "@blobz/ui/components/skeleton";
 import { LayoutDashboard, LogOut } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { authClient } from "@/lib/auth-client";
 
-interface UserMenuProps {
-	readonly signInClassName: string;
-}
-
-export default function UserMenu({ signInClassName }: UserMenuProps) {
+export default function UserMenu() {
 	const router = useRouter();
-	const { data: session, isPending } = authClient.useSession();
+	const { data: session } = authClient.useSession();
 
 	const handleSignOut = async (): Promise<void> => {
 		await authClient.signOut();
@@ -32,18 +27,8 @@ export default function UserMenu({ signInClassName }: UserMenuProps) {
 		router.refresh();
 	};
 
-	if (isPending) {
-		return (
-			<Skeleton aria-label="Loading account" className="size-10 rounded-full" />
-		);
-	}
-
 	if (!session) {
-		return (
-			<Link className={signInClassName} href="/login">
-				Sign in
-			</Link>
-		);
+		return null;
 	}
 
 	const displayName = session.user.name.trim() || "Blobz user";
@@ -54,6 +39,7 @@ export default function UserMenu({ signInClassName }: UserMenuProps) {
 				render={
 					<Button
 						aria-label={`Open account menu for ${displayName}`}
+						className="size-11"
 						size="icon-lg"
 						variant="ghost"
 					/>

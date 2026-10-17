@@ -1,5 +1,6 @@
 import { Avatar } from "@blobz/react";
 import Link from "next/link";
+import styles from "./site-footer.module.css";
 
 export const LEGAL_LINKS = [
 	{ href: "/privacy-policy", label: "Privacy policy" },
@@ -11,7 +12,7 @@ export const LEGAL_LINKS = [
 export function SiteFooter() {
 	return (
 		<footer className="border-[#d8eef9] border-t bg-white text-[#60708a]">
-			<div className="mx-auto flex max-w-[82rem] flex-wrap items-center justify-between gap-x-10 gap-y-6 px-6 py-7 text-xs max-[640px]:px-4">
+			<div className="site-container flex flex-wrap items-center justify-between gap-x-10 gap-y-6 py-7 text-xs">
 				<Link
 					className="inline-flex items-center gap-[0.55rem] rounded-sm focus-visible:outline-2 focus-visible:outline-sky-600 focus-visible:outline-offset-4"
 					href="/"
@@ -41,6 +42,31 @@ export function SiteFooter() {
 						</Link>
 					))}
 				</nav>
+			</div>
+			<div className={`site-container ${styles.creditRow}`}>
+				<p className={styles.credit}>
+					made by bored{" "}
+					<span className={styles.author}>
+						<a
+							href="https://lirena.in"
+							rel="noopener noreferrer"
+							target="_blank"
+						>
+							saksham
+						</a>
+						<Avatar
+							alt=""
+							frame="square"
+							name="Saksham"
+							palette={["#e8f7ff", "#38bdf8"]}
+							size={24}
+						/>
+					</span>{" "}
+					on a random friday
+				</p>
+				<Link className={styles.accountLink} href="/login">
+					Sign in to hosted API
+				</Link>
 			</div>
 		</footer>
 	);

@@ -1,31 +1,207 @@
-.headerChrome {
-	position: relative;
+.header {
+	position: sticky;
+	top: 0.75rem;
+	z-index: 50;
+	height: 4.75rem;
+	margin-bottom: -4.75rem;
+	pointer-events: none;
 }
 
-.headerChrome::before {
-	position: absolute;
-	inset: 0;
-	z-index: 0;
-	content: "";
-	background: rgb(255 255 255 / 78%);
-	border: 1px solid rgb(255 255 255 / 88%);
+.inner {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+	gap: 2rem;
+	align-items: center;
+	height: 4rem;
+	padding: 0.5rem 0.625rem 0.5rem 1rem;
+	pointer-events: auto;
+	background: rgb(255 255 255 / 86%);
+	border: 1px solid rgb(255 255 255 / 90%);
 	border-radius: 999px;
 	box-shadow:
 		0 1px 0 rgb(255 255 255 / 95%) inset,
-		0 18px 50px rgb(14 87 120 / 13%);
-	backdrop-filter: blur(22px) saturate(165%);
+		0 14px 40px rgb(14 87 120 / 10%);
+	backdrop-filter: blur(18px) saturate(140%);
 }
 
-.headerAction:active {
-	transform: scale(0.97);
+.brand {
+	display: inline-flex;
+	gap: 0.5rem;
+	align-items: center;
+	justify-self: start;
+	min-height: 2.75rem;
+	font-family: var(--font-bricolage), sans-serif;
+	font-size: 1.125rem;
+	font-weight: 780;
+	line-height: 1;
+	color: #0b1830;
+	letter-spacing: -0.035em;
+	text-decoration: none;
+	border-radius: 0.25rem;
 }
 
+.brand img {
+	display: block;
+}
+
+.navigation {
+	display: flex;
+	gap: 1.5rem;
+	align-items: center;
+}
+
+.navLink {
+	display: inline-flex;
+	align-items: center;
+	min-height: 2.75rem;
+	padding: 0 0.25rem;
+	font-size: 0.85rem;
+	font-weight: 600;
+	color: #52647c;
+	text-decoration: none;
+	border-radius: 0.25rem;
+	transition: color 150ms ease;
+}
+
+.actions {
+	display: flex;
+	gap: 0.5rem;
+	align-items: center;
+	justify-self: end;
+	min-width: 0;
+}
+
+.githubLink {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.75rem;
+	height: 2.75rem;
+	color: #60708a;
+	border-radius: 50%;
+	transition:
+		color 150ms ease,
+		background-color 150ms ease,
+		transform 150ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.githubLink svg {
+	width: 1.15rem;
+	height: 1.15rem;
+}
+
+.headerAction {
+	gap: 0.5rem;
+	min-height: 2.75rem;
+	padding-inline: 1rem;
+	transition:
+		background-color 150ms ease,
+		transform 150ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.headerAction:active,
 .githubLink:active {
 	transform: scale(0.97);
 }
 
+.header a:focus-visible {
+	outline: 2px solid #0284c7;
+	outline-offset: 4px;
+	transition: none;
+}
+
+.mobileNavigation {
+	display: none;
+}
+
+.menuTrigger {
+	width: 2.75rem;
+	height: 2.75rem;
+	transition:
+		background-color 150ms ease,
+		transform 150ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.menuTrigger:active {
+	transform: scale(0.97);
+}
+
+.mobileMenu {
+	width: 14rem;
+	max-width: calc(100vw - 2rem);
+	animation: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.navLink:hover,
+	.githubLink:hover {
+		color: #0b1830;
+	}
+
+	.githubLink:hover {
+		background: #e8f7ff;
+	}
+}
+
+@media (max-width: 640px) {
+	.header {
+		top: 0.5rem;
+		height: 4.5rem;
+		margin-bottom: -4.5rem;
+	}
+
+	.inner {
+		display: flex;
+		gap: 0.5rem;
+		justify-content: space-between;
+		padding-inline: 0.75rem 0.375rem;
+	}
+
+	.navigation,
+	.githubLink {
+		display: none;
+	}
+
+	.actions {
+		gap: 0.375rem;
+	}
+
+	.headerAction {
+		padding-inline: 0.75rem;
+	}
+
+	.headerAction svg {
+		display: none;
+	}
+
+	.mobileNavigation {
+		display: block;
+	}
+}
+
+@media (max-width: 380px) {
+	.wordmark {
+		display: none;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.headerAction,
+	.githubLink,
+	.menuTrigger,
+	.navLink {
+		transition: none;
+	}
+
+	.headerAction:active,
+	.githubLink:active,
+	.menuTrigger:active {
+		transform: none;
+	}
+}
+
 @media (prefers-reduced-transparency: reduce) {
-	.headerChrome::before {
+	.inner {
 		background: #fff;
 		border-color: #d8eef9;
 		backdrop-filter: none;
@@ -33,7 +209,7 @@
 }
 
 @media (prefers-contrast: more) {
-	.headerChrome::before {
+	.inner {
 		background: #fff;
 		border-color: #0b1830;
 	}

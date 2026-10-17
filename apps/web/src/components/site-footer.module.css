@@ -1,0 +1,65 @@
+.creditRow {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem 1.5rem;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0.75rem 0 1.25rem;
+	border-top: 1px solid #e8f3f9;
+}
+
+.credit {
+	font-size: 0.8rem;
+	line-height: 2;
+	text-wrap: pretty;
+}
+
+.author {
+	display: inline-flex;
+	gap: 0.4rem;
+	align-items: center;
+	vertical-align: middle;
+	white-space: nowrap;
+}
+
+.author a {
+	font-weight: 600;
+	color: #0b1830;
+	text-decoration: underline;
+	text-decoration-color: #b5d9ec;
+	text-underline-offset: 0.2rem;
+	border-radius: 0.2rem;
+}
+
+.author img {
+	display: block;
+}
+
+.accountLink {
+	display: inline-flex;
+	align-items: center;
+	min-height: 2.75rem;
+	font-size: 0.75rem;
+	border-radius: 0.2rem;
+	transition: color 150ms ease;
+}
+
+.creditRow a:focus-visible {
+	outline: 2px solid #0284c7;
+	outline-offset: 4px;
+	transition: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.author a:hover,
+	.accountLink:hover {
+		color: #0369a1;
+		text-decoration-color: currentColor;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.accountLink {
+		transition: none;
+	}
+}
