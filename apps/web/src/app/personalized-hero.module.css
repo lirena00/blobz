@@ -25,70 +25,63 @@
 .inner {
 	position: relative;
 	display: grid;
-	grid-template-columns: minmax(0, 1fr) minmax(20rem, 0.82fr);
-	gap: clamp(2rem, 6vw, 6rem);
+	grid-template-columns: minmax(0, 1.15fr) minmax(20rem, 0.85fr);
+	gap: clamp(2rem, 5vw, 5rem);
 	align-items: center;
-	width: min(100% - 3rem, 78rem);
-	min-height: min(52rem, 100svh);
-	padding: 9rem 0 6rem;
-	margin: 0 auto;
+	min-height: min(49rem, 100svh);
+	padding: 9rem 0 5rem;
 }
 
 .copy {
 	min-width: 0;
 }
 
-.title,
-.nameInput {
-	font-family: var(--font-bricolage), sans-serif;
-	font-size: clamp(4.2rem, 7vw, 7.5rem);
-	font-weight: 800;
-	line-height: 0.96;
-	letter-spacing: -0.075em;
+.eyebrow {
+	margin-bottom: 1.25rem;
+	font-size: 0.72rem;
+	font-weight: 850;
+	color: #0369a1;
+	text-transform: uppercase;
+	letter-spacing: 0.14em;
 }
 
 .title {
+	max-width: 44rem;
 	margin: 0;
-	white-space: nowrap;
+	font-family: var(--font-bricolage), sans-serif;
+	font-size: clamp(3.25rem, 5.5vw, 5.5rem);
+	font-weight: 800;
+	line-height: 1.02;
+	letter-spacing: -0.065em;
+	text-wrap: balance;
 }
 
-.nameRow {
+.title span {
+	color: #087eaf;
+}
+
+.features {
 	display: flex;
-	gap: 0.75rem;
+	flex-wrap: wrap;
+	gap: 0.7rem 1.25rem;
 	align-items: center;
+	padding: 0;
+	margin: 2rem 0 0;
+	font-size: 0.75rem;
+	font-weight: 600;
+	color: #52647c;
+	list-style: none;
 }
 
-.inputLabel {
-	display: block;
-	width: min(100%, 33rem);
-	margin-top: 0.1rem;
-}
-
-.inputGroup {
-	height: auto;
-	background: transparent;
-	border: 0;
-	border-bottom: 3px solid #7dd3fc;
-	border-radius: 0;
-	transition: border-color 160ms ease;
-}
-
-.inputGroup:focus-within {
-	border-color: #0284c7;
-	box-shadow: none;
-}
-
-.nameInput {
-	width: 100%;
-	height: auto;
-	padding: 0.03em 0 0.1em;
-	color: #0b1830;
-	outline: none;
-}
-
-.nameInput::placeholder {
-	color: #80a8bd;
-	opacity: 1;
+.features li::before {
+	display: inline-block;
+	width: 0.3rem;
+	height: 0.3rem;
+	margin-right: 0.5rem;
+	vertical-align: middle;
+	content: "";
+	background: #0ea5e9;
+	border-radius: 50%;
 }
 
 .description {
@@ -108,6 +101,7 @@
 }
 
 .primaryLink {
+	min-height: 2.75rem;
 	font-weight: 750;
 	transition:
 		transform 160ms cubic-bezier(0.23, 1, 0.32, 1),
@@ -122,6 +116,7 @@
 	display: inline-flex;
 	gap: 0.45rem;
 	align-items: center;
+	min-height: 2.75rem;
 	font-size: 0.9rem;
 	font-weight: 750;
 	color: #075985;
@@ -140,51 +135,11 @@
 	outline-offset: 4px;
 }
 
-.launchBadges {
-	padding-top: 1.5rem;
-	margin-top: 2.25rem;
-	border-top: 1px solid #cdeaff;
-}
-
-.launchLabel {
-	margin-bottom: 0.8rem;
-	font-size: 0.72rem;
-	font-weight: 800;
-	color: #60708a;
-	text-transform: uppercase;
-	letter-spacing: 0.12em;
-}
-
-.badgeLinks {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 0.75rem;
-	align-items: center;
-}
-
-.badgeLink {
-	display: inline-block;
-	max-width: 100%;
-	border-radius: 1rem;
-	transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-.badgeLink:hover {
-	transform: translateY(-2px);
-}
-
-.badgeLink:focus-visible {
-	outline: 2px solid #0284c7;
-	outline-offset: 4px;
-}
-
-.badgeLink img {
-	display: block;
-	max-width: 100%;
-	height: auto;
-}
-
 .preview {
+	--foreground: #0b1830;
+	--input: #cce8f7;
+	--muted-foreground: #60708a;
+	--ring: #0284c7;
 	position: relative;
 	min-width: 0;
 	padding: 1.25rem;
@@ -194,10 +149,14 @@
 	box-shadow: 0 35px 90px rgb(14 116 168 / 13%);
 }
 
+.demoHeader {
+	margin-bottom: 1.1rem;
+}
+
 .avatarStage {
 	display: grid;
 	place-items: center;
-	min-height: clamp(17rem, 31vw, 27rem);
+	min-height: clamp(17rem, 26vw, 23rem);
 	background:
 		radial-gradient(circle at 50% 44%, #fff 0 22%, transparent 66%),
 		linear-gradient(145deg, #e9f8ff, #d9f3ff);
@@ -232,6 +191,10 @@
 	padding: 1rem 0.15rem 0;
 }
 
+.previewFooter button {
+	min-height: 2.75rem;
+}
+
 .exportStatus {
 	flex: 1;
 	min-width: 7rem;
@@ -250,9 +213,9 @@
 		padding-top: 8rem;
 	}
 
-	.inputLabel {
-		flex: 1;
-		min-width: 0;
+	.title {
+		max-width: 42rem;
+		font-size: clamp(3.25rem, 7.8vw, 4.5rem);
 	}
 
 	.preview {
@@ -262,13 +225,11 @@
 
 @media (max-width: 480px) {
 	.inner {
-		width: min(100% - 2rem, 35rem);
 		padding-bottom: 4rem;
 	}
 
-	.title,
-	.nameInput {
-		font-size: clamp(2.9rem, 13vw, 4.2rem);
+	.title {
+		font-size: clamp(2.75rem, 11.5vw, 3.4rem);
 	}
 
 	.description {
@@ -299,13 +260,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.inputGroup,
-	.primaryLink,
-	.badgeLink {
+	.primaryLink {
 		transition: none;
-	}
-
-	.badgeLink:hover {
-		transform: none;
 	}
 }

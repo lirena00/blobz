@@ -3,6 +3,15 @@
 @import "fumadocs-ui/css/preset.css";
 @import "fumadocs-openapi/css/preset.css";
 
+:root {
+	--site-gutter: 1rem;
+}
+
+.site-container {
+	width: min(78rem, calc(100% - var(--site-gutter) * 2));
+	margin-inline: auto;
+}
+
 html:has(#nd-docs-layout) {
 	--color-fd-background: #f9fdff;
 	--color-fd-foreground: #0b1830;
@@ -155,6 +164,12 @@ a,
 	textarea,
 	select {
 		font-size: 1rem;
+	}
+}
+
+@media (max-width: 640px) {
+	:root {
+		--site-gutter: 0.5rem;
 	}
 }
 

@@ -10,9 +10,9 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@blobz/ui/components/dropdown-menu";
+import { Field, FieldGroup, FieldLabel } from "@blobz/ui/components/field";
 import { InputGroup, InputGroupInput } from "@blobz/ui/components/input-group";
 import {
-	ArrowDownRight,
 	ArrowRight,
 	Check,
 	ChevronDown,
@@ -21,7 +21,6 @@ import {
 	FileCode2,
 	FileImage,
 } from "lucide-react";
-import NextImage from "next/image";
 import Link from "next/link";
 import { type ChangeEvent, useCallback, useState } from "react";
 
@@ -145,33 +144,15 @@ export function PersonalizedHero() {
 
 	return (
 		<section aria-labelledby="hero-title" className={styles.hero}>
-			<div className={styles.inner}>
+			<div className={`site-container ${styles.inner}`}>
 				<div className={styles.copy}>
+					<p className={styles.eyebrow}>Open-source SVG avatars</p>
 					<h1 className={styles.title} id="hero-title">
-						Blobz for
+						Expressive default avatars <span>for React and shadcn apps.</span>
 					</h1>
-					<div className={styles.nameRow}>
-						<label className={styles.inputLabel} htmlFor="hero-name">
-							<span className="sr-only">
-								Enter a name to generate a Blobz avatar
-							</span>
-							<InputGroup className={styles.inputGroup}>
-								<InputGroupInput
-									autoComplete="name"
-									className={styles.nameInput}
-									id="hero-name"
-									maxLength={42}
-									name="name"
-									onChange={handleNameChange}
-									placeholder="your name"
-									value={name}
-								/>
-							</InputGroup>
-						</label>
-					</div>
 					<p className={styles.description}>
-						Type a name and meet its avatar. Blobz turns any username, email, or
-						ID into the same playful SVG face every time.
+						Generate SVG avatars from user IDs, customize your brand colors, and
+						ship with React components, shadcn blocks, or a hosted API.
 					</p>
 					<div className={styles.actions}>
 						<Link
@@ -179,52 +160,49 @@ export function PersonalizedHero() {
 								className: styles.primaryLink,
 								size: "lg",
 							})}
-							href="#surfaces"
+							href="#install"
 						>
-							See it everywhere
-							<ArrowDownRight aria-hidden="true" data-icon="inline-end" />
+							Add to your app
+							<ArrowRight aria-hidden="true" data-icon="inline-end" />
 						</Link>
-						<Link className={styles.secondaryLink} href="/docs/components">
-							Explore components
+						<Link className={styles.secondaryLink} href="/create">
+							Try the playground
 							<ArrowRight aria-hidden="true" />
 						</Link>
 					</div>
-					<div className={styles.launchBadges}>
-						<p className={styles.launchLabel}>Find Blobz on</p>
-						<div className={styles.badgeLinks}>
-							<a
-								className={styles.badgeLink}
-								href="https://www.producthunt.com/products/blobz-2?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-blobz-2"
-								rel="noopener noreferrer"
-								target="_blank"
-							>
-								<NextImage
-									alt="Blobz on Product Hunt"
-									height={54}
-									src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1278323&theme=light&t=1791843105193"
-									unoptimized
-									width={250}
-								/>
-							</a>
-							<a
-								className={styles.badgeLink}
-								href="https://peerlist.io/lirena00/project/blobz-deterministic-avatars-worth-keeping"
-								rel="noopener noreferrer"
-								target="_blank"
-							>
-								<NextImage
-									alt="Blobz on Peerlist"
-									height={72}
-									src="https://peerlist.io/api/v1/projects/embed/PRJHR8D7BKJ7RQKOP3DAKBRONMBBN8?showUpvote=true&theme=light"
-									unoptimized
-									width={296}
-								/>
-							</a>
-						</div>
-					</div>
+					<ul aria-label="Blobz features" className={styles.features}>
+						<li>MIT licensed</li>
+						<li>Custom brand colors</li>
+						<li>Free React &amp; shadcn toolkit</li>
+					</ul>
 				</div>
 
 				<div className={styles.preview}>
+					<FieldGroup className={styles.demoHeader}>
+						<Field orientation="horizontal">
+							<FieldLabel
+								className="shrink-0 whitespace-nowrap"
+								htmlFor="hero-name"
+							>
+								Blobz for
+								<span className="sr-only"> (enter a name or user ID)</span>
+							</FieldLabel>
+							<InputGroup>
+								<InputGroupInput
+									autoCapitalize="none"
+									autoComplete="off"
+									enterKeyHint="done"
+									id="hero-name"
+									maxLength={42}
+									name="name"
+									onChange={handleNameChange}
+									placeholder="your name or user ID"
+									spellCheck={false}
+									value={name}
+								/>
+							</InputGroup>
+						</Field>
+					</FieldGroup>
 					<div className={styles.avatarStage}>
 						<div className={styles.avatarFrame}>
 							<Avatar

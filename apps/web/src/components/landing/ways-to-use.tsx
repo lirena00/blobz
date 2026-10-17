@@ -1,117 +1,191 @@
-import { Avatar } from "@blobz/react";
+import {
+	Tabs,
+	TabsContent,
+	TabsList,
+	TabsTrigger,
+} from "@blobz/ui/components/tabs";
 import { ArrowUpRight, Code2, Component, Globe2 } from "lucide-react";
 import Link from "next/link";
-import { DEMO_PEOPLE, getFirstName } from "@/lib/demo-people";
 
-const CARD_CLASS =
-	"flex min-h-[20rem] flex-col rounded-[1.6rem] border border-white/12 bg-white/[0.055] p-7 shadow-[0_20px_60px_rgb(0_0_0_/_10%)] max-[640px]:min-h-0 max-[640px]:p-6";
-const LINK_CLASS =
-	"mt-auto inline-flex w-fit items-center gap-2 rounded-lg pt-7 font-bold text-[#9cddff] text-sm underline-offset-4 hover:text-white hover:underline focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-4";
+import { CopyCode } from "./copy-code";
+import styles from "./ways-to-use.module.css";
+
+const PACKAGE_MANAGERS = [
+	{ install: "npm i", name: "npm", runner: "npx" },
+	{ install: "pnpm add", name: "pnpm", runner: "pnpm dlx" },
+	{ install: "yarn add", name: "yarn", runner: "yarn dlx" },
+	{ install: "bun add", name: "bun", runner: "bunx --bun" },
+] as const;
+
+const REACT_EXAMPLE = `import { Avatar } from "@blobz/react";
+
+<Avatar
+  name={user.id}
+  palette={["#eef9ff", "#38bdf8"]}
+  size={48}
+/>`;
+
+const SHADCN_EXAMPLE = `import {
+  Avatar,
+  AvatarFallback,
+} from "@/components/ui/avatar";
+
+<Avatar>
+  <AvatarFallback name={user.id} />
+</Avatar>`;
+
+const API_EXAMPLE = `<img
+  src="https://blobz.lirena.in/api/v1/avatars/YOUR_ENDPOINT_ID?name=user_123"
+  crossorigin="anonymous"
+  width="48"
+  height="48"
+  alt="User avatar"
+/>`;
+
+function CodeSnippet({
+	code,
+	label,
+}: {
+	readonly code: string;
+	readonly label: string;
+}) {
+	return (
+		<div className={styles.snippet}>
+			<div className={styles.snippetHeader}>
+				<span>{label}</span>
+				<CopyCode code={code} label={`Copy ${label}`} />
+			</div>
+			<pre className={styles.code}>
+				<code>{code}</code>
+			</pre>
+		</div>
+	);
+}
+
+function PackageInstall({ mode }: { readonly mode: "react" | "shadcn" }) {
+	return (
+		<Tabs className="min-w-0 gap-3" defaultValue="npm">
+			<TabsList aria-label={`${mode} package manager`} variant="line">
+				{PACKAGE_MANAGERS.map(({ name }) => (
+					<TabsTrigger className="min-h-11 px-3" key={name} value={name}>
+						{name}
+					</TabsTrigger>
+				))}
+			</TabsList>
+			{PACKAGE_MANAGERS.map(({ install, name, runner }) => (
+				<TabsContent key={name} value={name}>
+					<CodeSnippet
+						code={
+							mode === "react"
+								? `${install} @blobz/react`
+								: `${runner} shadcn@latest add @blobz/avatar`
+						}
+						label={`${mode} · ${name}`}
+					/>
+				</TabsContent>
+			))}
+		</Tabs>
+	);
+}
 
 export function WaysToUse() {
 	return (
 		<section
-			aria-labelledby="docs-title"
-			className="scroll-mt-20 bg-[#071426] px-6 py-28 text-white max-[640px]:px-4 max-[640px]:py-20"
-			id="docs"
+			aria-labelledby="install-title"
+			className={styles.section}
+			id="install"
 		>
-			<div className="mx-auto max-w-[78rem]">
-				<div className="max-w-[52rem]">
-					<p className="mb-4 font-[850] text-[#7dd3fc] text-[0.72rem] uppercase tracking-[0.17em]">
-						Ways to use Blobz
-					</p>
-					<h2
-						className="font-[780] font-[family-name:var(--font-bricolage)] text-[clamp(3rem,6vw,6rem)] leading-[0.93] tracking-[-0.055em] max-[640px]:text-[3.2rem]"
-						id="docs-title"
-					>
-						One identity. Three ways to ship it.
+			<div className={`site-container ${styles.inner}`}>
+				<div className={styles.intro}>
+					<p className={styles.eyebrow}>From preview to production</p>
+					<h2 className={styles.title} id="install-title">
+						Add Blobz to your app.
 					</h2>
-					<p className="mt-6 max-w-[38rem] text-[#9fb4ca] text-[1.05rem] leading-7">
-						Use the same stable seed with a React component, a ready-made
-						interface, or a hosted image URL.
+					<p className={styles.description}>
+						A React component, source you own with shadcn, or an image URL for
+						any stack. Pick what fits your project.
+					</p>
+					<p className={styles.freeNote}>
+						React and shadcn are free and open source.
+						<br />
+						No account or API key needed.
 					</p>
 				</div>
 
-				<div className="mt-12 grid gap-4 min-[821px]:grid-cols-3">
-					<article className={CARD_CLASS}>
-						<span className="grid size-12 place-items-center rounded-2xl bg-sky-400/15 text-[#7dd3fc]">
-							<Code2 aria-hidden="true" className="size-6" />
-						</span>
-						<h3 className="mt-7 font-[760] font-[family-name:var(--font-bricolage)] text-2xl tracking-[-0.035em]">
-							React package
-						</h3>
-						<p className="mt-2 text-[#9fb4ca] text-sm leading-6">
-							Render SVG avatars directly in your app. Free and unlimited.
-						</p>
-						<code className="mt-6 block overflow-x-auto rounded-xl border border-white/10 bg-[#06101e] px-4 py-3 text-[#b9e8ff] text-xs">
-							&lt;Avatar name=&#123;user.id&#125; /&gt;
-						</code>
-						<Link className={LINK_CLASS} href="/docs/react">
-							Read React docs{" "}
-							<ArrowUpRight aria-hidden="true" className="size-4" />
-						</Link>
-					</article>
-
-					<article className={CARD_CLASS}>
-						<span className="grid size-12 place-items-center rounded-2xl bg-violet-400/15 text-violet-200">
-							<Component aria-hidden="true" className="size-6" />
-						</span>
-						<h3 className="mt-7 font-[760] font-[family-name:var(--font-bricolage)] text-2xl tracking-[-0.035em]">
-							shadcn components
-						</h3>
-						<p className="mt-2 text-[#9fb4ca] text-sm leading-6">
-							Install ready-to-use profile, account, and group UI into your
-							project.
-						</p>
-						<div
-							aria-hidden="true"
-							className="mt-6 flex items-center gap-3 rounded-xl border border-white/10 bg-[#06101e] p-2.5"
-						>
-							<Avatar
-								alt=""
-								className="rounded-xl"
-								name={getFirstName(DEMO_PEOPLE.janakiAmmal)}
-								palette={["#e8f7ff", "#38bdf8"]}
-								size={40}
+				<Tabs className="min-w-0 gap-6" defaultValue="react">
+					<TabsList
+						aria-label="Integration method"
+						className="w-full"
+						variant="line"
+					>
+						<TabsTrigger className="min-h-11 px-3" value="react">
+							<Code2
+								aria-hidden="true"
+								className="max-[380px]:hidden"
+								data-icon="inline-start"
 							/>
-							<span className="text-sm">{DEMO_PEOPLE.janakiAmmal}</span>
-							<span className="ml-auto rounded-full bg-emerald-400/15 px-2 py-1 text-[0.65rem] text-emerald-200">
-								Online
-							</span>
-						</div>
-						<Link className={LINK_CLASS} href="/docs/components">
-							Explore components{" "}
-							<ArrowUpRight aria-hidden="true" className="size-4" />
-						</Link>
-					</article>
-
-					<article className={CARD_CLASS}>
-						<span className="grid size-12 place-items-center rounded-2xl bg-emerald-400/15 text-emerald-200">
-							<Globe2 aria-hidden="true" className="size-6" />
-						</span>
-						<h3 className="mt-7 font-[760] font-[family-name:var(--font-bricolage)] text-2xl tracking-[-0.035em]">
+							React
+						</TabsTrigger>
+						<TabsTrigger className="min-h-11 px-3" value="shadcn">
+							<Component
+								aria-hidden="true"
+								className="max-[380px]:hidden"
+								data-icon="inline-start"
+							/>
+							shadcn
+						</TabsTrigger>
+						<TabsTrigger className="min-h-11 px-3" value="api">
+							<Globe2
+								aria-hidden="true"
+								className="max-[380px]:hidden"
+								data-icon="inline-start"
+							/>
 							Hosted API
-						</h3>
-						<p className="mt-2 text-[#9fb4ca] text-sm leading-6">
-							Get the avatar as an image URL for any stack. Paid plans start
-							when you need volume.
-						</p>
-						<div
-							aria-hidden="true"
-							className="mt-6 flex items-center gap-2 rounded-xl border border-white/10 bg-[#06101e] px-4 py-3 font-mono text-[#b9e8ff] text-xs"
-						>
-							<span className="rounded bg-emerald-400/15 px-1.5 py-1 text-emerald-200">
-								GET
-							</span>
-							<span>avatar.svg</span>
-							<ArrowUpRight className="ml-auto size-4" />
+						</TabsTrigger>
+					</TabsList>
+
+					<TabsContent className={styles.panel} value="react">
+						<PackageInstall mode="react" />
+						<CodeSnippet code={REACT_EXAMPLE} label="your-component.tsx" />
+						<div className={styles.panelFooter}>
+							<p>React 19+ · Renders locally · No global stylesheet</p>
+							<Link className={styles.docsLink} href="/docs/react/installation">
+								React docs <ArrowUpRight aria-hidden="true" />
+							</Link>
 						</div>
-						<Link className={LINK_CLASS} href="/docs/api">
-							Read API docs{" "}
-							<ArrowUpRight aria-hidden="true" className="size-4" />
-						</Link>
-					</article>
-				</div>
+					</TabsContent>
+
+					<TabsContent className={styles.panel} value="shadcn">
+						<PackageInstall mode="shadcn" />
+						<CodeSnippet code={SHADCN_EXAMPLE} label="your-component.tsx" />
+						<div className={styles.panelFooter}>
+							<p>
+								Run in an existing shadcn project. Review the diff if replacing
+								an Avatar.
+							</p>
+							<Link className={styles.docsLink} href="/docs/components">
+								Components &amp; blocks <ArrowUpRight aria-hidden="true" />
+							</Link>
+						</div>
+					</TabsContent>
+
+					<TabsContent className={styles.panel} value="api">
+						<div className={styles.apiIntro}>
+							<p className={styles.apiLabel}>Paid hosted API · Any stack</p>
+							<p>
+								Activate a plan, approve your website origin, then copy your
+								endpoint ID from the dashboard.
+							</p>
+						</div>
+						<CodeSnippet code={API_EXAMPLE} label="your-page.html" />
+						<div className={styles.panelFooter}>
+							<p>Replace YOUR_ENDPOINT_ID with your active endpoint ID.</p>
+							<Link className={styles.docsLink} href="/docs/api/quickstart">
+								API quickstart <ArrowUpRight aria-hidden="true" />
+							</Link>
+						</div>
+					</TabsContent>
+				</Tabs>
 			</div>
 		</section>
 	);

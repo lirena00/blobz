@@ -227,7 +227,7 @@ export function IdentitySurfaces() {
 						</div>
 					</div>
 					<div className="relative flex items-center justify-between font-mono text-[#7aa2b9] text-[0.58rem]">
-						<span>Same name. Same face.</span>
+						<span>Made to match your palette.</span>
 						<span>1200 × 630</span>
 					</div>
 				</article>
@@ -299,7 +299,7 @@ export function IdentitySurfaces() {
 						<div>
 							<strong className="text-[0.7rem]">{avatarName}</strong>
 							<p className="mt-[0.15rem] text-[#748399] text-[0.7rem]">
-								Same seed, same face. Neat.
+								These colors fit right in.
 							</p>
 						</div>
 					</div>

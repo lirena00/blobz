@@ -183,10 +183,10 @@ export function Pricing() {
 	return (
 		<section
 			aria-labelledby="api-pricing-title"
-			className="scroll-mt-20 bg-[#f7fcff] px-6 pt-24 pb-28 max-[640px]:px-4 max-[640px]:pt-16 max-[640px]:pb-20"
+			className="site-container scroll-mt-20 bg-[#f7fcff] pt-24 pb-28 max-[640px]:pt-16 max-[640px]:pb-20"
 			id="api"
 		>
-			<div className="mx-auto max-w-[78rem]">
+			<div>
 				<Tabs
 					className={styles.tabs}
 					data-has-switched={hasSwitched}
