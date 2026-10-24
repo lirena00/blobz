@@ -64,7 +64,13 @@ which lets an editor use a generated face as its custom starting point. The
 legacy `choices` option on `createAvatar` remains available for partial numeric
 overrides.
 
-The current feature space contains `4,911,637,500` combinations before palette
-variation. It includes 21 silhouettes, 14 eye styles, 11 mouths, nine brow
-styles, and 25 face angles. The generator draw order is intentionally stable;
-changing it would change existing users' avatars.
+The current feature space contains `5,159,700,000` combinations before palette
+variation. It includes 21 silhouettes, 14 eye styles, 13 mouths, eight brow
+styles, and 25 face angles. Bodies use a soft gradient and rim lighting with
+highlights fitted to each silhouette.
+
+The Faceprint v2 update adds `uwu` and `angry` mouths and removes the `tilted`
+brow style. The generator draw order stays stable, but the updated option counts
+change the generated mouth and brows for some names. Saved numeric brow index
+`7` now selects `unibrow`; index `8` is no longer valid. Semantic custom choices
+continue to use their named styles, except for the removed `tilted` option.

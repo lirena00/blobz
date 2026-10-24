@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import {
 	AVATAR_CHOICES,
 	AVATAR_COMBINATION_COUNT,
+	type AvatarFrame,
 	createAvatar,
 	createCustomAvatar,
 	DEFAULT_CUSTOM_AVATAR_CHOICES,
@@ -15,14 +16,14 @@ const digest = (value: string) =>
 	createHash("sha256").update(value).digest("hex");
 
 describe("avatar-core", () => {
-	test("matches the rounded index.html output", () => {
+	test("matches the rounded Faceprint v2 output", () => {
 		const avatar = makeAvatar("Janaki", ["#f2f1f4", "#7c6cf2"], "rounded");
 
 		expect(avatar.key).toBe("janaki");
 		expect(avatar.hash).toBe(4_216_952_012_017_202);
-		expect(avatar.combos).toBe(4_911_637_500);
+		expect(avatar.combos).toBe(5_159_700_000);
 		expect(avatar.choices).toEqual({
-			browI: 7,
+			browI: 6,
 			dxI: 2,
 			dyI: 1,
 			eyeI: 0,
@@ -30,16 +31,16 @@ describe("avatar-core", () => {
 			flip: 1,
 			gapI: 1,
 			lookI: 0,
-			mouthI: 8,
+			mouthI: 10,
 			shapeI: 1,
 			tiltI: 0,
 		});
 		expect(digest(avatar.svg)).toBe(
-			"48745f125fe596ff9e116476aaaf2295ecca286872dd20ce006bfb6a4782e32a"
+			"b827686a13c219bd9b7b2c5271ac2f4bfb704bf465956151161904dbf47d24d3"
 		);
 	});
 
-	test("matches the circle index.html output", () => {
+	test("matches the circle Faceprint v2 output", () => {
 		const avatar = makeAvatar(
 			"Blobz <Admin>",
 			["#101828", "#f79009"],
@@ -48,14 +49,14 @@ describe("avatar-core", () => {
 
 		expect(avatar.hash).toBe(1_665_355_454_956_846);
 		expect(digest(avatar.svg)).toBe(
-			"c0cf729908dd0791d4d429a22ad26c6b7e3245f442843efd51ca0b0ac17058bd"
+			"5667914a244cf9d8f77355ac1b4099370fb1815e427a152e7af79454c1369937"
 		);
 		expect(avatar.svg).toContain("Blob avatar for blobz &lt;admin&gt;");
 	});
 
 	test("supports every manual face choice", () => {
 		const choices = {
-			browI: 8,
+			browI: 7,
 			dxI: 4,
 			dyI: 2,
 			eyeI: 6,
@@ -63,7 +64,7 @@ describe("avatar-core", () => {
 			flip: 1,
 			gapI: 2,
 			lookI: 4,
-			mouthI: 10,
+			mouthI: 12,
 			shapeI: 16,
 			tiltI: 14,
 		} as const;
@@ -79,8 +80,9 @@ describe("avatar-core", () => {
 		expect(values).toContain("leaf");
 		expect(values).toContain("distorted");
 		expect(values).toContain("unibrow");
+		expect(values).toContain("angry");
 		expect(digest(avatar.svg)).toBe(
-			"39a1de2cad99598136aedcd222e4c7c793ab32357309aff76057c877a2c2ba0f"
+			"99a6680e1531099ec7d2f5783f889ffcd3865120efb9620b67d23777b2d1ebea"
 		);
 	});
 
@@ -88,10 +90,75 @@ describe("avatar-core", () => {
 		expect(AVATAR_CHOICES.shape).toHaveLength(21);
 		expect(AVATAR_CHOICES.eyes).toHaveLength(14);
 		expect(AVATAR_CHOICES.look).toHaveLength(5);
-		expect(AVATAR_CHOICES.mouth).toHaveLength(11);
-		expect(AVATAR_CHOICES.brows).toHaveLength(9);
+		expect(AVATAR_CHOICES.mouth).toHaveLength(13);
+		expect(AVATAR_CHOICES.brows).toHaveLength(8);
 		expect(AVATAR_CHOICES.gap).toHaveLength(3);
-		expect(AVATAR_COMBINATION_COUNT).toBe(4_911_637_500);
+		expect(AVATAR_COMBINATION_COUNT).toBe(5_159_700_000);
+		expect(AVATAR_COMBINATION_COUNT).toBe(
+			makeAvatar("catalogue", ["#f2f1f4", "#7c6cf2"]).combos
+		);
+	});
+
+	test("matches Faceprint v2 shading and features across every silhouette", () => {
+		const matrix = createHash("sha256");
+		const frames: readonly AvatarFrame[] = ["rounded", "circle", "square"];
+		const bodies = [
+			"#7c6cf2",
+			"#171717",
+			"#000000",
+			"#ffffff",
+			"#aaaaaa",
+			"#ff0000",
+			"#ffff00",
+			"#00ff00",
+			"#00ffff",
+			"#0000ff",
+			"#ff00ff",
+			"#595959",
+			"#5a5a5a",
+		];
+		for (const [shapeI] of AVATAR_CHOICES.shape.entries()) {
+			for (const frame of frames) {
+				for (const [colourI, body] of bodies.entries()) {
+					for (const flip of [0, 1]) {
+						const avatar = makeAvatar(
+							"Faceprint parity",
+							["#f2f1f4", body],
+							frame,
+							{
+								browI: (shapeI + colourI) % 8,
+								dxI: colourI % 5,
+								dyI: colourI % 3,
+								eyeI: (shapeI + colourI) % 14,
+								faceTiltI: shapeI % 25,
+								flip,
+								gapI: colourI % 3,
+								lookI: colourI % 5,
+								mouthI: (shapeI + colourI) % 13,
+								shapeI,
+								tiltI: shapeI % 15,
+							}
+						);
+						matrix.update(avatar.svg);
+					}
+				}
+			}
+		}
+		// Captured from faceprint-v2 (3).html, omitting its unused blur filter.
+		expect(matrix.digest("hex")).toBe(
+			"636ee4df85c0d2fb07ca1f59157ac68863f90cfaf4877c99e0c49b43608ba21e"
+		);
+	});
+
+	test("keeps all SVG definition IDs unique for side-eye avatars", () => {
+		const { svg } = createAvatar({ choices: { eyeI: 10 }, name: "side-eye" });
+		const ids = Array.from(svg.matchAll(/\bid="([^"]+)"/g), ([, id]) => id);
+		expect(new Set(ids).size).toBe(ids.length);
+		expect(svg).toContain("<linearGradient ");
+		expect(svg).toContain('stdDeviation="3.3"');
+		for (const [, id] of svg.matchAll(/url\(#([^)]+)\)/g)) {
+			expect(ids).toContain(id);
+		}
 	});
 
 	test("normalizes names and stays deterministic", () => {
@@ -103,12 +170,33 @@ describe("avatar-core", () => {
 	test("ignores invalid overrides", () => {
 		const generated = makeAvatar("fallback", ["#f8fafc", "#14b8a6"]);
 		const invalid = makeAvatar("fallback", ["#f8fafc", "#14b8a6"], "rounded", {
+			browI: 8,
 			eyeI: -1,
 			mouthI: 1.5,
 			shapeI: 99,
 		});
 		expect(invalid).toEqual(generated);
 	});
+
+	test.each(["uwu", "angry"] as const)(
+		"supports the %s mouth in custom avatars",
+		(mouth) => {
+			const customChoices = {
+				...DEFAULT_CUSTOM_AVATAR_CHOICES,
+				brows: "unibrow",
+				mouth,
+			} as const;
+			const avatar = createCustomAvatar({ choices: customChoices });
+			expect(toCustomAvatarChoices(avatar.choices)).toEqual(customChoices);
+			expect(avatar.choices.browI).toBe(7);
+			expect(avatar.features).toContainEqual({
+				at: avatar.choices.mouthI + 1,
+				label: "Mouth",
+				of: 13,
+				value: mouth,
+			});
+		}
+	);
 
 	test("renders a custom avatar without a name-derived hash", () => {
 		const avatar = createCustomAvatar({

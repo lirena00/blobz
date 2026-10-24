@@ -8,7 +8,6 @@ export const AVATAR_CHOICES = {
 		"flat",
 		"quizzical",
 		"high",
-		"tilted",
 		"unibrow",
 	],
 	eyes: [
@@ -41,6 +40,8 @@ export const AVATAR_CHOICES = {
 		"buck teeth",
 		"wobbly",
 		"wide smile",
+		"uwu",
+		"angry",
 	],
 	shape: [
 		"eared",
@@ -68,7 +69,7 @@ export const AVATAR_CHOICES = {
 } as const;
 
 export const CHOICE_LABELS = AVATAR_CHOICES;
-export const AVATAR_COMBINATION_COUNT = 4_911_637_500;
+export const AVATAR_COMBINATION_COUNT = 5_159_700_000;
 export const DEFAULT_AVATAR_PALETTE = ["#f2f1f4", "#7c6cf2"] as const;
 
 export type AvatarFrame = "circle" | "rounded" | "square";
@@ -316,6 +317,60 @@ const luminance = (hex: string): number => {
 	const [red, green, blue] = toRgb(hex);
 	return 0.299 * red + 0.587 * green + 0.114 * blue;
 };
+const getHue = (
+	red: number,
+	green: number,
+	blue: number,
+	maximum: number,
+	delta: number
+): number => {
+	if (delta === 0) {
+		return 0;
+	}
+	if (maximum === red) {
+		return ((green - blue) / delta + 6) % 6;
+	}
+	if (maximum === green) {
+		return (blue - red) / delta + 2;
+	}
+	return (red - green) / delta + 4;
+};
+const shade = (hex: string, lightness: number, saturation = 1): string => {
+	const [redChannel, greenChannel, blueChannel] = toRgb(hex);
+	const red = redChannel / 255;
+	const green = greenChannel / 255;
+	const blue = blueChannel / 255;
+	const maximum = Math.max(red, green, blue);
+	const minimum = Math.min(red, green, blue);
+	const delta = maximum - minimum;
+	const hue = getHue(red, green, blue, maximum, delta);
+	const originalLightness = (maximum + minimum) / 2;
+	const originalSaturation =
+		delta === 0 ? 0 : delta / (1 - Math.abs(2 * originalLightness - 1));
+	const adjustedLightness = Math.min(1, originalLightness * lightness);
+	const adjustedSaturation = Math.min(1, originalSaturation * saturation);
+	const chroma = (1 - Math.abs(2 * adjustedLightness - 1)) * adjustedSaturation;
+	const secondary = chroma * (1 - Math.abs((hue % 2) - 1));
+	const offset = adjustedLightness - chroma / 2;
+	const channels = getItem(
+		[
+			[chroma, secondary, 0],
+			[secondary, chroma, 0],
+			[0, chroma, secondary],
+			[0, secondary, chroma],
+			[secondary, 0, chroma],
+			[chroma, 0, secondary],
+		] as const,
+		Math.floor(hue) % 6
+	);
+	return `#${channels
+		.map((channel) =>
+			Math.round((channel + offset) * 255)
+				.toString(16)
+				.padStart(2, "0")
+		)
+		.join("")}`;
+};
 const escapeXml = (value: string): string =>
 	value.replace(/[&<>"]/g, (character) => XML_ENTITIES[character] ?? character);
 const choiceOrFallback = (
@@ -511,6 +566,10 @@ const renderAvatar = ({
 	const bodySvg = body.g;
 	const glint = getItem(GLINTS, shapeI);
 	const whiteBody = bodySvg.split(blob).join("#fff");
+	const light = darkBlob ? mix(blob, "#ffffff", 0.14) : shade(blob, 1.07, 1.02);
+	const deep = darkBlob ? mix(blob, "#000000", 0.3) : shade(blob, 0.84, 1.12);
+	const rim = mix(blob, "#ffffff", darkBlob ? 0.34 : 0.5);
+	const paintedBody = bodySvg.split(blob).join(`url(#${id}g)`);
 	const shine =
 		`<g mask="url(#${id}s)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" opacity=".62">` +
 		`<path d="${glint[0]}" stroke-width="2.3"/>` +
@@ -624,6 +683,8 @@ const renderAvatar = ({
 			`<path d="M-4 7.5H4" ${stroke(2.2)}/><rect x="-2.6" y="8" width="2.4" height="3.2" rx=".7" fill="#fff" stroke="${pupil}" stroke-width=".8"/><rect x=".2" y="8" width="2.4" height="3.2" rx=".7" fill="#fff" stroke="${pupil}" stroke-width=".8"/>`,
 			`<path d="M-5 8Q-2.5 5 0 8T5 8" ${stroke(2.2)}/>`,
 			`<path d="M-7 5.4Q0 14.6 7 5.4" ${stroke(2.4)}/>`,
+			`<path d="M-7.2 5.4C-8 11.4 -1.8 12.6 -0.5 7.2C0.5 10.4 3.2 11 5.2 9.6C6.4 8.7 7 7.2 7 5.6" ${stroke(2.4)}/>`,
+			`<path d="M-3.4 4.4V7.4Q-3.6 9.6 -6 11.4M3.4 4.4V7.4Q3.6 9.6 6 11.4M-3.4 8.2Q0 10.2 3.4 8.2" ${stroke(2.4)}/>`,
 		],
 		mouthI
 	);
@@ -639,7 +700,6 @@ const renderAvatar = ({
 					? `<path d="M${x - 4.5} -13Q${x} -18.2 ${x + 4.5} -13" ${stroke(2.2)}/>`
 					: `<path d="M${x - 4.5} -11.8H${x + 4.5}" ${stroke(2.2)}/>`,
 				`<path d="M${x - 5} -14.6Q${x} -22.4 ${x + 5} -14.6" ${stroke(2.2)}/>`,
-				`<path d="M${x - 4.6} -11.6L${x + 4.6} -14.4" ${stroke(2.2)}/>`,
 				side > 0
 					? `<path d="M${x - 5} -12.6Q0 -15.8 ${-x + 5} -12.6" ${stroke(2.4)}/>`
 					: "",
@@ -660,9 +720,11 @@ const renderAvatar = ({
 	const svg =
 		`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80" role="img" aria-label="Blob avatar for ${escapeXml(key)}">` +
 		`<defs><clipPath id="${id}"><rect width="80" height="80" rx="${frameRadius}"/></clipPath>` +
-		`<mask id="${id}s" maskUnits="userSpaceOnUse" x="0" y="0" width="80" height="80">${whiteBody}</mask></defs>` +
+		`<mask id="${id}s" maskUnits="userSpaceOnUse" x="0" y="0" width="80" height="80">${whiteBody}</mask>` +
+		`<linearGradient id="${id}g" gradientUnits="userSpaceOnUse" x1="30" y1="12" x2="50" y2="72"><stop offset="0" stop-color="${light}"/><stop offset=".3" stop-color="${blob}"/><stop offset=".65" stop-color="${blob}"/><stop offset="1" stop-color="${deep}"/></linearGradient>` +
+		`<filter id="${id}f" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB"><feComponentTransfer in="SourceAlpha" result="inv"><feFuncA type="table" tableValues="1 0"/></feComponentTransfer><feGaussianBlur in="inv" stdDeviation="3.3" result="blur"/><feComposite in="blur" in2="SourceAlpha" operator="in" result="edge"/><feComponentTransfer in="edge" result="edge2"><feFuncA type="linear" slope="1.25"/></feComponentTransfer><feFlood flood-color="${rim}" result="tint"/><feComposite in="tint" in2="edge2" operator="in" result="glow"/><feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="glow"/></feMerge></filter></defs>` +
 		`<g clip-path="url(#${id})"><rect width="80" height="80" fill="${background}"/>` +
-		`<g transform="translate(40 42) rotate(${tilt}) scale(1.15) translate(-40 -42)"><g${flipTransform}>${bodySvg}${shine}</g><g${flipTransform}>${face}</g></g></g></svg>`;
+		`<g transform="translate(40 42) rotate(${tilt}) scale(1.15) translate(-40 -42)"><g${flipTransform}><g filter="url(#${id}f)">${paintedBody}</g>${shine}</g><g${flipTransform}>${face}</g></g></g></svg>`;
 
 	const features: readonly AvatarFeature[] = [
 		{
@@ -701,13 +763,13 @@ const renderAvatar = ({
 		{
 			at: mouthI + 1,
 			label: "Mouth",
-			of: 11,
+			of: AVATAR_CHOICES.mouth.length,
 			value: getItem(AVATAR_CHOICES.mouth, mouthI),
 		},
 		{
 			at: browI + 1,
 			label: "Brows",
-			of: 9,
+			of: AVATAR_CHOICES.brows.length,
 			value: getItem(AVATAR_CHOICES.brows, browI),
 		},
 		{ at: faceTiltI + 1, label: "Face angle", of: 25, value: `${faceTilt}°` },
@@ -741,25 +803,33 @@ export const makeAvatar = (
 	let shapeI = integer(21);
 	let eyeI = integer(14);
 	let lookI = integer(5);
-	let mouthI = integer(11);
+	let mouthI = integer(AVATAR_CHOICES.mouth.length);
 	let tiltI = integer(15);
 	let dxI = integer(5);
 	let dyI = integer(3);
 	let gapI = integer(3);
 	let flip = integer(2);
-	let browI = integer(9);
+	let browI = integer(AVATAR_CHOICES.brows.length);
 	let faceTiltI = integer(25);
 	if (overrides) {
 		shapeI = choiceOrFallback(overrides.shapeI, 21, shapeI);
 		eyeI = choiceOrFallback(overrides.eyeI, 14, eyeI);
 		lookI = choiceOrFallback(overrides.lookI, 5, lookI);
-		mouthI = choiceOrFallback(overrides.mouthI, 11, mouthI);
+		mouthI = choiceOrFallback(
+			overrides.mouthI,
+			AVATAR_CHOICES.mouth.length,
+			mouthI
+		);
 		tiltI = choiceOrFallback(overrides.tiltI, 15, tiltI);
 		dxI = choiceOrFallback(overrides.dxI, 5, dxI);
 		dyI = choiceOrFallback(overrides.dyI, 3, dyI);
 		gapI = choiceOrFallback(overrides.gapI, 3, gapI);
 		flip = choiceOrFallback(overrides.flip, 2, flip);
-		browI = choiceOrFallback(overrides.browI, 9, browI);
+		browI = choiceOrFallback(
+			overrides.browI,
+			AVATAR_CHOICES.brows.length,
+			browI
+		);
 		faceTiltI = choiceOrFallback(overrides.faceTiltI, 25, faceTiltI);
 	}
 	const choices: AvatarChoices = {
