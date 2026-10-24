@@ -7,6 +7,9 @@ const withMDX = createMDX();
 
 const nextConfig: NextConfig = {
 	allowedDevOrigins: ["equation-straw-bamboo.ngrok-free.dev"],
+	experimental: {
+		agentUpgrade: "security",
+	},
 	reactCompiler: true,
 	async redirects() {
 		return [

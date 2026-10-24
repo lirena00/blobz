@@ -35,7 +35,7 @@
     "fumadocs-openapi": "^12.4.1",
     "fumadocs-ui": "^16.17.1",
     "lucide-react": "catalog:",
-    "next": "^16.3.4",
+    "next": "16.4.3",
     "next-themes": "catalog:",
     "prism-react-renderer": "^2.4.1",
     "react": "catalog:",
