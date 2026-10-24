@@ -10,5 +10,6 @@ export default async function OpenGraphImage() {
 			"Generate the same playful SVG avatar from any username, email, or ID.",
 		seed: "blobz-open-graph",
 		title: "A face worth keeping.",
+		variant: "cover",
 	});
 }

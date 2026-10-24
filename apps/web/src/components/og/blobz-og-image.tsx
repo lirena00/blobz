@@ -1,6 +1,8 @@
 import { type AvatarPalette, makeAvatar } from "@blobz/avatar-core";
 import { ImageResponse } from "next/og";
 
+import { MainCoverImage } from "./main-cover-image";
+
 const OG_SIZE = {
 	height: 630,
 	width: 1200,
@@ -8,6 +10,8 @@ const OG_SIZE = {
 
 const BRICOLAGE_GROTESQUE_URL =
 	"https://fonts.gstatic.com/s/bricolagegrotesque/v9/3y9U6as8bTXq_nANBjzKo3IeZx8z6up5BeSl5jBNz_19PpbpMXuECpwUxJBOm_OJWiaaD30YfKfjZZoLvZvlyM0.ttf";
+const BRICOLAGE_GROTESQUE_REGULAR_URL =
+	"https://fonts.gstatic.com/s/bricolagegrotesque/v9/3y9U6as8bTXq_nANBjzKo3IeZx8z6up5BeSl5jBNz_19PpbpMXuECpwUxJBOm_OJWiaaD30YfKfjZZoLvRviyM0.ttf";
 
 const OG_AVATARS = [
 	{
@@ -66,6 +70,7 @@ interface BlobzOgImageProps {
 	readonly description: string;
 	readonly seed: string;
 	readonly title: string;
+	readonly variant?: "cover";
 }
 
 const createAvatarSource = (seed: string, palette: AvatarPalette): string => {
@@ -327,6 +332,21 @@ export function BlobzOgImage({ description, seed, title }: BlobzOgImageProps) {
 }
 
 let displayFontPromise: Promise<ArrayBuffer> | undefined;
+let regularFontPromise: Promise<ArrayBuffer> | undefined;
+
+const loadRegularFont = (): Promise<ArrayBuffer> => {
+	regularFontPromise ??= fetch(BRICOLAGE_GROTESQUE_REGULAR_URL).then(
+		async (response) => {
+			if (!response.ok) {
+				throw new Error(
+					`Failed to load the Blobz body font: ${response.status}`
+				);
+			}
+			return await response.arrayBuffer();
+		}
+	);
+	return regularFontPromise;
+};
 
 const loadDisplayFont = (): Promise<ArrayBuffer> => {
 	displayFontPromise ??= fetch(BRICOLAGE_GROTESQUE_URL).then(
@@ -345,9 +365,18 @@ const loadDisplayFont = (): Promise<ArrayBuffer> => {
 export const createBlobzOgImage = async (
 	props: BlobzOgImageProps
 ): Promise<ImageResponse> => {
-	const displayFont = await loadDisplayFont();
+	const [displayFont, regularFont] = await Promise.all([
+		loadDisplayFont(),
+		props.variant === "cover" ? loadRegularFont() : undefined,
+	]);
 
-	return new ImageResponse(<BlobzOgImage {...props} />, {
+	const image =
+		props.variant === "cover" ? (
+			<MainCoverImage />
+		) : (
+			<BlobzOgImage {...props} />
+		);
+	return new ImageResponse(image, {
 		fonts: [
 			{
 				data: displayFont,
@@ -355,6 +384,16 @@ export const createBlobzOgImage = async (
 				style: "normal",
 				weight: 800,
 			},
+			...(regularFont
+				? [
+						{
+							data: regularFont,
+							name: "Bricolage Grotesque",
+							style: "normal" as const,
+							weight: 400 as const,
+						},
+					]
+				: []),
 		],
 		height: OG_SIZE.height,
 		width: OG_SIZE.width,

@@ -10,5 +10,6 @@ export default async function TwitterImage() {
 			"Generate the same playful SVG avatar from any username, email, or ID.",
 		seed: "blobz-twitter-card",
 		title: "A face worth keeping.",
+		variant: "cover",
 	});
 }

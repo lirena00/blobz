@@ -1,6 +1,13 @@
 // biome-ignore-all lint/performance/noAwaitInLoops: Painting in order preserves the intentional overlap of the Blobz.
 import { type AvatarPalette, makeAvatar } from "@blobz/avatar-core";
 
+import {
+	getMainCoverLayout,
+	MAIN_COVER_COLORS,
+	MAIN_COVER_COPY,
+	MAIN_COVER_LOGO,
+} from "@/lib/main-social-cover";
+
 export const SOCIAL_IMAGES = [
 	{
 		category: "Cover",
@@ -271,145 +278,129 @@ const accentLine = (ctx: CanvasRenderingContext2D, x: number, y: number) => {
 	box(ctx, x, y, 52, 6, 3, "#0ea5d9");
 };
 
+const getCoverImage = (source: string): Promise<HTMLImageElement> => {
+	const cached = avatarCache.get(source);
+	if (cached) {
+		return cached;
+	}
+	const image = new Image();
+	image.src = source;
+	const loading = image.decode().then(() => image);
+	avatarCache.set(source, loading);
+	return loading;
+};
+
+const coverText = (
+	ctx: CanvasRenderingContext2D,
+	value: string,
+	x: number,
+	y: number,
+	size: number,
+	weight: number,
+	color: string,
+	font: string,
+	tracking = 0
+) => {
+	ctx.font = `${weight} ${size}px ${font}`;
+	ctx.textAlign = "left";
+	ctx.textBaseline = "top";
+	ctx.fillStyle = color;
+	ctx.letterSpacing = `${tracking * size}px`;
+	ctx.fillText(value, x, y);
+	ctx.letterSpacing = "0px";
+};
+
 const drawCover = async (ctx: CanvasRenderingContext2D, board: Artboard) => {
-	const { w, h, margin, portrait, font } = board;
-	background(ctx, board, "blue");
-	const logo = await getAvatar("blobz", PALETTES.blue);
+	const layout = getMainCoverLayout(board.w, board.h);
+	const [logo, ...images] = await Promise.all(
+		[MAIN_COVER_LOGO, ...layout.tiles.map((tile) => tile.source)].map(
+			getCoverImage
+		)
+	);
+	const colors = MAIN_COVER_COLORS;
+	const copy = MAIN_COVER_COPY;
 	ctx.save();
-	ctx.beginPath();
-	ctx.arc(margin + 23, 63, 23, 0, Math.PI * 2);
-	ctx.clip();
-	ctx.drawImage(logo, margin, 40, 46, 46);
-	ctx.restore();
-	write(ctx, "blobz", margin + 58, 73, 29, 800, INK, font);
-	const titleTop = portrait ? 195 : 252;
-	accentLine(ctx, margin, portrait ? 136 : 164);
-	const headline = portrait
-		? ["A face worth", "keeping."]
-		: ["A face worth keeping."];
-	writeLines(
+	ctx.fillStyle = colors.background;
+	ctx.fillRect(0, 0, board.w, board.h);
+	grid(ctx, board);
+	ctx.translate(layout.offsetX, layout.offsetY);
+	ctx.scale(layout.scale, layout.scale);
+	box(
 		ctx,
-		headline,
-		margin,
-		titleTop,
-		portrait ? 70 : 76,
-		portrait ? 73 : 80,
-		850,
-		INK,
-		font,
-		portrait ? w - margin * 2 : w * 0.67
+		layout.panel.left,
+		layout.panel.top,
+		layout.panel.size,
+		layout.panel.size,
+		24,
+		colors.panel,
+		colors.border
 	);
-	const copyY = portrait ? titleTop + 174 : 309;
-	writeLines(
+	for (const [index, tile] of layout.tiles.entries()) {
+		const image = images[index];
+		if (image) {
+			ctx.drawImage(image, tile.left, tile.top, tile.size, tile.size);
+		}
+	}
+	if (logo) {
+		ctx.drawImage(logo, layout.brand.left, layout.brand.top, 40, 40);
+	}
+	coverText(
 		ctx,
-		[
-			"Generate the same playful SVG avatar from any username,",
-			"email, or ID.",
-		],
-		margin,
-		copyY,
-		portrait ? 23 : 25,
-		33,
-		650,
-		MUTED,
-		FONT_FALLBACK,
-		portrait ? w - margin * 2 : w * 0.63
+		"blobz",
+		layout.brand.left + 52,
+		layout.brand.top + 3,
+		32,
+		800,
+		colors.ink,
+		board.font,
+		-0.03
 	);
-	if (portrait) {
-		const fieldY = h * 0.73;
-		await avatarTile(
+	for (const [index, line] of copy.title.entries()) {
+		coverText(
 			ctx,
-			"blobz-open-graph-swarm-1",
-			PALETTES.orange,
-			w * 0.27,
-			fieldY - 65,
-			w * 0.25,
-			-10
-		);
-		await avatarTile(
-			ctx,
-			"blobz-open-graph-swarm-0",
-			PALETTES.blue,
-			w * 0.69,
-			fieldY - 97,
-			w * 0.17,
-			7
-		);
-		await avatarTile(
-			ctx,
-			"blobz-open-graph-swarm-3",
-			PALETTES.green,
-			w * 0.4,
-			fieldY + 125,
-			w * 0.2,
-			-7
-		);
-		await avatarTile(
-			ctx,
-			"blobz-open-graph-swarm-4",
-			PALETTES.pink,
-			w * 0.78,
-			fieldY + 85,
-			w * 0.15,
-			11
-		);
-		await avatarTile(
-			ctx,
-			"blobz-open-graph-swarm-2",
-			PALETTES.purple,
-			w * 0.85,
-			fieldY - 130,
-			w * 0.14,
-			9
-		);
-	} else {
-		await avatarTile(
-			ctx,
-			"blobz-open-graph-swarm-0",
-			PALETTES.blue,
-			w * 0.71,
-			h * 0.23,
-			116,
-			-8
-		);
-		await avatarTile(
-			ctx,
-			"blobz-open-graph-swarm-1",
-			PALETTES.orange,
-			w * 0.86,
-			h * 0.42,
-			218,
-			6
-		);
-		await avatarTile(
-			ctx,
-			"blobz-open-graph-swarm-3",
-			PALETTES.green,
-			w * 0.77,
-			h * 0.77,
-			143,
-			-7
-		);
-		await avatarTile(
-			ctx,
-			"blobz-open-graph-swarm-4",
-			PALETTES.pink,
-			w * 0.92,
-			h * 0.77,
-			104,
-			9
-		);
-		await avatarTile(
-			ctx,
-			"blobz-open-graph-swarm-2",
-			PALETTES.purple,
-			w * 0.96,
-			h * 0.02,
-			145,
-			10
+			line,
+			layout.title.left,
+			layout.title.top + index * layout.title.size,
+			layout.title.size,
+			800,
+			index === 0 ? colors.ink : colors.accent,
+			board.font,
+			-0.04
 		);
 	}
-	site(ctx, board);
+	for (const [index, line] of copy.description.entries()) {
+		coverText(
+			ctx,
+			line,
+			layout.description.left,
+			layout.description.top + index * 31,
+			22,
+			400,
+			colors.muted,
+			board.font
+		);
+	}
+	coverText(
+		ctx,
+		copy.tagline,
+		layout.tagline.left,
+		layout.tagline.top,
+		16,
+		800,
+		colors.accent,
+		board.font
+	);
+	coverText(
+		ctx,
+		copy.site,
+		layout.site.left,
+		layout.site.top,
+		18,
+		800,
+		colors.ink,
+		board.font
+	);
+	ctx.restore();
 };
 
 const drawWhat = async (ctx: CanvasRenderingContext2D, board: Artboard) => {
