@@ -1,0 +1,279 @@
+.demo {
+	--foreground: #0b1830;
+	--primary: #0b1830;
+	--primary-foreground: #fff;
+	--muted: #eef7fd;
+	--muted-foreground: #60708a;
+	--input: #d9eaf5;
+	--ring: #0284c7;
+	position: relative;
+	width: min(100%, 25rem);
+	min-width: 0;
+	margin-inline: auto;
+	color: var(--foreground);
+	scroll-margin-top: 6rem;
+}
+
+.stage {
+	padding-top: 3.75rem;
+	perspective: 1200px;
+}
+
+.deck {
+	position: relative;
+	width: 100%;
+	aspect-ratio: 0.96;
+	transform-style: preserve-3d;
+}
+
+.card {
+	position: absolute;
+	inset: 0;
+	border-radius: 1.75rem;
+	box-shadow: 0 18px 42px rgb(14 87 120 / 9%);
+	backface-visibility: hidden;
+}
+
+.cardContent {
+	display: grid;
+	grid-template-rows: 3.5rem minmax(0, 1fr) auto;
+	height: 100%;
+	padding: 1.6rem 1.75rem 2rem;
+}
+
+.card[data-revealed="false"] .cardContent {
+	visibility: hidden;
+}
+
+.cardHeader {
+	display: flex;
+	gap: 1rem;
+	align-items: baseline;
+	justify-content: space-between;
+	min-width: 0;
+}
+
+.name {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	min-width: 0;
+	margin: 0;
+	overflow: hidden;
+	-webkit-line-clamp: 2;
+	font-family: var(--font-bricolage), sans-serif;
+	font-size: clamp(1.25rem, 2vw, 1.65rem);
+	font-weight: 750;
+	line-height: 1.1;
+	letter-spacing: -0.025em;
+	overflow-wrap: anywhere;
+}
+
+.counter {
+	flex-shrink: 0;
+	font-size: 0.72rem;
+	font-weight: 650;
+	font-variant-numeric: tabular-nums;
+}
+
+.counterTotal {
+	opacity: 0.6;
+}
+
+.avatar {
+	align-self: center;
+	max-height: 100%;
+	aspect-ratio: 1;
+	user-select: none;
+	object-fit: contain;
+}
+
+.cardFooter {
+	display: flex;
+	gap: 1rem;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.paletteLabel {
+	display: inline-flex;
+	gap: 0.45rem;
+	align-items: center;
+	font-size: 0.72rem;
+	font-weight: 550;
+	color: #47576b;
+}
+
+.paletteDot {
+	width: 0.4rem;
+	height: 0.4rem;
+	border-radius: 50%;
+}
+
+.wordmark {
+	font-family: var(--font-bricolage), sans-serif;
+	font-size: 1.25rem;
+	font-weight: 800;
+	letter-spacing: -0.04em;
+}
+
+.dock {
+	position: relative;
+	z-index: 1;
+	margin-top: 1rem;
+	background: #fff;
+	border: 1px solid #d5e7f3;
+	border-radius: 1.25rem;
+}
+
+.nameRow {
+	padding: 0.4rem 0.85rem 0.4rem 1.1rem;
+	border-bottom: 1px solid #e5eff6;
+}
+
+.inputLabel {
+	flex: 0 0 auto;
+	font-size: 0.75rem;
+	font-weight: 600;
+	color: var(--muted-foreground);
+	white-space: nowrap;
+}
+
+.nameInput {
+	height: 2.75rem;
+	background: transparent;
+	border-color: transparent;
+	box-shadow: none;
+}
+
+.nameInput input {
+	min-width: 0;
+	font-size: 1rem;
+	font-weight: 550;
+	caret-color: var(--ring);
+}
+
+.nameInput [data-slot="input-group-addon"] {
+	padding-block: 0;
+}
+
+.nameInput input::placeholder {
+	font-weight: 400;
+	color: #6a7e94;
+}
+
+.toolbar,
+.browseControls,
+.exports {
+	display: flex;
+	gap: 0.2rem;
+	align-items: center;
+}
+
+.toolbar {
+	justify-content: space-between;
+	padding: 0.55rem;
+}
+
+.iconButton,
+.nextButton,
+.downloadButton,
+.resetButton {
+	min-height: 2.75rem;
+	touch-action: manipulation;
+	transition:
+		transform 160ms var(--ease-out),
+		background-color 160ms ease;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.iconButton,
+.resetButton {
+	min-width: 2.75rem;
+}
+
+.nextButton {
+	padding-inline: 0.6rem;
+}
+
+.downloadButton {
+	gap: 0.5rem;
+	padding-inline: 0.9rem;
+}
+
+.demo button:active {
+	transform: scale(0.97);
+}
+
+.demo button:focus-visible {
+	outline: 2px solid var(--ring);
+	outline-offset: 3px;
+}
+
+.nextButton[aria-disabled="true"] {
+	opacity: 0.55;
+}
+
+.exportStatus {
+	position: absolute;
+	right: 0;
+	bottom: -1.75rem;
+	left: 0;
+	font-size: 0.72rem;
+	line-height: 1.5;
+	color: #52647c;
+	text-align: center;
+}
+
+.spinner {
+	animation: spin 800ms linear infinite;
+}
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@media (max-width: 480px) {
+	.demo {
+		width: min(100%, 23rem);
+	}
+
+	.cardContent {
+		padding: 1.4rem 1.5rem 1.75rem;
+	}
+
+	.name {
+		font-size: 1.5rem;
+	}
+}
+
+@media (max-width: 360px) {
+	.toolbar {
+		flex-wrap: wrap;
+		gap: 0.25rem;
+	}
+
+	.browseControls,
+	.exports {
+		justify-content: space-between;
+		width: 100%;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.iconButton,
+	.nextButton,
+	.downloadButton,
+	.resetButton {
+		transition: none;
+	}
+
+	.demo button:active {
+		transform: none;
+	}
+
+	.spinner {
+		animation: none;
+	}
+}
