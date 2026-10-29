@@ -59,6 +59,7 @@ export const metadata: Metadata = {
 	title: "Blobz: deterministic avatars worth keeping",
 	twitter: {
 		card: "summary_large_image",
+		creator: "@lirena00",
 		description:
 			"Playful, deterministic SVG avatars for default profile pictures. Generate the same unique avatar from any username, email, or ID.",
 		title: "Blobz: deterministic avatars worth keeping",
