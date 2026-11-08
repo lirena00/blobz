@@ -14,6 +14,10 @@ import { AvatarTeamList } from "@/registry/blobz/blocks/avatar-team-list";
 import { ProfileCard } from "@/registry/blobz/components/profile-card";
 import { TestimonialCard } from "@/registry/blobz/components/testimonial-card";
 
+const AWAY_IMAGE = /aria-label="Away"[^>]*role="img"/;
+const UNREAD_IMAGE = /aria-label="128 unread messages"[^>]*role="img"/;
+const ONLINE_IMAGE = /aria-label="Online"[^>]*role="img"/;
+
 describe("avatar composition", () => {
 	test("renders a generated fallback with the inherited frame and an accessible description", () => {
 		const markup = renderToStaticMarkup(
@@ -54,7 +58,7 @@ describe("avatar composition", () => {
 		expect(markup).toContain('data-blobz-source="generated"');
 	});
 
-	test("announces status and the full unread count while capping its visible value", () => {
+	test("labels status and the full unread count as images while capping its visible value", () => {
 		const markup = renderToStaticMarkup(
 			<Avatar>
 				<AvatarFallback alt="" name="Vikram" />
@@ -62,11 +66,21 @@ describe("avatar composition", () => {
 				<AvatarCount count={128} />
 			</Avatar>
 		);
-		expect(markup).toContain('aria-label="Away"');
-		expect(markup).toContain('aria-label="128 unread messages"');
+		expect(markup).toMatch(AWAY_IMAGE);
+		expect(markup).toMatch(UNREAD_IMAGE);
+		expect(markup).not.toContain('role="status"');
 		expect(markup).toContain(">99+</span>");
 		expect(renderToStaticMarkup(<AvatarCount count={0} />)).toBe("");
 		expect(renderToStaticMarkup(<AvatarCount count={Number.NaN} />)).toBe("");
+	});
+
+	test("leaves an unlabelled custom badge without a role", () => {
+		const markup = renderToStaticMarkup(
+			<AvatarBadge>
+				<span>★</span>
+			</AvatarBadge>
+		);
+		expect(markup).not.toContain("role=");
 	});
 
 	test("gives group counts a useful accessible name and hides invalid counts", () => {
@@ -101,7 +115,8 @@ describe("avatar composition", () => {
 		);
 		expect(markup).toContain("ritu@example.com");
 		expect(markup).toContain("Lead");
-		expect(markup).toContain('aria-label="Online"');
+		expect(markup).toMatch(ONLINE_IMAGE);
+		expect(markup).not.toContain('role="status"');
 		expect(markup).toContain('data-slot="avatar-profile"');
 	});
 
