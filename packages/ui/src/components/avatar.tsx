@@ -165,12 +165,12 @@ function AvatarBadge({
 	status,
 	...props
 }: ComponentProps<"span"> & VariantProps<typeof badgeVariants>) {
+	const label = ariaLabel ?? (status ? STATUS_LABELS[status] : undefined);
 	return (
 		<span
-			aria-label={ariaLabel ?? (status ? STATUS_LABELS[status] : undefined)}
 			className={cn(badgeVariants({ position, status }), className)}
 			data-slot="avatar-badge"
-			role="status"
+			{...(label ? { "aria-label": label, role: "img" } : {})}
 			{...props}
 		/>
 	);
@@ -194,7 +194,7 @@ function AvatarCount({
 				className
 			)}
 			data-slot="avatar-count"
-			role="status"
+			role="img"
 			{...props}
 		>
 			<span aria-hidden="true">
